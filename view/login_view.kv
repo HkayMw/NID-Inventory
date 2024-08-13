@@ -1,0 +1,98 @@
+#:kivy 2.3.0
+# view/login_view.kv
+
+<FlatButton@ButtonBehavior+Label>:
+    font_size: 16
+
+<LoginScreen>:
+    id: login_view
+    name: 'login_view'
+    orientation: "vertical"
+    spacing: 10
+    space_x: self.size[0]/3
+    canvas.before:
+        Color:
+            rgba: (.35,.35,.35,.35)
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+    BoxLayout:
+        orientation: "vertical"
+        # spacing: 10
+        # padding: 10
+
+        BoxLayout:
+            size_hint_y: None
+            height: 50
+            canvas.before:
+                Color:
+                    rgba: (.1, .19, .15, 1)
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            Label:
+                text: "Login Page"
+                bold: True
+                size_hint_x: .9
+
+            FlatButton:
+                text: "x"
+                size_hint_x: .1
+
+        BoxLayout:
+            orientation: "vertical"
+            padding: login_view.space_x, 10
+
+            # Login form
+            Label:
+                id: sp
+                size_hint_y: None
+                height: 40
+            BoxLayout:
+                orientation: "vertical"
+                spacing: 10
+                size_hint_y: None
+                height: 120
+
+
+                Label:
+                    id: notice
+                    text: ""
+                    size_hint_y: None
+                    height: 20
+                    markup: True
+                    padding: 20
+
+                
+
+                TextInput:
+                    id: id_no_field
+                    hint_text: "ID Number / Scan ID"
+                    multiline: False
+                    focus: True
+                    on_text_validate: password_field.focus = True
+
+                TextInput:
+                    id: password_field
+                    hint_text: "Password"
+                    multiline: False
+                    password: True
+                    on_text_validate: root.validate_user()
+
+            Label:
+                id: sp
+                size_hint_y: None
+                height: 40
+
+            Button:
+                text: "Log In"
+                size_hint_y: None
+                height: 40
+                background_normal: ''
+                background_color: (.1, .19, .15, 1)
+                on_release: root.validate_user()
+
+            Label:
+                id: sp2

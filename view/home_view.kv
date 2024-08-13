@@ -1,0 +1,16 @@
+#:kivy 2.3.0
+#view/home_view.kv
+
+<HomeScreen>:
+    id: home_view
+    name: "home_view"
+    BoxLayout:
+        orientation: 'vertical'
+        Label:
+            text: "Welcome to Home Screen"
+            font_size: 32
+            size_hint: (1, 0.2)
+        Button:
+            text: "Logout"
+            size_hint: (1, 0.2)
+            on_press: app.root.current = "login"

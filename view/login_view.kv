@@ -1,98 +1,148 @@
 #:kivy 2.3.0
 # view/login_view.kv
 
-<FlatButton@ButtonBehavior+Label>:
-    font_size: 16
-
 <LoginScreen>:
     id: login_view
     name: 'login_view'
     orientation: "vertical"
-    spacing: 10
+    # spacing: 10
     space_x: self.size[0]/3
     canvas.before:
+        # Gray background
         Color:
-            rgba: (.35,.35,.35,.35)
+            rgba: (0.4, 0.4, 0.4, 1)
         Rectangle:
             size: self.size
             pos: self.pos
 
+    # on_enter: id_no_field.focus = True
+
     BoxLayout:
         orientation: "vertical"
-        # spacing: 10
-        # padding: 10
+        # size_hint: 1, None
+        height: self.minimum_height
 
+        # Teal Header Section
         BoxLayout:
-            size_hint_y: None
-            height: 50
+            size_hint_y: .1
+            pos_hint: {'x': 0, 'y': 0}
+            # height: 50
             canvas.before:
                 Color:
-                    rgba: (.1, .19, .15, 1)
+                    rgba: (0, 0.5, 0.5, 1)  # Teal color
                 Rectangle:
                     size: self.size
                     pos: self.pos
 
             Label:
-                text: "Login Page"
+                text: "NRB / MZUZU"
+                # font_size: 17
+                color: 1, 1, 1, 1  # White text
                 bold: True
-                size_hint_x: .9
+                halign: 'center'
+                valign: 'middle'
+                font_size: self.height * 0.5
+                padding: [10, (self.height - self.line_height) / 2]
+                text_size: self.size
 
-            FlatButton:
-                text: "x"
-                size_hint_x: .1
-
+        # Main Section
         BoxLayout:
+            id: main_section
             orientation: "vertical"
-            padding: login_view.space_x, 10
+            padding: login_view.space_x, 20
+            size_hint_y: .8
+            height: self.minimum_height
+            spacing: 20
 
-            # Login form
             Label:
-                id: sp
-                size_hint_y: None
-                height: 40
+                id: notice
+                text: ''
+                size_hint_y: .1
+                # height: 50
+
+            # ID Input
             BoxLayout:
-                orientation: "vertical"
-                spacing: 10
-                size_hint_y: None
-                height: 120
-
-
-                Label:
-                    id: notice
-                    text: ""
-                    size_hint_y: None
-                    height: 20
-                    markup: True
-                    padding: 20
-
-                
+                pos_hint: {'top': 1}
+                size_hint_y: .1
+                # height: 50
+                canvas.before:
+                    Color:
+                        rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [10, 10, 10, 10]  # Rounded corners
 
                 TextInput:
                     id: id_no_field
-                    hint_text: "ID Number / Scan ID"
-                    multiline: False
+                    hint_text: "Enter ID No. / Scan ID"
+                    foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
+                    background_color: (0, 0, 0, 0)  # Transparent to show canvas color
+                    # size_hint_y: None
+                    # height: 50
+                    halign: 'center'
                     focus: True
+                    multiline: False
+                    font_size: self.height * 0.5
+                    padding: [10, (self.height - self.line_height) / 2]
                     on_text_validate: password_field.focus = True
+
+            # Password Input
+            BoxLayout:
+                size_hint_y: .1
+                # height: 50
+                canvas.before:
+                    Color:
+                        rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [10, 10, 10, 10]  # Rounded corners
 
                 TextInput:
                     id: password_field
-                    hint_text: "Password"
+                    hint_text: "Enter password"
+                    foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
+                    background_color: (0, 0, 0, 0)  # Transparent to show canvas color
+                    # size_hint_y: None
+                    # height: 50
+                    halign: 'center'
                     multiline: False
+                    font_size: self.height * 0.5
+                    padding: [10, (self.height - self.line_height) / 2]
                     password: True
                     on_text_validate: root.validate_user()
 
-            Label:
-                id: sp
-                size_hint_y: None
-                height: 40
+            # Login Button
+            BoxLayout:
+                size_hint_y: .1
+                size_hint_x: .5
+                pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                # height: 50
+                padding: [5]
+                canvas.before:
+                    Color:
+                        rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [10, 10, 10, 10]  # Rounded corners
 
-            Button:
-                text: "Log In"
-                size_hint_y: None
-                height: 40
-                background_normal: ''
-                background_color: (.1, .19, .15, 1)
-                on_release: root.validate_user()
+                Button:
+                    text: "Login"
+                    background_normal: ''
+                    background_color: (0.14, 0.31, 0.31, 1)  # Dark teal color
+                    size_hint_x: 1
+                    font_size: self.height * 0.5
+                    padding: [10, (self.height - self.line_height) / 2]
+                    # height: 50
+                    # radius: [10, 10, 10, 10]  # Rounded corners
+                    color: 1, 1, 1, 1  # White text
+                    on_press: root.validate_user()
 
             Label:
-                id: sp2
+                id: bottom
+                # size_hint_y: None
+                size_hint_y: .6
+                
+    

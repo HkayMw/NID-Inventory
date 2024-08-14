@@ -24,4 +24,4 @@ class send_sms():
             print(f'Oops, we have a problem: {e}')
 
 sms = send_sms()
-sms.send(["+265994248549"],"sometext") 
+sms.send(["+265992236155"],"Okondedwa akasitomala, pitani pa office yaku mzuzu mukatenge chiphaso cha unzika chanu pa tsiku la ntchito lililonse.") 

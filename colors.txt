@@ -1,0 +1,11 @@
+background
+    (0.4, 0.4, 0.4, 1)  # Gray color
+
+input, button 
+    (0.14, 0.31, 0.31, 1)  # Dark teal color for background
+
+    (0.7, 0.7, 0.7, 1)  # Light gray color for the hint text
+
+header 
+    (0, 0.5, 0.5, 1)  # Teal color for background
+    1, 1, 1, 1 # white for the text

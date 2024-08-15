@@ -4,7 +4,7 @@ from kivy.app import App
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
 from kivy.lang import Builder
 from view.login_view import LoginScreen
-from view.home_view import HomeScreen
+from view.search_id_view import SearchIDScreen
 from view.add_id_view import AddIDScreen
 from view.adminDashboard_view import AdminDashboardScreen
 from kivy.config import Config
@@ -33,7 +33,7 @@ class MainApp(App):
         # sm.add_widget(LoginScreen(name='login_view'))
         # sm.add_widget(AddIDScreen(name='add_id_view'))
 
-        sm.current = 'login_view'
+        sm.current = 'search_id_view'
         
         # # Bind the on_key_down event for tab navigation
         # Window.bind(on_key_down=login_screen.on_key_down)

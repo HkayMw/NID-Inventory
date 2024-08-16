@@ -33,6 +33,13 @@
                     size: self.size
                     pos: self.pos
 
+            Image:
+                source: 'Assets/Coat_of_arms_of_Malawi.svg'
+                keep_ratio: True
+                size_hint_x: .07
+                pos_hint: {'x':0}
+
+
             Label:
                 text: "NRB / MZUZU"
                 # font_size: 17
@@ -43,6 +50,13 @@
                 font_size: min(self.width * .4, self.height * .4)
                 padding: [10, (self.height - self.line_height) / 2]
                 text_size: self.size
+                size_hint_x: .86
+
+            Image:
+                source: 'Assets/Coat_of_arms_of_Malawi.svg'
+                keep_ratio: True
+                size_hint_x: .07
+                pos_hint: {'x':1}
 
         # Main Section
         BoxLayout:

@@ -33,6 +33,13 @@
                     size: self.size
                     pos: self.pos
 
+            Image:
+                source: 'Assets/Coat_of_arms_of_Malawi.svg'
+                keep_ratio: True
+                size_hint_x: .07
+                pos_hint: {'x':0}
+
+
             Label:
                 text: "NRB / MZUZU"
                 # font_size: 17
@@ -43,6 +50,14 @@
                 font_size: min(self.width * .4, self.height * .4)
                 padding: [10, (self.height - self.line_height) / 2]
                 text_size: self.size
+                size_hint_x: .86
+
+            Image:
+                source: 'Assets/Coat_of_arms_of_Malawi.svg'
+                keep_ratio: True
+                size_hint_x: .07
+                pos_hint: {'x':1}
+
 
         # Window Section
         BoxLayout:
@@ -405,8 +420,46 @@
                     name: "search_results_section"
                     size_hint_x: .7
 
+                    #Search results table
+                    GridLayout:
+                        cols: 11
+                        size_hint_x: .9
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        # width: self.minimum_width
+                        # height: self.minimum_height
+                        padding: 5
+                        spacing: 5
 
+                        canvas.before:
+                            Color:
+                                rgba: 0, 0, 0, 1  # Black color for the border
+                            Line:
+                                width: 1
+                                rounded_rectangle: self.x, self.y, self.width, self.height, 10  # Radius of 10 for rounded edges
 
+                        Label:
+                            text: "Header 1"
+                        Label:
+                            text: "Header 1"
+                        Label:
+                            text: "Header 1"
+                        Label:
+                            text: "Header 1"
+                        Label:
+                            text: "Header 1"
+                        Label:
+                            text: "Header 1"
+                        Label:
+                            text: "Header 1"
+                        Label:
+                            text: "Header 1"
+                        Label:
+                            text: "Header 1"
+                        Label:
+                            text: "Header 1"
+                        Label:
+                            text: "Header 1"
+                    
             Label:
                 size_hint_y: .2
         

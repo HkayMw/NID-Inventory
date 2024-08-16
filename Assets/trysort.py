@@ -1,13 +1,32 @@
 from kivy.app import App
+from kivymd.app import MDApp
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.widget import Widget
+from kivymd.uix.datatables import MDDataTable
+from kivy.metrics import dp
 
-class CustomCanvas(Widget):
-    pass
-
-class MyApp(App):
+class DataTableApp(MDApp):
+    # print(self.ids)
     def build(self):
-        return BoxLayout()
+        layout = BoxLayout(orientation='vertical')
 
-if __name__ == '__main__':
-    MyApp().run()
+        data_tables = MDDataTable(
+            
+            size_hint=(1, 0.7),
+            use_pagination=True,
+            column_data=[
+                ("No", dp(30)),
+                ("Name", dp(30)),
+                ("Email", dp(60)),
+            ],
+            row_data=[
+                (1, "John Doe", "johndoe@example.com"),
+                (2, "Jane Smith", "janesmith@example.com"),
+                # ... more rows
+            ],
+        )
+
+        data_tables.id='table'
+        layout.add_widget(data_tables)
+        return layout
+
+DataTableApp().run()

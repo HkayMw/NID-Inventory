@@ -5,11 +5,11 @@ from kivy.core.window import Window
 
 
 # Builder.load_file('view/UI.kv')
-Builder.load_file('view/add_id_view.kv')
+Builder.load_file('view/sort_id_view.kv')
 
 
 
-class AddIDScreen(Screen):
+class SortIDScreen(Screen):
     def __init__(self, **kwargs):
-        super(AddIDScreen, self).__init__(**kwargs)
+        super(SortIDScreen, self).__init__(**kwargs)
         self.controller = UserController()

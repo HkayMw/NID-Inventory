@@ -1,9 +1,9 @@
 #:kivy 2.3.0
-# view/search_id_view.kv
+# view/sort_id_view.kv
 
-<SearchIDScreen>:
-    id: search_id_view
-    name: 'search_id_view'
+<SortIDScreen>:
+    id: sort_id_view
+    name: 'sort_id_view'
     orientation: "vertical"
     space_x: self.size[0]/3
     canvas.before:
@@ -106,7 +106,7 @@
                     padding: [5]
                     canvas.before:
                         Color:
-                            rgba: (0.7, 0.7, 0.7, 1)
+                            rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
                         RoundedRectangle:
                             size: self.size
                             pos: self.pos
@@ -115,11 +115,11 @@
                     Button:
                         text: "Search IDs"
                         background_normal: ''
-                        background_color: (0.7, 0.7, 0.7, 1)
+                        background_color: (0.14, 0.31, 0.31, 1)  # Dark teal color
                         size_hint_x: 1
                         font_size: min(self.width * .4, self.height * .4)
                         padding: [10, (self.height - self.line_height) / 2]
-                        color: (0.14, 0.31, 0.31, 1)
+                        color: 1, 1, 1, 1  # White text
                         on_press: root.manager.current = 'search_id_view'
 
                 
@@ -130,7 +130,7 @@
                     padding: [5]
                     canvas.before:
                         Color:
-                            rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
+                            rgba: (0.7, 0.7, 0.7, 1)
                         RoundedRectangle:
                             size: self.size
                             pos: self.pos
@@ -139,11 +139,11 @@
                     Button:
                         text: "Sort IDs"
                         background_normal: ''
-                        background_color: (0.14, 0.31, 0.31, 1)  # Dark teal color
+                        background_color: (0.7, 0.7, 0.7, 1)
                         size_hint_x: 1
                         font_size: min(self.width * .4, self.height * .4)
                         padding: [10, (self.height - self.line_height) / 2]
-                        color: 1, 1, 1, 1  # White text
+                        color: (0.14, 0.31, 0.31, 1)
                         on_press: root.manager.current = 'sort_id_view'
 
                 #Contacts Nav Button

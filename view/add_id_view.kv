@@ -5,7 +5,6 @@
     id: add_id_view
     name: 'add_id_view'
     orientation: "vertical"
-    # spacing: 10
     space_x: self.size[0]/3
     canvas.before:
         # Gray background
@@ -18,14 +17,12 @@
 
     BoxLayout:
         orientation: "vertical"
-        # size_hint: 1, None
         height: self.minimum_height
 
         # Teal Header Section
         BoxLayout:
             size_hint_y: .1
             pos_hint: {'x': 0, 'y': 0}
-            # height: 50
             canvas.before:
                 Color:
                     rgba: (0, 0.5, 0.5, 1)  # Teal color
@@ -42,7 +39,6 @@
 
             Label:
                 text: "NRB / MZUZU"
-                # font_size: 17
                 color: 1, 1, 1, 1  # White text
                 bold: True
                 halign: 'center'
@@ -58,11 +54,12 @@
                 size_hint_x: .07
                 pos_hint: {'x':1}
 
-        # Main Section
+        # Window Section
         BoxLayout:
-            id: main_section
+            id: window_section
+            name: "window_section"
             orientation: "vertical"
-            padding: add_id_view.space_x*.5, 10
+            padding: 0, 10
             size_hint_y: .8
             height: self.minimum_height
             spacing: 40
@@ -70,17 +67,17 @@
             # Navigation
             BoxLayout:        
                 orientation: "horizontal"
+                padding: window_section.width*.167, .9
+                pos_hint: {"center_x": 0.5, "center_y": 0.5}
                 id: navigation
                 size_hint_y: .1
-                size_hint_x: .63
-                pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                size_hint_x: .75
                 spacing: 10
 
+                #ADD ID Nav button
                 BoxLayout:
-                    # size_hint_y: .1
                     size_hint_x: .5
                     pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                    # height: 50
                     padding: [5]
                     canvas.before:
                         Color:
@@ -97,17 +94,13 @@
                         size_hint_x: 1
                         font_size: min(self.width * .4, self.height * .4)
                         padding: [10, (self.height - self.line_height) / 2]
-                        # height: 50
-                        # radius: [10, 10, 10, 10]  # Rounded corners
                         color: (0.14, 0.31, 0.31, 1)
                         on_press: root.manager.current = 'add_id_view'
 
-
+                #Search IDs Nav Button
                 BoxLayout:
-                    # size_hint_y: .1
                     size_hint_x: .5
                     pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                    # height: 50
                     padding: [5]
                     canvas.before:
                         Color:
@@ -124,17 +117,14 @@
                         size_hint_x: 1
                         font_size: min(self.width * .4, self.height * .4)
                         padding: [10, (self.height - self.line_height) / 2]
-                        # height: 50
-                        # radius: [10, 10, 10, 10]  # Rounded corners
                         color: 1, 1, 1, 1  # White text
                         on_press: root.manager.current = 'search_id_view'
 
                 
+                #Sort IDs Nav Button
                 BoxLayout:
-                    # size_hint_y: .1
                     size_hint_x: .5
                     pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                    # height: 50
                     padding: [5]
                     canvas.before:
                         Color:
@@ -151,16 +141,13 @@
                         size_hint_x: 1
                         font_size: min(self.width * .4, self.height * .4)
                         padding: [10, (self.height - self.line_height) / 2]
-                        # height: 50
-                        # radius: [10, 10, 10, 10]  # Rounded corners
                         color: 1, 1, 1, 1  # White text
                         on_press: root.manager.current = 'sort_id_view'
 
+                #Contacts Nav Button
                 BoxLayout:
-                    # size_hint_y: .1
                     size_hint_x: .5
                     pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                    # height: 50
                     padding: [5]
                     canvas.before:
                         Color:
@@ -177,109 +164,109 @@
                         size_hint_x: 1
                         font_size: min(self.width * .4, self.height * .4)
                         padding: [10, (self.height - self.line_height) / 2]
-                        # height: 50
-                        # radius: [10, 10, 10, 10]  # Rounded corners
                         color: 1, 1, 1, 1  # White text
-                        on_press: root.manager.current = 'contacts_view'
+                        on_press: root.manager.current = 'contact_view'
 
-            Label:
-                size_hint_y: .051
+            
+
+            # Main Section
             BoxLayout:
-                orientation: "horizontal"
-                id: issue_date_container
-                size_hint_y: .1
-                size_hint_x: .7
-                pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                # height: 50
-                padding: [5]
-                canvas.before:
-                    Color:
-                        rgba: (0.7, 0.7, 0.7, 1)  # Dark teal color
-                    RoundedRectangle:
-                        size: self.size
-                        pos: self.pos
-                        radius: [10, 10, 10, 10]  # Rounded corners
+                orientation: "vertical"
+                id: main_section
+                name: "main_section"
+                size_hint_y: .9
+                spacing: 30
 
                 Label:
-                    id:issue_date_label
-                    text: "Issue Date"
-                    color: (0.14, 0.31, 0.31, 1)
-                    font_size: min(root.width * .05, root.height * .05)  # Adjust the multiplier as needed
-                    # size_hint_y: None
-                    # height: self.texture_size[1]
-                
+                    size_hint_y: .05
+
                 BoxLayout:
-                    pos_hint: {'top': 1}
-                    # size_hint_y: 
-                    # height: 50
-                    canvas.before:
-                        Color:
-                            rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
-                        RoundedRectangle:
-                            size: self.size
-                            pos: self.pos
-                            radius: [10, 10, 10, 10]  # Rounded corners
+                    orientation: "vertical"
+                    id: input_section
+                    name: "input_section"
+                    size_hint_y: .95
+                    size_hint_x: .5
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    padding: [10, (self.height - self.height) / 1]
+                    spacing: 30
 
-                    TextInput:
-                        id: id_no_field
-                        hint_text: "Year-Month"
-                        foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
-                        background_color: (0, 0, 0, 0)  # Transparent to show canvas color
-                        # size_hint_y: None
+                    # Issue Date Input
+                    BoxLayout:
+                        orientation: "horizontal"
+                        id: issue_date_container
+                        size_hint_y: .1
+                        size_hint_x: .7
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
                         # height: 50
-                        halign: 'center'
-                        focus: True
-                        multiline: False
-                        font_size: min(self.width * .4, self.height * .4)
-                        padding: [10, (self.height - self.line_height) / 2]
+                        padding: [5]
+                        canvas.before:
+                            Color:
+                                rgba: (0.7, 0.7, 0.7, 1)  # Dark teal color
+                            RoundedRectangle:
+                                size: self.size
+                                pos: self.pos
+                                radius: [10, 10, 10, 10]  # Rounded corners
 
-            
-            
-            # BoxLayout:
-            #     orientation: "horizontal"
-            #     id: qr_code_container
-            #     size_hint_y: .1
-            #     size_hint_x: .5
-            #     pos_hint: {"center_x": 0.5, "center_y": 0.5}
-            #     # height: 50
-            #     padding: [5]
-            #     canvas.before:
-            #         Color:
-            #             rgba: (0.7, 0.7, 0.7, 1)  # Dark teal color
-            #         RoundedRectangle:
-            #             size: self.size
-            #             pos: self.pos
-            #             radius: [10, 10, 10, 10]  # Rounded corners
-            # ID Input
-            BoxLayout:
-                pos_hint: {'top': 1}
-                size_hint_y: .1
-                size_hint_x: .5
-                pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                canvas.before:
-                    Color:
-                        rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
-                    RoundedRectangle:
-                        size: self.size
-                        pos: self.pos
-                        radius: [10, 10, 10, 10]  # Rounded corners
+                        Label:
+                            id:issue_date_label
+                            text: "Issue Date"
+                            color: (0.14, 0.31, 0.31, 1)
+                            font_size: min(root.width * .04, root.height * .04)  # Adjust the multiplier as needed
+                        
+                        BoxLayout:
+                            pos_hint: {'top': 1}
+                            canvas.before:
+                                Color:
+                                    rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
+                                RoundedRectangle:
+                                    size: self.size
+                                    pos: self.pos
+                                    radius: [10, 10, 10, 10]  # Rounded corners
 
-                TextInput:
-                    id: qr_code
-                    hint_text: "Scan QR Code"
-                    foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
-                    background_color: (0, 0, 0, 0)  # Transparent to show canvas color
-                    # size_hint_y: None
-                    # height: 50
-                    halign: 'center'
-                    focus: True
-                    multiline: False
-                    font_size: min(self.width * .4, self.height * .4)
-                    padding: [10, (self.height - self.line_height) / 2]
+                            TextInput:
+                                id: id_no_field
+                                hint_text: "Year-Month"
+                                foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
+                                background_color: (0, 0, 0, 0)  # Transparent to show canvas color
+                                halign: 'center'
+                                focus: True
+                                multiline: False
+                                font_size: min(self.width * .4, self.height * .4)
+                                padding: [10, (self.height - self.line_height) / 2]
+
+                    
+                    
+                    
+                    # ID Input
+                    BoxLayout:
+                        pos_hint: {'top': 1}
+                        size_hint_y: .1
+                        size_hint_x: .5
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        canvas.before:
+                            Color:
+                                rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
+                            RoundedRectangle:
+                                size: self.size
+                                pos: self.pos
+                                radius: [10, 10, 10, 10]  # Rounded corners
+
+                        TextInput:
+                            id: qr_code
+                            hint_text: "Scan QR Code"
+                            foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
+                            background_color: (0, 0, 0, 0)  # Transparent to show canvas color
+                            # size_hint_y: None
+                            # height: 50
+                            halign: 'center'
+                            focus: True
+                            multiline: False
+                            font_size: min(self.width * .4, self.height * .4)
+                            padding: [10, (self.height - self.line_height) / 2]
 
 
-            Label:
-                size_hint_y: .4
+                    Label:
+                        size_hint_y: .55
 
         #Footer
         BoxLayout:

@@ -1,14 +1,12 @@
-#screens/login_view.py
+# screens/login/login_view.py
 
 from kivy.uix.screenmanager import Screen
 from controller.user_controller import UserController
 from kivy.lang import Builder
 from kivy.core.window import Window
 
-
 # Builder.load_file('view/UI.kv')
-Builder.load_file('view/login_view.kv')
-
+Builder.load_file('view/login/login_view.kv')
 
 
 class LoginScreen(Screen):
@@ -16,7 +14,6 @@ class LoginScreen(Screen):
         super(LoginScreen, self).__init__(**kwargs)
         self.controller = UserController()
         Window.bind(on_key_down=self.on_key_down)  # Bind the on_key_down event
-    
 
     def validate_user(self):
         id_no = self.ids.id_no_field
@@ -31,24 +28,20 @@ class LoginScreen(Screen):
             valid, message, user = self.controller.validate_user(id_no.text.upper(), password.text)
             if valid:
                 # notice.text = f"[color=#00ff00]{message}, {user}[/color]"
-                
+
                 self.manager.current = 'add_id_view'
             else:
                 notice.text = f"[color=#ff0000]{message}[/color]"
-                
-    
-      
-
 
     def on_key_down(self, instance, keyboard, keycode, text, modifiers):
         # print(f"Keycode: {keycode}")
         if keycode == 43:
-           # Collect all focusable widgets
+            # Collect all focusable widgets
             focusable_widgets = []
             for widget in self.walk(restrict=True):
                 if hasattr(widget, 'focus') and widget.is_focusable:
                     focusable_widgets.append(widget)
-            
+
             # for x in focusable_widgets: print(x.)
             # Find the currently focused widget
             focused_widget = next((w for w in focusable_widgets if w.focus), None)

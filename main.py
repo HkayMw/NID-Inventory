@@ -6,12 +6,12 @@ from kivy.app import App
 
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition
 from kivy.lang import Builder
-from view.login_view import LoginScreen
-from view.search_id_view import SearchIDScreen
-from view.add_id_view import AddIDScreen
-from view.sort_id_view import SortIDScreen
-from view.contact_view import ContactScreen
-from view.adminDashboard_view import AdminDashboardScreen
+from view.login.login_view import LoginScreen
+from view.search_id.search_id_view import SearchIDScreen
+from view.add_id.add_id_view import AddIDScreen
+from view.sort_id.sort_id_view import SortIDScreen
+from view.contact.contact_view import ContactScreen
+from view.adminDashboard.adminDashboard_view import AdminDashboardScreen
 from kivy.config import Config
 from kivy.core.window import Window
 

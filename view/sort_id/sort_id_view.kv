@@ -1,6 +1,8 @@
 #:kivy 2.3.0
 # view/sort_id/sort_id_view.kv
 
+
+
 <SortIDScreen>:
     id: sort_id_view
     name: 'sort_id_view'
@@ -95,7 +97,7 @@
                         size_hint_x: 1
                         font_size: min(self.width * .4, self.height * .4)
                         padding: [10, (self.height - self.line_height) / 2]
-                        color:  (0.7, 0.7, 0.7, 1)
+                        color:  1, 1, 1, 1  # White text
                         on_press: root.manager.current = 'add_id_view'
 
 
@@ -181,18 +183,22 @@
                     orientation: "vertical"
                     id: controls_section
                     name: "controls_section"
-                    size_hint_x: .4
-                    spacing: 30
+                    size_hint_x: .35
+                    spacing: 20
 
-                    #Search with ID number controls
+                    Label:
+                        size_hint_y:.1
+
+                    # Letter To Sort Input
                     BoxLayout:
                         orientation: "horizontal"
+                        id: sort_letter_container
+                        name: "sort_letter_container"
                         size_hint_y: .15
                         size_hint_x: .9
                         pos_hint: {"center_x": 0.5, "center_y": 0.5}
                         # height: 50
                         padding: [5]
-                        spacing: 10
                         canvas.before:
                             Color:
                                 rgba: (0.7, 0.7, 0.7, 1)  # Dark teal color
@@ -201,11 +207,78 @@
                                 pos: self.pos
                                 radius: [10, 10, 10, 10]  # Rounded corners
 
+                        Label:
+                            id:sort_later_label
+                            text: "Pick a letter"
+                            halign: "left"
+                            valign: "middle"
+                            text_size: self.size
+                            size_hint_x: .7
+                            color: (0.14, 0.31, 0.31, 1)
+                            font_size: min(root.width * .04, root.height * .04)  # Adjust the multiplier as needed
+                        
                         BoxLayout:
                             pos_hint: {'top': 1}
-                            size_hint_x: .7
-                            # size_hint_y: 
-                            # height: 50
+                            size_hint_x: .3
+                            canvas.before:
+                                Color:
+                                    rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
+                                RoundedRectangle:
+                                    size: self.size
+                                    pos: self.pos
+                                    radius: [10, 10, 10, 10]  # Rounded corners
+
+                            Spinner:
+                                id: sort_letter
+                                text: "ALL"
+                                values: [chr(x) for x in range(65, 91)]  # Generates letters A to Z
+                                # values: ["A", "", "B", "", "C", "", "D"]
+                                # on_text: root.on_spinner_select(self, self.text)
+                                foreground_color: (1, 1, 1, 1)  # Light gray text
+                                background_color: (0, 0, 0, 0)  # Transparent to show canvas color
+                                halign: 'center'
+                                size: 200,44
+                                # focus: True
+                                multiline: False
+                                font_size: min(self.width * .4, self.height * .4)
+                                padding: [10, (self.height - self.line_height) / 2]
+
+                                # Styling the dropdown items
+                                option_cls: 'StyledSpinnerOption'
+                                dropdown_cls: 'LimitedHeightDropDown'  # Use the custom dropdown
+                    
+                    Label:
+                        size_hint_y:.15
+                    
+                    # From Date: For sorting Date Rage
+                    BoxLayout:
+                        orientation: "horizontal"
+                        id: from_date_container
+                        size_hint_y: .15
+                        size_hint_x: .9
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        padding: [5]
+                        halign: "left"
+                        text_size: self.size
+                        canvas.before:
+                            Color:
+                                rgba: (0.7, 0.7, 0.7, 1)  # Dark teal color
+                            RoundedRectangle:
+                                size: self.size
+                                pos: self.pos
+                                radius: [10, 10, 10, 10]  # Rounded corners
+
+                        Label:
+                            id:from_date_label
+                            text: "From"
+                            halign: "left"
+                            valign: "middle"
+                            text_size: self.size
+                            color: (0.14, 0.31, 0.31, 1)
+                            font_size: min(root.width * .04, root.height * .04)
+                        
+                        BoxLayout:
+                            pos_hint: {'top': 1}
                             canvas.before:
                                 Color:
                                     rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
@@ -215,25 +288,45 @@
                                     radius: [10, 10, 10, 10]  # Rounded corners
 
                             TextInput:
-                                id: id_no_field
-                                hint_text: "ID Number"
+                                id: from_date
+                                hint_text: "YYYY-MM-DD"
                                 foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
                                 background_color: (0, 0, 0, 0)  # Transparent to show canvas color
-                                # size_hint_y: None
-                                # height: 50
                                 halign: 'center'
                                 focus: True
                                 multiline: False
-                                font_size: min(self.width * .4, self.height * .4)  
+                                font_size: min(self.width * .4, self.height * .4)
                                 padding: [10, (self.height - self.line_height) / 2]
+                    
+                    # To Date: For sorting Date Rage
+                    BoxLayout:
+                        orientation: "horizontal"
+                        id: to_date_container
+                        size_hint_y: .15
+                        size_hint_x: .9
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        # height: 50
+                        padding: [5]
+                        canvas.before:
+                            Color:
+                                rgba: (0.7, 0.7, 0.7, 1)  # Dark teal color
+                            RoundedRectangle:
+                                size: self.size
+                                pos: self.pos
+                                radius: [10, 10, 10, 10]  # Rounded corners
 
-                        #Search with ID number button
+                        Label:
+                            id:to_date_label
+                            text: "To"
+                            text: "From"
+                            halign: "left"
+                            valign: "middle"
+                            text_size: self.size
+                            color: (0.14, 0.31, 0.31, 1)
+                            font_size: min(root.width * .04, root.height * .04)
+                        
                         BoxLayout:
-                            # size_hint_y: .1
-                            size_hint_x: .3
-                            pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                            # height: 50
-                            padding: [5]
+                            pos_hint: {'top': 1}
                             canvas.before:
                                 Color:
                                     rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
@@ -242,166 +335,23 @@
                                     pos: self.pos
                                     radius: [10, 10, 10, 10]  # Rounded corners
 
-                            Button:
-                                text: "Submit"
-                                background_normal: ''
-                                background_color: (0.14, 0.31, 0.31, 1)  # Dark teal color
-                                size_hint_x: 1
-                                font_size: min(self.width * .4, self.height * .4)  
+                            TextInput:
+                                id: to_date
+                                hint_text: "YYYY-MM-DD"
+                                foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
+                                background_color: (0, 0, 0, 0)  # Transparent to show canvas color
+                                halign: 'center'
+                                focus: True
+                                multiline: False
+                                font_size: min(self.width * .4, self.height * .4)
                                 padding: [10, (self.height - self.line_height) / 2]
-                                # height: 50
-                                # radius: [10, 10, 10, 10]  # Rounded corners
-                                color: 1, 1, 1, 1  # White text
-                                # on_press: root.manager.current = 'search_id_view'
-
-                    # Search by name
-                    BoxLayout:
-                        orientation: "vertical"
-                        id: qr_code_container
-                        size_hint_y: .3
-                        size_hint_x: .9
-                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                        # height: 50
-                        padding: [5]
-                        spacing: 10
-                        canvas.before:
-                            Color:
-                                rgba: (0.7, 0.7, 0.7, 1)  # Dark teal color
-                            RoundedRectangle:
-                                size: self.size
-                                pos: self.pos
-                                radius: [10, 10, 10, 10]  # Rounded corners
-                
-                        #first name row
-                        BoxLayout:
-                            orientation: "horizontal"
-                            spacing: 10
-
-                            #Firstname field
-                            BoxLayout:
-                                pos_hint: {'top': 1}
-                                # size_hint_y: .5
-                                size_hint_x: .7
-                                # height: 50
-                                canvas.before:
-                                    Color:
-                                        rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
-                                    RoundedRectangle:
-                                        size: self.size
-                                        pos: self.pos
-                                        radius: [10, 10, 10, 10]  # Rounded corners
-
-                                TextInput:
-                                    id: firstname_field
-                                    hint_text: "Firstname"
-                                    foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
-                                    background_color: (0, 0, 0, 0)  # Transparent to show canvas color
-                                    # size_hint_y: None
-                                    # height: 50
-                                    halign: 'center'
-                                    focus: True
-                                    multiline: False
-                                    font_size: min(self.width * .4, self.height * .4)  
-                                    padding: [10, (self.height - self.line_height) / 2]
-
-                            Label:
-                                pos_hint: {'top': 1}
-                                size_hint_x: .3
-                                # size_hint_y: .5
-                                # padding: 5
-
-                        # Lastname and submit button row
-                        BoxLayout:
-                            orientation: "horizontal"
-                            spacing: 10
-
-                            # Lastname field
-                            BoxLayout:
-                                pos_hint: {'top': 1}
-                                size_hint_x: .7
-                                # size_hint_y: 
-                                # height: 50
-                                canvas.before:
-                                    Color:
-                                        rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
-                                    RoundedRectangle:
-                                        size: self.size
-                                        pos: self.pos
-                                        radius: [10, 10, 10, 10]  # Rounded corners
-
-                                TextInput:
-                                    id: lastname_field
-                                    hint_text: "Surname"
-                                    foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
-                                    background_color: (0, 0, 0, 0)  # Transparent to show canvas color
-                                    # size_hint_y: None
-                                    # height: 50
-                                    halign: 'center'
-                                    focus: True
-                                    multiline: False
-                                    font_size: min(self.width * .4, self.height * .4)  
-                                    padding: [10, (self.height - self.line_height) / 2]
-
-                            #Search with name submit button
-                            BoxLayout:
-                                # size_hint_y: .1
-                                size_hint_x: .3
-                                pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                                # height: 50
-                                padding: [5]
-                                canvas.before:
-                                    Color:
-                                        rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
-                                    RoundedRectangle:
-                                        size: self.size
-                                        pos: self.pos
-                                        radius: [10, 10, 10, 10]  # Rounded corners
-
-                                Button:
-                                    text: "Submit"
-                                    background_normal: ''
-                                    background_color: (0.14, 0.31, 0.31, 1)  # Dark teal color
-                                    size_hint_x: 1
-                                    font_size: min(self.width * .4, self.height * .4)  
-                                    padding: [10, (self.height - self.line_height) / 2]
-                                    # height: 50
-                                    # radius: [10, 10, 10, 10]  # Rounded corners
-                                    color: 1, 1, 1, 1  # White text
-                                    # on_press: root.manager.current = 'search_id_view'
-
-                    # Search by scanning ID
-                    BoxLayout:
-                        pos_hint: {'top': 1}
-                        size_hint_y: .15
-                        size_hint_x: .9
-                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                        canvas.before:
-                            Color:
-                                rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
-                            RoundedRectangle:
-                                size: self.size
-                                pos: self.pos
-                                radius: [10, 10, 10, 10]  # Rounded corners
-
-                        TextInput:
-                            id: qr_code
-                            hint_text: "Scan QR Code"
-                            foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
-                            background_color: (0, 0, 0, 0)  # Transparent to show canvas color
-                            # size_hint_y: None
-                            # height: 50
-                            halign: 'center'
-                            focus: True
-                            multiline: False
-                            font_size: min(self.width * .4, self.height * .4)
-                            padding: [10, (self.height - self.line_height) / 2]
-
                     Label:
-                        size_hint_y:.4
+                        size_hint_y:.3
                 #Search results Section
                 BoxLayout:
                     orientation: 'vertical'
                     padding: 10
+                    size_hint_x: .65
 
                     BoxLayout:
                         id: table_container
@@ -440,3 +390,25 @@
                     size: self.size
                     pos: self.pos
                     radius: [10, 10, 10, 10]  # Rounded corners
+
+
+
+# Custom SpinnerOption class with padding
+<StyledSpinnerOption@SpinnerOption>:
+    background_color: (0, 0, 0, 0)  # Fully transparent default background
+    canvas.before:
+        Color:
+            rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
+        # RoundedRectangle:
+        #     size: self.size
+        #     pos: self.pos
+        #     radius: [0, 0, 0, 0]  # Rounded corners
+        Line:
+            width:1.5
+            rectangle: (self.x, self.y, self.width, self.height)
+    color: (1, 1, 1, 1)  # Light gray text
+    font_size: min(self.width * .4, self.height * .4)
+    # padding: [20, 10]  # Increase padding: [horizontal padding, vertical padding]
+
+<LimitedHeightDropDown@DropDown>:
+    max_height: 120  # Limit the dropdown height to show only 3 items at a time

@@ -95,7 +95,7 @@
                         size_hint_x: 1
                         font_size: min(self.width * .4, self.height * .4)
                         padding: [10, (self.height - self.line_height) / 2]
-                        color:  (0.7, 0.7, 0.7, 1)
+                        color:  1, 1, 1, 1
                         on_press: root.manager.current = 'add_id_view'
 
 
@@ -181,19 +181,23 @@
                     orientation: "vertical"
                     id: controls_section
                     name: "controls_section"
-                    size_hint_x: .4
+                    size_hint_x: .35
                     spacing: 30
+
+                    Label:
+                        size_hint_y: .05
 
                     #Add Contact controls
                     BoxLayout:
                         orientation: "vertical"
-                        size_hint_y: .3
+                        size_hint_y: .35
                         Label:
                             id: add_contact_label
                             text: "Add Contact"
                             size_hint_y: .2
-                            # padding: [5]
+                            color: (0.14, 0.31, 0.31, 1)
                             halign: "left"
+                            font_size: min(self.width * 1, self.height * 1)
                             text_size: self.size
                             size_hint_x: .9
                             pos_hint: {"center_x": 0.5, "center_y": 0.5}
@@ -206,7 +210,6 @@
                             size_hint_y: .8
                             size_hint_x: .9
                             pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                            # height: 50
                             padding: [5]
                             spacing: 10
                             canvas.before:
@@ -309,14 +312,16 @@
                     #Search Contact controls
                     BoxLayout:
                         orientation: "vertical"
-                        size_hint_y: .3
+                        size_hint_y: .35
                         Label:
                             id: search_contact_label
                             text: "Search Contact"
                             size_hint_y: .2
                             # padding: [5]
+                            font_size: min(self.width * 1, self.height * 1)
                             halign: "left"
                             text_size: self.size
+                            color: (0.14, 0.31, 0.31, 1)
                             size_hint_x: .9
                             pos_hint: {"center_x": 0.5, "center_y": 0.5}
 
@@ -429,11 +434,11 @@
                     
 
                     Label:
-                        size_hint_y:.4
+                        size_hint_y:.25
                 #Search results Section
                 BoxLayout:
                     orientation: 'vertical'
-                    size_hint_x: .6
+                    size_hint_x: .65
                     padding: 10
 
                     BoxLayout:

@@ -95,7 +95,7 @@
                         size_hint_x: 1
                         font_size: min(self.width * .4, self.height * .4)
                         padding: [10, (self.height - self.line_height) / 2]
-                        color:  (0.7, 0.7, 0.7, 1)
+                        color:  1, 1, 1, 1  # White text
                         on_press: root.manager.current = 'add_id_view'
 
 
@@ -181,8 +181,11 @@
                     orientation: "vertical"
                     id: controls_section
                     name: "controls_section"
-                    size_hint_x: .4
+                    size_hint_x: .35
                     spacing: 30
+
+                    Label:
+                        size_hint_y: .1
 
                     #Search with ID number controls
                     BoxLayout:
@@ -258,7 +261,7 @@
                     BoxLayout:
                         orientation: "vertical"
                         id: qr_code_container
-                        size_hint_y: .3
+                        size_hint_y: .35
                         size_hint_x: .9
                         pos_hint: {"center_x": 0.5, "center_y": 0.5}
                         # height: 50
@@ -397,32 +400,20 @@
                             padding: [10, (self.height - self.line_height) / 2]
 
                     Label:
-                        size_hint_y:.4
+                        size_hint_y:.25
+                
                 #Search results Section
                 BoxLayout:
                     orientation: 'vertical'
                     padding: 10
+                    size_hint_x: .65
 
                     BoxLayout:
                         id: table_container
                         orientation: 'vertical'
                         padding: [10, 10, 10, 10]
                         size_hint_y: 1
-                        # height: self.minimum_height
-
-                        # MDDataTable:
-                        #     id: id_results_table
-                        #     size_hint_y: 1
-                        #     size_hint_x: 1
-                        #     pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-                        #     column_data:
-                        #         [("ID Number", dp(30)), ("First Name", dp(30)), ("Last Name", dp(30)), ("Date of Birth", dp(30)), ("Gender", dp(30))]
-                        #     row_data: []
-
-                        #     on_row_press:
-                        #         app.on_row_press(*args)
-            # Label:
-            #     size_hint_y: .2
+                        
         
         #Footer
         BoxLayout:

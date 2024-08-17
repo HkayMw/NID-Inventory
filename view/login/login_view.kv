@@ -24,9 +24,8 @@
 
         # Teal Header Section
         BoxLayout:
-            size_hint_y: .1
+            size_hint_y: .15
             pos_hint: {'x': 0, 'y': 0}
-            # height: 50
             canvas.before:
                 Color:
                     rgba: (0, 0.5, 0.5, 1)  # Teal color
@@ -34,23 +33,39 @@
                     size: self.size
                     pos: self.pos
 
+            Image:
+                source: 'Assets/Coat_of_arms_of_Malawi.svg'
+                keep_ratio: True
+                size_hint_x: .07
+                pos_hint: {'x':0}
+
+
             Label:
                 text: "NRB / MZUZU"
-                # font_size: 17
                 color: 1, 1, 1, 1  # White text
                 bold: True
                 halign: 'center'
                 valign: 'middle'
-                font_size: self.height * 0.5
+                font_size: min(self.width * .4, self.height * .4)
                 padding: [10, (self.height - self.line_height) / 2]
                 text_size: self.size
+                size_hint_x: .86
+
+            Image:
+                source: 'Assets/Coat_of_arms_of_Malawi.svg'
+                keep_ratio: True
+                size_hint_x: .07
+                pos_hint: {'x':1}
+
+
+        
 
         # Main Section
         BoxLayout:
             id: main_section
             orientation: "vertical"
             padding: login_view.space_x, 20
-            size_hint_y: .8
+            size_hint_y: .85
             height: self.minimum_height
             spacing: 20
 

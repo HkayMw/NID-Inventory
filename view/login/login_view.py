@@ -3,6 +3,7 @@
 from kivy.uix.screenmanager import Screen
 from controller.user_controller import UserController
 from kivy.lang import Builder
+from model.current_user import CurrentUser
 from kivy.core.window import Window
 
 # Builder.load_file('view/UI.kv')
@@ -25,9 +26,21 @@ class LoginScreen(Screen):
         if id_no.text == "" or password.text == "":
             notice.text = f"[color=#ff0000]id_no and/ or password required[/color]"
         else:
-            valid, message, user = self.controller.validate_user(id_no.text.upper(), password.text)
+            valid, message, user= self.controller.validate_user(id_no.text.upper(), password.text)
             if valid:
                 # notice.text = f"[color=#00ff00]{message}, {user}[/color]"
+                # print(user)
+                current_user = CurrentUser()
+                # print(user)
+                current_user.set_user_details(
+                    id_number=user[0],
+                    firstname=user[1],
+                    lastname=user[2],
+                    othernames=user[3],
+                    user_type=user[5]
+                )
+                
+                # print(current_user.get_user_details())
 
                 self.manager.current = 'add_id_view'
             else:

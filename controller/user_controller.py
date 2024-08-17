@@ -11,7 +11,7 @@ class UserController(Controller):
         user = self.model.validate_user(id_no, password)
         # return print(id_no + password)
         if user:
-            return True, "Login Successful", user
+            return True, "Login Successful", user[0]
         else:
             return False, "Wrong credentials", None
 

@@ -35,7 +35,7 @@ class MainApp(App):
         Builder.load_file('view/main_view.kv')
         sm = MainScreen(transition=NoTransition())
 
-        sm.current = 'sort_id_view'
+        sm.current = 'login_view'
         
         return sm
     

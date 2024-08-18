@@ -1,6 +1,47 @@
 #:kivy 2.3.0
 # view/search_id/search_id_view.kv
 
+<Table@GridLayout>:
+    cols: 11  # Number of columns in the table
+    row_default_height: 40
+    spacing: 5
+    padding: 10
+
+    Label:
+        text: 'Header 1'
+        bold: True
+    Label:
+        text: 'Header 2'
+        bold: True
+    Label:
+        text: 'Header 3'
+        bold: True
+    Label:
+        text: 'Header 4'
+        bold: True
+    Label:
+        text: 'Header 5'
+        bold: True
+
+    Label:
+        text: 'Header 6'
+        bold: True
+    Label:
+        text: 'Header 7'
+        bold: True
+    Label:
+        text: 'Header 8'
+        bold: True
+    Label:
+        text: 'Header 9'
+        bold: True
+    Label:
+        text: 'Header 10'
+        bold: True
+    Label:
+        text: 'Header 11'
+        bold: True
+
 <SearchIDScreen>:
     id: search_id_view
     name: 'search_id_view'
@@ -413,6 +454,7 @@
                         orientation: 'vertical'
                         padding: [10, 10, 10, 10]
                         size_hint_y: 1
+                        # Table:
                         
         
         #Footer

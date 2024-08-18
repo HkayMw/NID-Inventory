@@ -26,8 +26,9 @@ class LoginScreen(Screen):
         if id_no.text == "" or password.text == "":
             notice.text = f"[color=#ff0000]id_no and/ or password required[/color]"
         else:
-            valid, message, user= self.controller.validate_user(id_no.text.upper(), password.text)
+            valid, message, user = self.controller.validate_user(id_no.text.upper(), password.text)
             if valid:
+                # user = message
                 # notice.text = f"[color=#00ff00]{message}, {user}[/color]"
                 # print(user)
                 current_user = CurrentUser()

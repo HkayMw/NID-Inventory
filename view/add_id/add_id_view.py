@@ -1,5 +1,6 @@
 from kivy.uix.screenmanager import Screen
 from controller.id_controller import IdController
+# from controller.sorting import IdController
 from Assets.qr_code import QRCode
 import datetime
 from model.current_user import CurrentUser
@@ -13,7 +14,8 @@ Builder.load_file('view/add_id/add_id_view.kv')
 class AddIDScreen(Screen):
     def __init__(self, **kwargs):
         super(AddIDScreen, self).__init__(**kwargs)
-        self.controller = IdController()
+        self.id_controller = IdController()
+        # self.sorting_key_controller = IdController()
         
     def add_id(self):
         
@@ -42,26 +44,22 @@ class AddIDScreen(Screen):
         
             #Add id_record
             try:
-                status, message = self.controller.add_id(id_record)
+                success, message = self.id_controller.add_id(id_record)
                 # print(self.controller.add_id(id_record))
-                if status == None:
+                if success:
                     self.ids.status.text = F"{message}"
                     
                     # Clear Qr Code field
                     self.ids.qr_code.text = ''
                     
-            except sqlite3.IntegrityError as e:
-                if "UNIQUE constraint failed: id_record.id_number, id_record.issue_date" in str(e):
+                elif message == "An error occurred: UNIQUE constraint failed: id_record.id_number, id_record.issue_date":
                     self.ids.status.text = f"A record with the specified ID # and issue date already exists in the database."
-                    
                     # Clear Qr Code field
                     self.ids.qr_code.text = ''
-                    
-                else:
-                    # Re-raise the exception if it's a different IntegrityError
-                    raise
+            except Exception as e:
+            # print(f"An unexpected error occurred: {e}")    
+                self.ids.status.text = f"An unexpected error occurred: {e}"
             
-                # self.ids.qr_code.focus = True
                 
 
         # print(id_record)

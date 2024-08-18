@@ -12,4 +12,10 @@ class IdController(Controller):
         
     def add_id(self,data):
         
-        return self.model.create(data), "Record Added Successfully"
+        success, message = self.model.create(data)
+        
+        if success:
+            record_id = message
+            return success, f"Record Added Successfully: {record_id}"
+        else:
+            return False, message

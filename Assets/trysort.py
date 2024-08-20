@@ -1,32 +1,34 @@
-from kivy.app import App
-from kivymd.app import MDApp
-from kivy.uix.boxlayout import BoxLayout
-from kivymd.uix.datatables import MDDataTable
+from kivy.lang import Builder
 from kivy.metrics import dp
+from kivymd.app import MDApp
+from kivymd.uix.datatables import MDDataTable
 
-class DataTableApp(MDApp):
-    # print(self.ids)
+KV = '''
+MDScreen:
+
+    MDDataTable:
+        id: data_table
+        pos_hint: {"center_y": 0.5, "center_x": 0.5}
+        size_hint: (0.9, 0.6)
+        use_pagination: True
+'''
+
+class ExampleApp(MDApp):
     def build(self):
-        layout = BoxLayout(orientation='vertical')
+        return Builder.load_string(KV)
 
-        data_tables = MDDataTable(
-            
-            size_hint=(1, 0.7),
-            use_pagination=True,
-            column_data=[
-                ("No", dp(30)),
-                ("Name", dp(30)),
-                ("Email", dp(60)),
-            ],
-            row_data=[
-                (1, "John Doe", "johndoe@example.com"),
-                (2, "Jane Smith", "janesmith@example.com"),
-                # ... more rows
-            ],
-        )
+    def on_start(self):
+        data_table = self.root.ids.data_table
+        data_table.column_data = [
+            ("No.", dp(30)),
+            ("Food", dp(30)),
+            ("Calories", dp(30)),
+            ("Type", dp(30)),
+        ]
+        data_table.row_data = [
+            (str(i), f"Food {i}", str(i * 100), "Fruit" if i % 2 == 0 else "Vegetable")
+            for i in range(1, 101)
+        ]
 
-        data_tables.id='table'
-        layout.add_widget(data_tables)
-        return layout
-
-DataTableApp().run()
+if __name__ == "__main__":
+    ExampleApp().run()

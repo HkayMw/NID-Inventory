@@ -21,7 +21,7 @@
 
         # Teal Header Section
         BoxLayout:
-            size_hint_y: .1
+            size_hint_y: .15
             pos_hint: {'x': 0, 'y': 0}
             canvas.before:
                 Color:
@@ -60,7 +60,7 @@
             name: "window_section"
             orientation: "vertical"
             padding: 0, 10
-            size_hint_y: .8
+            size_hint_y: .75
             height: self.minimum_height
             spacing: 40
 
@@ -225,15 +225,16 @@
                                     radius: [10, 10, 10, 10]  # Rounded corners
 
                             TextInput:
-                                id: id_no_field
+                                id: issue_date
                                 hint_text: "Year-Month"
                                 foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
                                 background_color: (0, 0, 0, 0)  # Transparent to show canvas color
                                 halign: 'center'
-                                focus: True
+                                # focus: True
                                 multiline: False
                                 font_size: min(self.width * .4, self.height * .4)
                                 padding: [10, (self.height - self.line_height) / 2]
+                                # on_text_validate: root.add_id(*args)
 
                     
                     
@@ -264,6 +265,7 @@
                             multiline: False
                             font_size: min(self.width * .4, self.height * .4)
                             padding: [10, (self.height - self.line_height) / 2]
+                            on_text_validate: root.add_id()
 
 
                     Label:
@@ -285,3 +287,9 @@
                     size: self.size
                     pos: self.pos
                     radius: [10, 10, 10, 10]  # Rounded corners
+
+            Label:
+                id: status
+                text: ''
+                size_hint_y: 1
+                font_size: 20

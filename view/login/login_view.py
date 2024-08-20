@@ -3,7 +3,9 @@
 from kivy.uix.screenmanager import Screen
 from controller.user_controller import UserController
 from kivy.lang import Builder
+from model.current_user import CurrentUser
 from kivy.core.window import Window
+from Assets.qr_code import QRCode
 
 # Builder.load_file('view/UI.kv')
 Builder.load_file('view/login/login_view.kv')
@@ -16,22 +18,46 @@ class LoginScreen(Screen):
         Window.bind(on_key_down=self.on_key_down)  # Bind the on_key_down event
 
     def validate_user(self):
-        id_no = self.ids.id_no_field
+        id_number = self.ids.id_no_field
         password = self.ids.password_field
         notice = self.ids.notice
 
         # print(id_no + " " + password)
 
-        if id_no.text == "" or password.text == "":
-            notice.text = f"[color=#ff0000]id_no and/ or password required[/color]"
+        if id_number.text == "" or password.text == "":
+            notice.text = f"id_no and/ or password required"
         else:
-            valid, message, user = self.controller.validate_user(id_no.text.upper(), password.text)
+            
+            # Check if qr code is provided
+            if '~' in id_number.text:
+                self.qr_code = QRCode(id_number.text) 
+                id = self.qr_code.process()
+                
+                id_number = id['id_number']
+            
+            else:
+                id_number = id_number.text
+            
+            valid, message, user = self.controller.validate_user(id_number.upper(), password.text)
             if valid:
+                # user = message
                 # notice.text = f"[color=#00ff00]{message}, {user}[/color]"
+                # print(user)
+                current_user = CurrentUser()
+                # print(user)
+                current_user.set_user_details(
+                    id_number=user[0],
+                    firstname=user[1],
+                    lastname=user[2],
+                    othernames=user[3],
+                    user_type=user[5]
+                )
+                
+                # print(current_user.get_user_details())
 
                 self.manager.current = 'add_id_view'
             else:
-                notice.text = f"[color=#ff0000]{message}[/color]"
+                notice.text = f"{message}"
 
     def on_key_down(self, instance, keyboard, keycode, text, modifiers):
         # print(f"Keycode: {keycode}")

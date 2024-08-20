@@ -2,18 +2,31 @@
 
 from controller.controller import Controller
 from model.user_model import UserModel
+import hashlib
+
 
 class UserController(Controller):
     def __init__(self):
         super().__init__(UserModel())
 
-    def validate_user(self, id_no, password):
-        user = self.model.validate_user(id_no, password)
-        # return print(id_no + password)
-        if user:
-            return True, "Login Successful", user
+    def validate_user(self, id_number, password):
+        
+        # Hash the provided password
+        password_hash = hashlib.sha256(password.encode()).hexdigest()
+        
+        # Fetch the user with the provided id_no and hashed password
+        where_clause = 'id_number = :id_number AND password_hash = :password_hash'
+        params = {'id_number': id_number, 'password_hash': password_hash}
+        success, message = self.model.read(where_clause, params)
+        
+        if success:
+            user = message
+            if user:
+                return success, "Login Successful", user[0]
+            else:
+                return False, "Wrong credentials", None
         else:
-            return False, "Wrong credentials", None
+            return False, message
 
     def add_user(self):
         pass

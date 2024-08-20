@@ -16,6 +16,6 @@ class IdController(Controller):
         
         if success:
             record_id = message
-            return success, f"Record Added Successfully: {record_id}"
+            return success, f"Record Added Successfully: "
         else:
             return False, message

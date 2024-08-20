@@ -47,13 +47,14 @@ class AddIDScreen(Screen):
                 success, message = self.id_controller.add_id(id_record)
                 # print(self.controller.add_id(id_record))
                 if success:
-                    self.ids.status.text = F"{message}"
+                    self.ids.status.text = F"{message} {id_record['id_number']}"
                     
                     # Clear Qr Code field
                     self.ids.qr_code.text = ''
+                    self.ids.qr_code.focus = True
                     
                 elif message == "An error occurred: UNIQUE constraint failed: id_record.id_number, id_record.issue_date":
-                    self.ids.status.text = f"A record with the specified ID # and issue date already exists in the database."
+                    self.ids.status.text = f"A record with ID Number: {id_record['id_number']} and issue date: {id_record['issue_date']} already exists in the database."
                     # Clear Qr Code field
                     self.ids.qr_code.text = ''
             except Exception as e:

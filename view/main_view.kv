@@ -1,14 +1,76 @@
 #:kivy 2.3.0
-#view/main_view.kv
-
+# view/main_view.kv
 
 <MainScreen>:
-    
-    id: screen_manager
-    # transition: NoTransition()
-    LoginScreen:
-    SearchIDScreen:
-    AddIDScreen:
-    SortIDScreen:
-    ContactScreen:
-    AdminDashboardScreen:
+    id: main_screen
+    orientation: "vertical"
+
+    # Teal Header Section
+    MDBoxLayout:
+        size_hint_y: .15
+        pos_hint: {'x': 0, 'y': 0}
+        canvas.before:
+            Color:
+                rgba: (0, 0.5, 0.5, 1)  # Teal color
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        Image:
+            source: 'Assets/Coat_of_arms_of_Malawi.svg'
+            keep_ratio: True
+            size_hint_x: .07
+            pos_hint: {'x':0}
+
+
+        Label:
+            text: "ID Inventory Manager"
+            color: 1, 1, 1, 1  # White text
+            bold: True
+            halign: 'center'
+            valign: 'middle'
+            font_size: min(self.width * .4, self.height * .4)
+            padding: [10, (self.height - self.line_height) / 2]
+            text_size: self.size
+            size_hint_x: .86
+
+        Image:
+            source: 'Assets/Coat_of_arms_of_Malawi.svg'
+            keep_ratio: True
+            size_hint_x: .07
+            pos_hint: {'x':1}
+
+    ScreenManager:
+        id: screen_manager
+        size_hint_y: .75
+        name: 'screen_manager'
+
+        
+
+    #Footer
+    MDBoxLayout:
+        orientation: "horizontal"
+        id: footer
+        size_hint_y: .1
+        # size_hint_x: .997
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        # height: 50
+        padding: [5]
+        canvas.before:
+            Color:
+                rgba: (.2, .2, .2, 1) 
+                # rgba: (0.7, 0.7, 0.7, 1)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+                # radius: [10, 10, 10, 10]  # Rounded corners
+
+        
+        MDLabel:
+            id: notice
+            # name: 'notice'
+            text: ''
+            halign: "center"
+            theme_text_color: "Custom"
+            text_color: 0, 1, 0, 1
+            font_size: min(self.width * .6, self.height * .6)

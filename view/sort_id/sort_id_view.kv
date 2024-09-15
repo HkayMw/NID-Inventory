@@ -7,63 +7,30 @@
     id: sort_id_view
     name: 'sort_id_view'
     orientation: "vertical"
-    space_x: self.size[0]/3
-    canvas.before:
-        # Gray background
-        Color:
-            rgba: (0.4, 0.4, 0.4, 1)
-        Rectangle:
-            size: self.size
-            pos: self.pos
+    # space_x: self.size[0]/3
+    # canvas.before:
+    #     # Gray background
+    #     Color:
+    #         rgba: app.theme_cls.bg_light
+    #         # rgba: (0.4, 0.4, 0.4, 1)
+    #     Rectangle:
+    #         size: self.size
+    #         pos: self.pos
         
 
     BoxLayout:
         orientation: "vertical"
         height: self.minimum_height
 
-        # Teal Header Section
-        BoxLayout:
-            size_hint_y: .15
-            pos_hint: {'x': 0, 'y': 0}
-            canvas.before:
-                Color:
-                    rgba: (0, 0.5, 0.5, 1)  # Teal color
-                Rectangle:
-                    size: self.size
-                    pos: self.pos
-
-            Image:
-                source: 'Assets/Coat_of_arms_of_Malawi.svg'
-                keep_ratio: True
-                size_hint_x: .07
-                pos_hint: {'x':0}
-
-
-            Label:
-                text: "NRB / MZUZU"
-                color: 1, 1, 1, 1  # White text
-                bold: True
-                halign: 'center'
-                valign: 'middle'
-                font_size: min(self.width * .4, self.height * .4)
-                padding: [10, (self.height - self.line_height) / 2]
-                text_size: self.size
-                size_hint_x: .86
-
-            Image:
-                source: 'Assets/Coat_of_arms_of_Malawi.svg'
-                keep_ratio: True
-                size_hint_x: .07
-                pos_hint: {'x':1}
-
-
         # Window Section
-        BoxLayout:
+        MDBoxLayout:
+            # adaptive_height: True
+            md_bg_color: app.theme_cls.bg_light
             id: window_section
             name: "window_section"
             orientation: "vertical"
             padding: 0, 10
-            size_hint_y: .75
+            # size_hint_y: .75
             height: self.minimum_height
             spacing: 40
 
@@ -98,7 +65,7 @@
                         font_size: min(self.width * .4, self.height * .4)
                         padding: [10, (self.height - self.line_height) / 2]
                         color:  1, 1, 1, 1  # White text
-                        on_press: root.manager.current = 'add_id_view'
+                        on_press: root.parent.current = 'add_id_view'
 
 
                 #Search IDs Nav Button
@@ -122,7 +89,7 @@
                         font_size: min(self.width * .4, self.height * .4)
                         padding: [10, (self.height - self.line_height) / 2]
                         color: 1, 1, 1, 1  # White text
-                        on_press: root.manager.current = 'search_id_view'
+                        on_press: root.parent.current = 'search_id_view'
 
                 
                 #Sort IDs Nav Button
@@ -146,7 +113,7 @@
                         font_size: min(self.width * .4, self.height * .4)
                         padding: [10, (self.height - self.line_height) / 2]
                         color: (0.14, 0.31, 0.31, 1)
-                        on_press: root.manager.current = 'sort_id_view'
+                        on_press: root.parent.current = 'sort_id_view'
 
                 #Contacts Nav Button
                 BoxLayout:
@@ -169,7 +136,7 @@
                         font_size: min(self.width * .4, self.height * .4)
                         padding: [10, (self.height - self.line_height) / 2]
                         color: 1, 1, 1, 1  # White text
-                        on_press: root.manager.current = 'contact_view'
+                        on_press: root.parent.current = 'contact_view'
 
             # Main Section
             BoxLayout:
@@ -374,22 +341,7 @@
             # Label:
             #     size_hint_y: .2
         
-        #Footer
-        BoxLayout:
-            orientation: "horizontal"
-            id: footer
-            size_hint_y: .1
-            size_hint_x: 1
-            pos_hint: {"center_x": 0.5, "center_y": 0.5}
-            # height: 50
-            padding: [5]
-            canvas.before:
-                Color:
-                    rgba: (0.7, 0.7, 0.7, 1)  # Dark teal color
-                RoundedRectangle:
-                    size: self.size
-                    pos: self.pos
-                    radius: [10, 10, 10, 10]  # Rounded corners
+        
 
 
 

@@ -34,7 +34,7 @@ class QRCode:
                     id_number = array[5]
                     d_o_b = self.db_date(array[8])
                 else:
-                    return None  # or handle the "noId" case as needed
+                    return False, 'Invalid or unsupported QR', None
             else:
                 if len(array) == 13:
                     type = array[1]
@@ -53,12 +53,11 @@ class QRCode:
                     id_number = array[6]
                     d_o_b = self.db_date(array[9])
                 else:
-                    return None  # or handle the "noId" case as needed
-
+                    return False, 'Invalid or unsupported QR', None
             # Extract sorting key from surname
-            sorting_key= lastname[:3]
+            # sorting_key= lastname[:3]
             
-            return {'type': type, 'firstname': firstname, 'othernames': othernames, 'lastname': lastname, 'gender': gender, 'id_number': id_number, 'd_o_b': d_o_b, "sorting_key": sorting_key}
+            return True, 'QR successfully processed', {'type': type, 'firstname': firstname, 'othernames': othernames, 'lastname': lastname, 'gender': gender, 'id_number': id_number, 'd_o_b': d_o_b}
         
         #Runs if it is General Sticker QR Code
         elif '01' in self.qr_code[:4]:
@@ -82,6 +81,10 @@ class QRCode:
             #For old ID Number Stickers
             else:
                 pass
+        
+        else:
+            return False, 'Invalid or unsupported QR', None
+            
 
     def db_date(self, date_str: str) -> str:
         # Convert the date string to the desired format for the database
@@ -93,5 +96,6 @@ class QRCode:
 
 # # Example usage
 # qr_processor = QRCode("~03~I<############<<<<<<<<<<<<<<<~##############MWI<<<<<<<<<<<4~DOE<<JOHN<<<<<<<<<<<<<<~DOE~A1B23C4D~JOHN~MALE~01 Jan 1991~01 jan 2017~")
-# result = qr_processor.process()
-# print(result)
+qr_processor = QRCode("hhhhhhh~hhhhhhhhh")
+result = qr_processor.process()
+print(result)

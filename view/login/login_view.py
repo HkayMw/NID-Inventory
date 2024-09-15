@@ -6,16 +6,17 @@ from kivy.lang import Builder
 from model.current_user import CurrentUser
 from kivy.core.window import Window
 from Assets.qr_code import QRCode
+from kivy.uix.boxlayout import BoxLayout
 
-# Builder.load_file('view/UI.kv')
+
+# # Builder.load_file('view/UI.kv')
 Builder.load_file('view/login/login_view.kv')
-
 
 class LoginScreen(Screen):
     def __init__(self, **kwargs):
         super(LoginScreen, self).__init__(**kwargs)
         self.controller = UserController()
-        Window.bind(on_key_down=self.on_key_down)  # Bind the on_key_down event
+        # Window.bind(on_key_down=self.on_key_down)  # Bind the on_key_down event
 
     def validate_user(self):
         id_number = self.ids.id_no_field
@@ -31,10 +32,16 @@ class LoginScreen(Screen):
             # Check if qr code is provided
             if '~' in id_number.text:
                 self.qr_code = QRCode(id_number.text) 
-                id = self.qr_code.process()
+                success, message, id = self.qr_code.process()
                 
-                id_number = id['id_number']
-            
+                if success:
+                    try:
+                        id_number = id['id_number']
+                        
+                    except Exception as e:
+                        print(f"Error: {e}")
+                else:
+                    print(message)
             else:
                 id_number = id_number.text
             
@@ -55,31 +62,7 @@ class LoginScreen(Screen):
                 
                 # print(current_user.get_user_details())
 
-                self.manager.current = 'add_id_view'
+                self.parent.parent.current = 'add_id_view'
+                self.manager.current                 = "add_id_view"
             else:
                 notice.text = f"{message}"
-
-    def on_key_down(self, instance, keyboard, keycode, text, modifiers):
-        # print(f"Keycode: {keycode}")
-        if keycode == 43:
-            # Collect all focusable widgets
-            focusable_widgets = []
-            for widget in self.walk(restrict=True):
-                if hasattr(widget, 'focus') and widget.is_focusable:
-                    focusable_widgets.append(widget)
-
-            # for x in focusable_widgets: print(x.)
-            # Find the currently focused widget
-            focused_widget = next((w for w in focusable_widgets if w.focus), None)
-            # print(focused_widget)
-            if focused_widget:
-                # Find the index of the focused widget
-                index = focusable_widgets.index(focused_widget)
-                # Move focus to the next widget, wrapping around if necessary
-                next_index = (index + 1) % len(focusable_widgets)
-            else:
-                next_index = 0
-            focusable_widgets[next_index].focus = True
-            return True  # Indicate that the event was handled
-
-        return False  # Indicate that the event was not handled

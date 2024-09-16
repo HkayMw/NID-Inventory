@@ -96,6 +96,6 @@ class QRCode:
 
 # # Example usage
 # qr_processor = QRCode("~03~I<############<<<<<<<<<<<<<<<~##############MWI<<<<<<<<<<<4~DOE<<JOHN<<<<<<<<<<<<<<~DOE~A1B23C4D~JOHN~MALE~01 Jan 1991~01 jan 2017~")
-qr_processor = QRCode("hhhhhhh~hhhhhhhhh")
-result = qr_processor.process()
-print(result)
+# qr_processor = QRCode("hhhhhhh~hhhhhhhhh")
+# result = qr_processor.process()
+# print(result)

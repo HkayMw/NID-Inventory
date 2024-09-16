@@ -139,6 +139,29 @@
                     color: 1, 1, 1, 1  # White text
                     on_press: root.parent.current = 'contact_view'
 
+            #Logout Nav Button
+            BoxLayout:
+                size_hint_x: .5
+                pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                padding: [5]
+                canvas.before:
+                    Color:
+                        rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [10, 10, 10, 10]  # Rounded corners
+
+                Button:
+                    text: "Logout"
+                    background_normal: ''
+                    background_color: (0.14, 0.31, 0.31, 1)  # Dark teal color
+                    size_hint_x: 1
+                    font_size: min(self.width * .4, self.height * .4)
+                    padding: [10, (self.height - self.line_height) / 2]
+                    color: 1, 1, 1, 1  # White text
+                    on_press: root.parent.current = 'login_view'
+
         # Main Section
         BoxLayout:
             orientation: "horizontal"

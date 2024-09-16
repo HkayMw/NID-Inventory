@@ -39,11 +39,21 @@
             keep_ratio: True
             size_hint_x: .07
             pos_hint: {'x':1}
-
-    ScreenManager:
-        id: screen_manager
+    # Main Window
+    MDBoxLayout:
+        id: main_window
         size_hint_y: .75
-        name: 'screen_manager'
+        
+        # Side Navigation
+        ScreenManager:
+            id: side_nav
+            width: 0
+            size_hint_x: 0
+        # Main Section
+        ScreenManager:
+            id: screen_manager
+            name: 'screen_manager'
+            size_hint_x: 1
 
         
 

@@ -75,10 +75,31 @@ class MainApp(MDApp):
 
         # Set the initial screen to 'search_id_view'
         sm = self.root.ids.screen_manager
-        sm.current = 'search_id_view'
+        sm.current = 'login_view'
+        
+        # Bind the event to a method to handle screen changes
+        sm.bind(current=self.on_screen_change)
 
         # Create inspector for debugging
         inspector.create_inspector(Window, sm)
+        
+    def on_screen_change(self, instance, value):
+        # Get the side_nav and screen_manager references
+        side_nav = self.root.ids.side_nav
+        screen_manager = self.root.ids.screen_manager
+
+        if value == 'login_view':
+            # Hide the side_nav by setting width to zero and opacity to zero
+            side_nav.size_hint_x = 0
+            side_nav.width = 0
+            side_nav.opacity = 0
+            screen_manager.size_hint_x = 1
+        else:
+            # Restore the side_nav and screen_manager to their original state
+            side_nav.size_hint_x = 0.15
+            # side_nav.width = None  # This allows size_hint_x to take effect
+            side_nav.opacity = 1
+            screen_manager.size_hint_x = 0.85
 
     def initialize_screens(self):
         sm = self.root.ids.screen_manager

@@ -10,154 +10,100 @@
     canvas.before:
         # Gray background
         Color:
-            rgba: (0.4, 0.4, 0.4, 1)
+            rgba: app.theme_cls.bg_light
+            # rgba: (0.4, 0.4, 0.4, 1)
         Rectangle:
             size: self.size
             pos: self.pos
 
-    # on_enter: id_no_field.focus = True
-
-    BoxLayout:
+# Main Section
+    MDBoxLayout:
+        id: main_section
         orientation: "vertical"
-        # size_hint: 1, None
+        padding: login_view.space_x, 20
+        # size_hint_y: .85
         height: self.minimum_height
+        spacing: 20
 
-        # Teal Header Section
-        BoxLayout:
-            size_hint_y: .15
-            pos_hint: {'x': 0, 'y': 0}
+        Label:
+            id: notice
+            text: ''
+            size_hint_y: .1
+
+        # ID Input
+        MDBoxLayout:
+            pos_hint: {'top': 1}
+            size_hint_y: .1
             canvas.before:
                 Color:
-                    rgba: (0, 0.5, 0.5, 1)  # Teal color
-                Rectangle:
+                    rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
+                RoundedRectangle:
                     size: self.size
                     pos: self.pos
+                    radius: [10, 10, 10, 10]  # Rounded corners
 
-            Image:
-                source: 'Assets/Coat_of_arms_of_Malawi.svg'
-                keep_ratio: True
-                size_hint_x: .07
-                pos_hint: {'x':0}
-
-
-            Label:
-                text: "NRB / MZUZU"
-                color: 1, 1, 1, 1  # White text
-                bold: True
+            TextInput:
+                id: id_no_field
+                hint_text: "Enter ID No. / Scan ID"
+                foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
+                background_color: (0, 0, 0, 0)  # Transparent to show canvas color
                 halign: 'center'
-                valign: 'middle'
-                font_size: min(self.width * .4, self.height * .4)
+                focus: True
+                multiline: False
+                font_size: self.height * 0.5
                 padding: [10, (self.height - self.line_height) / 2]
-                text_size: self.size
-                size_hint_x: .86
+                on_text_validate: password_field.focus = True
 
-            Image:
-                source: 'Assets/Coat_of_arms_of_Malawi.svg'
-                keep_ratio: True
-                size_hint_x: .07
-                pos_hint: {'x':1}
+        # Password Input
+        MDBoxLayout:
+            size_hint_y: .1
+            canvas.before:
+                Color:
+                    rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [10, 10, 10, 10]  # Rounded corners
 
+            TextInput:
+                id: password_field
+                hint_text: "Enter password"
+                foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
+                background_color: (0, 0, 0, 0)  # Transparent to show canvas color
+                halign: 'center'
+                multiline: False
+                font_size: self.height * 0.5
+                padding: [10, (self.height - self.line_height) / 2]
+                password: True
+                on_text_validate: root.validate_user()
 
-        
+        # Login Button
+        MDBoxLayout:
+            size_hint_y: .1
+            size_hint_x: .5
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            # height: 50
+            padding: [5]
+            canvas.before:
+                Color:
+                    rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
+                RoundedRectangle:
+                    size: self.size
+                    pos: self.pos
+                    radius: [10, 10, 10, 10]  # Rounded corners
 
-        # Main Section
-        BoxLayout:
-            id: main_section
-            orientation: "vertical"
-            padding: login_view.space_x, 20
-            size_hint_y: .85
-            height: self.minimum_height
-            spacing: 20
+            Button:
+                text: "Login"
+                background_normal: ''
+                background_color: (0.14, 0.31, 0.31, 1)  # Dark teal color
+                size_hint_x: 1
+                font_size: self.height * 0.5
+                padding: [10, (self.height - self.line_height) / 2]
+                color: 1, 1, 1, 1  # White text
+                on_press: root.validate_user()
 
-            Label:
-                id: notice
-                text: ''
-                size_hint_y: .1
-                # height: 50
-
-            # ID Input
-            BoxLayout:
-                pos_hint: {'top': 1}
-                size_hint_y: .1
-                # height: 50
-                canvas.before:
-                    Color:
-                        rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
-                    RoundedRectangle:
-                        size: self.size
-                        pos: self.pos
-                        radius: [10, 10, 10, 10]  # Rounded corners
-
-                TextInput:
-                    id: id_no_field
-                    hint_text: "Enter ID No. / Scan ID"
-                    foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
-                    background_color: (0, 0, 0, 0)  # Transparent to show canvas color
-                    # size_hint_y: None
-                    # height: 50
-                    halign: 'center'
-                    focus: True
-                    multiline: False
-                    font_size: self.height * 0.5
-                    padding: [10, (self.height - self.line_height) / 2]
-                    on_text_validate: password_field.focus = True
-
-            # Password Input
-            BoxLayout:
-                size_hint_y: .1
-                # height: 50
-                canvas.before:
-                    Color:
-                        rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
-                    RoundedRectangle:
-                        size: self.size
-                        pos: self.pos
-                        radius: [10, 10, 10, 10]  # Rounded corners
-
-                TextInput:
-                    id: password_field
-                    hint_text: "Enter password"
-                    foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
-                    background_color: (0, 0, 0, 0)  # Transparent to show canvas color
-                    # size_hint_y: None
-                    # height: 50
-                    halign: 'center'
-                    multiline: False
-                    font_size: self.height * 0.5
-                    padding: [10, (self.height - self.line_height) / 2]
-                    password: True
-                    on_text_validate: root.validate_user()
-
-            # Login Button
-            BoxLayout:
-                size_hint_y: .1
-                size_hint_x: .5
-                pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                # height: 50
-                padding: [5]
-                canvas.before:
-                    Color:
-                        rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
-                    RoundedRectangle:
-                        size: self.size
-                        pos: self.pos
-                        radius: [10, 10, 10, 10]  # Rounded corners
-
-                Button:
-                    text: "Login"
-                    background_normal: ''
-                    background_color: (0.14, 0.31, 0.31, 1)  # Dark teal color
-                    size_hint_x: 1
-                    font_size: self.height * 0.5
-                    padding: [10, (self.height - self.line_height) / 2]
-                    # height: 50
-                    # radius: [10, 10, 10, 10]  # Rounded corners
-                    color: 1, 1, 1, 1  # White text
-                    on_press: root.validate_user()
-
-            Label:
-                id: bottom
-                # size_hint_y: None
-                size_hint_y: .6
+        Label:
+            id: bottom
+            size_hint_y: .6
                 
     

@@ -17,16 +17,16 @@ class UserController(Controller):
         # Fetch the user with the provided id_no and hashed password
         where_clause = 'id_number = :id_number AND password_hash = :password_hash'
         params = {'id_number': id_number, 'password_hash': password_hash}
-        success, message = self.model.read(where_clause, params)
+        success, message, user = self.read(where_clause, params)
         
         if success:
-            user = message
+            # user = message
             if user:
                 return success, "Login Successful", user[0]
             else:
                 return False, "Wrong credentials", None
         else:
-            return False, message
+            return False, message, None
 
     def add_user(self):
         pass

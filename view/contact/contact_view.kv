@@ -5,227 +5,345 @@
     id: contact_view
     name: 'contact_view'
     orientation: "vertical"
-    space_x: self.size[0]/3
-    canvas.before:
-        # Gray background
-        Color:
-            rgba: (0.4, 0.4, 0.4, 1)
-        Rectangle:
-            size: self.size
-            pos: self.pos
+    # space_x: self.size[0]/3
+    # canvas.before:
+    #     # Gray background
+    #     Color:
+    #         rgba: app.theme_cls.bg_light
+    #         # rgba: (0.4, 0.4, 0.4, 1)
+    #     Rectangle:
+    #         size: self.size
+    #         pos: self.pos
         
 
-    BoxLayout:
+    # Window Section
+    MDBoxLayout:
+        # adaptive_height: True
+        md_bg_color: app.theme_cls.bg_light
+        id: window_section
+        name: "window_section"
         orientation: "vertical"
+        padding: 0, 10
+        # size_hint_y: .75
         height: self.minimum_height
+        spacing: 40
 
-        # Teal Header Section
-        BoxLayout:
-            size_hint_y: .15
-            pos_hint: {'x': 0, 'y': 0}
-            canvas.before:
-                Color:
-                    rgba: (0, 0.5, 0.5, 1)  # Teal color
-                Rectangle:
-                    size: self.size
-                    pos: self.pos
+        # Navigation
+        MDBoxLayout:        
+            orientation: "horizontal"
+            padding: window_section.width*.167, .9
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            id: navigation
+            size_hint_y: .1
+            size_hint_x: .75
+            spacing: 10
 
-            Image:
-                source: 'Assets/Coat_of_arms_of_Malawi.svg'
-                keep_ratio: True
-                size_hint_x: .07
-                pos_hint: {'x':0}
-
-
-            Label:
-                text: "NRB / MZUZU"
-                color: 1, 1, 1, 1  # White text
-                bold: True
-                halign: 'center'
-                valign: 'middle'
-                font_size: min(self.width * .4, self.height * .4)
-                padding: [10, (self.height - self.line_height) / 2]
-                text_size: self.size
-                size_hint_x: .86
-
-            Image:
-                source: 'Assets/Coat_of_arms_of_Malawi.svg'
-                keep_ratio: True
-                size_hint_x: .07
-                pos_hint: {'x':1}
-
-
-        # Window Section
-        BoxLayout:
-            id: window_section
-            name: "window_section"
-            orientation: "vertical"
-            padding: 0, 10
-            size_hint_y: .75
-            height: self.minimum_height
-            spacing: 40
-
-            # Navigation
-            BoxLayout:        
-                orientation: "horizontal"
-                padding: window_section.width*.167, .9
+            #ADD ID Nav button
+            MDBoxLayout:
+                size_hint_x: .5
                 pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                id: navigation
-                size_hint_y: .1
-                size_hint_x: .75
-                spacing: 10
+                padding: [5]
+                canvas.before:
+                    Color:
+                        rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [10, 10, 10, 10]  # Rounded corners
 
-                #ADD ID Nav button
-                BoxLayout:
-                    size_hint_x: .5
-                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                    padding: [5]
-                    canvas.before:
-                        Color:
-                            rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
-                        RoundedRectangle:
-                            size: self.size
-                            pos: self.pos
-                            radius: [10, 10, 10, 10]  # Rounded corners
-
-                    Button:
-                        text: "Add IDs"
-                        background_normal: ''
-                        background_color: (0.14, 0.31, 0.31, 1)  # Dark teal color
-                        size_hint_x: 1
-                        font_size: min(self.width * .4, self.height * .4)
-                        padding: [10, (self.height - self.line_height) / 2]
-                        color:  1, 1, 1, 1
-                        on_press: root.manager.current = 'add_id_view'
+                Button:
+                    text: "Add IDs"
+                    background_normal: ''
+                    background_color: (0.14, 0.31, 0.31, 1)  # Dark teal color
+                    size_hint_x: 1
+                    font_size: min(self.width * .4, self.height * .4)
+                    padding: [10, (self.height - self.line_height) / 2]
+                    color:  1, 1, 1, 1
+                    on_press: root.parent.current = 'add_id_view'
 
 
-                #Search IDs Nav Button
-                BoxLayout:
-                    size_hint_x: .5
-                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                    padding: [5]
-                    canvas.before:
-                        Color:
-                            rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
-                        RoundedRectangle:
-                            size: self.size
-                            pos: self.pos
-                            radius: [10, 10, 10, 10]  # Rounded corners
+            #Search IDs Nav Button
+            MDBoxLayout:
+                size_hint_x: .5
+                pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                padding: [5]
+                canvas.before:
+                    Color:
+                        rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [10, 10, 10, 10]  # Rounded corners
 
-                    Button:
-                        text: "Search IDs"
-                        background_normal: ''
-                        background_color: (0.14, 0.31, 0.31, 1)  # Dark teal color
-                        size_hint_x: 1
-                        font_size: min(self.width * .4, self.height * .4)
-                        padding: [10, (self.height - self.line_height) / 2]
-                        color: 1, 1, 1, 1  # White text
-                        on_press: root.manager.current = 'search_id_view'
+                Button:
+                    text: "Search IDs"
+                    background_normal: ''
+                    background_color: (0.14, 0.31, 0.31, 1)  # Dark teal color
+                    size_hint_x: 1
+                    font_size: min(self.width * .4, self.height * .4)
+                    padding: [10, (self.height - self.line_height) / 2]
+                    color: 1, 1, 1, 1  # White text
+                    on_press: root.parent.current = 'search_id_view'
+
+            
+            #Sort IDs Nav Button
+            MDBoxLayout:
+                size_hint_x: .5
+                pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                padding: [5]
+                canvas.before:
+                    Color:
+                        rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [10, 10, 10, 10]  # Rounded corners
+
+                Button:
+                    text: "Sort IDs"
+                    background_normal: ''
+                    background_color: (0.14, 0.31, 0.31, 1)  # Dark teal color
+                    size_hint_x: 1
+                    font_size: min(self.width * .4, self.height * .4)
+                    padding: [10, (self.height - self.line_height) / 2]
+                    color: 1, 1, 1, 1  # White text
+                    on_press: root.parent.current = 'sort_id_view'
+
+            #Contacts Nav Button
+            MDBoxLayout:
+                size_hint_x: .5
+                pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                padding: [5]
+                canvas.before:
+                    Color:
+                        rgba: (0.7, 0.7, 0.7, 1)
+                    RoundedRectangle:
+                        size: self.size
+                        pos: self.pos
+                        radius: [10, 10, 10, 10]  # Rounded corners
+
+                Button:
+                    text: "Contacts"
+                    background_normal: ''
+                    background_color: (0.7, 0.7, 0.7, 1)
+                    size_hint_x: 1
+                    font_size: min(self.width * .4, self.height * .4)
+                    padding: [10, (self.height - self.line_height) / 2]
+                    color: (0.14, 0.31, 0.31, 1)
+                    on_press: root.parent.current = 'contact_view'
+
+        # Main Section
+        MDBoxLayout:
+            orientation: "horizontal"
+            id: main_section
+            name: "main_section"
+            size_hint_y: .9
+
+            #Controls Section
+            MDBoxLayout:
+                orientation: "vertical"
+                id: controls_section
+                name: "controls_section"
+                size_hint_x: .35
+                spacing: 30
+
+                Label:
+                    size_hint_y: .05
+
+                #Add Contact controls
+                MDBoxLayout:
+                    orientation: "vertical"
+                    size_hint_y: .35
+                    Label:
+                        id: add_contact_label
+                        text: "Add Contact"
+                        size_hint_y: .2
+                        color: (0.14, 0.31, 0.31, 1)
+                        halign: "left"
+                        font_size: min(self.width * 1, self.height * 1)
+                        text_size: self.size
+                        size_hint_x: .9
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+
+                    # ID Number field container
+                    MDBoxLayout:
+                        orientation: "vertical"
+                        id: id_number_container
+                        size_hint_y: .8
+                        size_hint_x: .9
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        padding: [5]
+                        spacing: 10
+                        canvas.before:
+                            Color:
+                                rgba: (0.7, 0.7, 0.7, 1)  # Dark teal color
+                            RoundedRectangle:
+                                size: self.size
+                                pos: self.pos
+                                radius: [10, 10, 10, 10]  # Rounded corners
+                
+                        # ID Number field
+                        MDBoxLayout:
+                            pos_hint: {'top': 1}
+                            size_hint_y: .5
+                            size_hint_x: 1
+                            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                            canvas.before:
+                                Color:
+                                    rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
+                                RoundedRectangle:
+                                    size: self.size
+                                    pos: self.pos
+                                    radius: [10, 10, 10, 10]  # Rounded corners
+
+                            TextInput:
+                                id: add_id_number
+                                hint_text: "ID Number / QR Code"
+                                foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
+                                background_color: (0, 0, 0, 0)  # Transparent to show canvas color
+                                halign: 'center'
+                                focus: True
+                                multiline: False
+                                font_size: min(self.width * .4, self.height * .4)
+                                padding: [10, (self.height - self.line_height) / 2]
+                                
+                        # Phone Number and submit button row
+                        MDBoxLayout:
+                            orientation: "horizontal"
+                            size_hint_y: .5
+                            spacing: 10
+
+                            # Phone Number field
+                            MDBoxLayout:
+                                pos_hint: {'top': 1}
+                                size_hint_x: .7
+                                # size_hint_y: 
+                                # height: 50
+                                canvas.before:
+                                    Color:
+                                        rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
+                                    RoundedRectangle:
+                                        size: self.size
+                                        pos: self.pos
+                                        radius: [10, 10, 10, 10]  # Rounded corners
+
+                                TextInput:
+                                    id: phone_number
+                                    hint_text: "Phone number"
+                                    foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
+                                    background_color: (0, 0, 0, 0)  # Transparent to show canvas color
+                                    # size_hint_y: None
+                                    # height: 50
+                                    halign: 'center'
+                                    focus: True
+                                    multiline: False
+                                    font_size: min(self.width * .4, self.height * .4)  
+                                    padding: [10, (self.height - self.line_height) / 2]
+
+                            #Add/Update submit button
+                            MDBoxLayout:
+                                # size_hint_y: .1
+                                size_hint_x: .3
+                                pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                                # height: 50
+                                padding: [5]
+                                canvas.before:
+                                    Color:
+                                        rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
+                                    RoundedRectangle:
+                                        size: self.size
+                                        pos: self.pos
+                                        radius: [10, 10, 10, 10]  # Rounded corners
+
+                                Button:
+                                    text: "Submit"
+                                    background_normal: ''
+                                    background_color: (0.14, 0.31, 0.31, 1)  # Dark teal color
+                                    size_hint_x: 1
+                                    font_size: min(self.width * .4, self.height * .4)  
+                                    padding: [10, (self.height - self.line_height) / 2]
+                                    # height: 50
+                                    # radius: [10, 10, 10, 10]  # Rounded corners
+                                    color: 1, 1, 1, 1  # White text
+                                    # on_press: root.parent.current = 'search_id_view'
 
                 
-                #Sort IDs Nav Button
-                BoxLayout:
-                    size_hint_x: .5
-                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                    padding: [5]
-                    canvas.before:
-                        Color:
-                            rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
-                        RoundedRectangle:
-                            size: self.size
-                            pos: self.pos
-                            radius: [10, 10, 10, 10]  # Rounded corners
+                
+                
 
-                    Button:
-                        text: "Sort IDs"
-                        background_normal: ''
-                        background_color: (0.14, 0.31, 0.31, 1)  # Dark teal color
-                        size_hint_x: 1
-                        font_size: min(self.width * .4, self.height * .4)
-                        padding: [10, (self.height - self.line_height) / 2]
-                        color: 1, 1, 1, 1  # White text
-                        on_press: root.manager.current = 'sort_id_view'
-
-                #Contacts Nav Button
-                BoxLayout:
-                    size_hint_x: .5
-                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                    padding: [5]
-                    canvas.before:
-                        Color:
-                            rgba: (0.7, 0.7, 0.7, 1)
-                        RoundedRectangle:
-                            size: self.size
-                            pos: self.pos
-                            radius: [10, 10, 10, 10]  # Rounded corners
-
-                    Button:
-                        text: "Contacts"
-                        background_normal: ''
-                        background_color: (0.7, 0.7, 0.7, 1)
-                        size_hint_x: 1
-                        font_size: min(self.width * .4, self.height * .4)
-                        padding: [10, (self.height - self.line_height) / 2]
-                        color: (0.14, 0.31, 0.31, 1)
-                        on_press: root.manager.current = 'contact_view'
-
-            # Main Section
-            BoxLayout:
-                orientation: "horizontal"
-                id: main_section
-                name: "main_section"
-                size_hint_y: .9
-
-                #Controls Section
-                BoxLayout:
+                #Search Contact controls
+                MDBoxLayout:
                     orientation: "vertical"
-                    id: controls_section
-                    name: "controls_section"
-                    size_hint_x: .35
-                    spacing: 30
-
+                    size_hint_y: .35
                     Label:
-                        size_hint_y: .05
+                        id: search_contact_label
+                        text: "Search Contact"
+                        size_hint_y: .2
+                        # padding: [5]
+                        font_size: min(self.width * 1, self.height * 1)
+                        halign: "left"
+                        text_size: self.size
+                        color: (0.14, 0.31, 0.31, 1)
+                        size_hint_x: .9
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
 
-                    #Add Contact controls
-                    BoxLayout:
+
+                    # Search Phone Number controls
+                    MDBoxLayout:
                         orientation: "vertical"
-                        size_hint_y: .35
-                        Label:
-                            id: add_contact_label
-                            text: "Add Contact"
-                            size_hint_y: .2
-                            color: (0.14, 0.31, 0.31, 1)
-                            halign: "left"
-                            font_size: min(self.width * 1, self.height * 1)
-                            text_size: self.size
-                            size_hint_x: .9
+                        id: qr_code_container
+                        size_hint_y: .8
+                        size_hint_x: .9
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        # height: 50
+                        padding: [5]
+                        spacing: 10
+                        canvas.before:
+                            Color:
+                                rgba: (0.7, 0.7, 0.7, 1)  # Dark teal color
+                            RoundedRectangle:
+                                size: self.size
+                                pos: self.pos
+                                radius: [10, 10, 10, 10]  # Rounded corners
+                
+                        # Search by scanning ID
+                        MDBoxLayout:
+                            pos_hint: {'top': 1}
+                            size_hint_y: .5
+                            size_hint_x: 1
                             pos_hint: {"center_x": 0.5, "center_y": 0.5}
-
-
-                        # ID Number field container
-                        BoxLayout:
-                            orientation: "vertical"
-                            id: id_number_container
-                            size_hint_y: .8
-                            size_hint_x: .9
-                            pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                            padding: [5]
-                            spacing: 10
                             canvas.before:
                                 Color:
-                                    rgba: (0.7, 0.7, 0.7, 1)  # Dark teal color
+                                    rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
                                 RoundedRectangle:
                                     size: self.size
                                     pos: self.pos
                                     radius: [10, 10, 10, 10]  # Rounded corners
-                    
-                            # ID Number field
-                            BoxLayout:
+
+                            TextInput:
+                                id: qr_code
+                                hint_text: "Scan QR Code"
+                                foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
+                                background_color: (0, 0, 0, 0)  # Transparent to show canvas color
+                                halign: 'center'
+                                focus: True
+                                multiline: False
+                                font_size: min(self.width * .4, self.height * .4)
+                                padding: [10, (self.height - self.line_height) / 2]
+                                
+                        # ID Number and submit button row
+                        MDBoxLayout:
+                            orientation: "horizontal"
+                            size_hint_y: .5
+                            spacing: 10
+
+                            # Lastname field
+                            MDBoxLayout:
                                 pos_hint: {'top': 1}
-                                size_hint_y: .5
-                                size_hint_x: 1
-                                pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                                size_hint_x: .7
+                                # size_hint_y: 
+                                # height: 50
                                 canvas.before:
                                     Color:
                                         rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
@@ -235,121 +353,25 @@
                                         radius: [10, 10, 10, 10]  # Rounded corners
 
                                 TextInput:
-                                    id: add_id_number
-                                    hint_text: "ID Number / QR Code"
+                                    id: search_id_number
+                                    hint_text: "ID Number"
                                     foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
                                     background_color: (0, 0, 0, 0)  # Transparent to show canvas color
+                                    # size_hint_y: None
+                                    # height: 50
                                     halign: 'center'
                                     focus: True
                                     multiline: False
-                                    font_size: min(self.width * .4, self.height * .4)
+                                    font_size: min(self.width * .4, self.height * .4)  
                                     padding: [10, (self.height - self.line_height) / 2]
-                                    
-                            # Phone Number and submit button row
-                            BoxLayout:
-                                orientation: "horizontal"
-                                size_hint_y: .5
-                                spacing: 10
 
-                                # Phone Number field
-                                BoxLayout:
-                                    pos_hint: {'top': 1}
-                                    size_hint_x: .7
-                                    # size_hint_y: 
-                                    # height: 50
-                                    canvas.before:
-                                        Color:
-                                            rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
-                                        RoundedRectangle:
-                                            size: self.size
-                                            pos: self.pos
-                                            radius: [10, 10, 10, 10]  # Rounded corners
-
-                                    TextInput:
-                                        id: phone_number
-                                        hint_text: "Phone number"
-                                        foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
-                                        background_color: (0, 0, 0, 0)  # Transparent to show canvas color
-                                        # size_hint_y: None
-                                        # height: 50
-                                        halign: 'center'
-                                        focus: True
-                                        multiline: False
-                                        font_size: min(self.width * .4, self.height * .4)  
-                                        padding: [10, (self.height - self.line_height) / 2]
-
-                                #Add/Update submit button
-                                BoxLayout:
-                                    # size_hint_y: .1
-                                    size_hint_x: .3
-                                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                                    # height: 50
-                                    padding: [5]
-                                    canvas.before:
-                                        Color:
-                                            rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
-                                        RoundedRectangle:
-                                            size: self.size
-                                            pos: self.pos
-                                            radius: [10, 10, 10, 10]  # Rounded corners
-
-                                    Button:
-                                        text: "Submit"
-                                        background_normal: ''
-                                        background_color: (0.14, 0.31, 0.31, 1)  # Dark teal color
-                                        size_hint_x: 1
-                                        font_size: min(self.width * .4, self.height * .4)  
-                                        padding: [10, (self.height - self.line_height) / 2]
-                                        # height: 50
-                                        # radius: [10, 10, 10, 10]  # Rounded corners
-                                        color: 1, 1, 1, 1  # White text
-                                        # on_press: root.manager.current = 'search_id_view'
-
-                    
-                    
-                    
-
-                    #Search Contact controls
-                    BoxLayout:
-                        orientation: "vertical"
-                        size_hint_y: .35
-                        Label:
-                            id: search_contact_label
-                            text: "Search Contact"
-                            size_hint_y: .2
-                            # padding: [5]
-                            font_size: min(self.width * 1, self.height * 1)
-                            halign: "left"
-                            text_size: self.size
-                            color: (0.14, 0.31, 0.31, 1)
-                            size_hint_x: .9
-                            pos_hint: {"center_x": 0.5, "center_y": 0.5}
-
-
-                        # Search Phone Number controls
-                        BoxLayout:
-                            orientation: "vertical"
-                            id: qr_code_container
-                            size_hint_y: .8
-                            size_hint_x: .9
-                            pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                            # height: 50
-                            padding: [5]
-                            spacing: 10
-                            canvas.before:
-                                Color:
-                                    rgba: (0.7, 0.7, 0.7, 1)  # Dark teal color
-                                RoundedRectangle:
-                                    size: self.size
-                                    pos: self.pos
-                                    radius: [10, 10, 10, 10]  # Rounded corners
-                    
-                            # Search by scanning ID
-                            BoxLayout:
-                                pos_hint: {'top': 1}
-                                size_hint_y: .5
-                                size_hint_x: 1
+                            #Search with name submit button
+                            MDBoxLayout:
+                                # size_hint_y: .1
+                                size_hint_x: .3
                                 pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                                # height: 50
+                                padding: [5]
                                 canvas.before:
                                     Color:
                                         rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
@@ -358,123 +380,46 @@
                                         pos: self.pos
                                         radius: [10, 10, 10, 10]  # Rounded corners
 
-                                TextInput:
-                                    id: qr_code
-                                    hint_text: "Scan QR Code"
-                                    foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
-                                    background_color: (0, 0, 0, 0)  # Transparent to show canvas color
-                                    halign: 'center'
-                                    focus: True
-                                    multiline: False
-                                    font_size: min(self.width * .4, self.height * .4)
+                                Button:
+                                    text: "Submit"
+                                    background_normal: ''
+                                    background_color: (0.14, 0.31, 0.31, 1)  # Dark teal color
+                                    size_hint_x: 1
+                                    font_size: min(self.width * .4, self.height * .4)  
                                     padding: [10, (self.height - self.line_height) / 2]
-                                    
-                            # ID Number and submit button row
-                            BoxLayout:
-                                orientation: "horizontal"
-                                size_hint_y: .5
-                                spacing: 10
-
-                                # Lastname field
-                                BoxLayout:
-                                    pos_hint: {'top': 1}
-                                    size_hint_x: .7
-                                    # size_hint_y: 
                                     # height: 50
-                                    canvas.before:
-                                        Color:
-                                            rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
-                                        RoundedRectangle:
-                                            size: self.size
-                                            pos: self.pos
-                                            radius: [10, 10, 10, 10]  # Rounded corners
+                                    # radius: [10, 10, 10, 10]  # Rounded corners
+                                    color: 1, 1, 1, 1  # White text
+                                    # on_press: root.parent.current = 'search_id_view'
 
-                                    TextInput:
-                                        id: search_id_number
-                                        hint_text: "ID Number"
-                                        foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
-                                        background_color: (0, 0, 0, 0)  # Transparent to show canvas color
-                                        # size_hint_y: None
-                                        # height: 50
-                                        halign: 'center'
-                                        focus: True
-                                        multiline: False
-                                        font_size: min(self.width * .4, self.height * .4)  
-                                        padding: [10, (self.height - self.line_height) / 2]
+                
+                
+                
 
-                                #Search with name submit button
-                                BoxLayout:
-                                    # size_hint_y: .1
-                                    size_hint_x: .3
-                                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                                    # height: 50
-                                    padding: [5]
-                                    canvas.before:
-                                        Color:
-                                            rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
-                                        RoundedRectangle:
-                                            size: self.size
-                                            pos: self.pos
-                                            radius: [10, 10, 10, 10]  # Rounded corners
+                Label:
+                    size_hint_y:.25
+            #Search results Section
+            MDBoxLayout:
+                orientation: 'vertical'
+                size_hint_x: .65
+                padding: 10
 
-                                    Button:
-                                        text: "Submit"
-                                        background_normal: ''
-                                        background_color: (0.14, 0.31, 0.31, 1)  # Dark teal color
-                                        size_hint_x: 1
-                                        font_size: min(self.width * .4, self.height * .4)  
-                                        padding: [10, (self.height - self.line_height) / 2]
-                                        # height: 50
-                                        # radius: [10, 10, 10, 10]  # Rounded corners
-                                        color: 1, 1, 1, 1  # White text
-                                        # on_press: root.manager.current = 'search_id_view'
-
-                    
-                    
-                    
-
-                    Label:
-                        size_hint_y:.25
-                #Search results Section
-                BoxLayout:
+                MDBoxLayout:
+                    id: table_container
                     orientation: 'vertical'
-                    size_hint_x: .65
-                    padding: 10
+                    padding: [10, 10, 10, 10]
+                    size_hint_y: 1
+                    # height: self.minimum_height
 
-                    BoxLayout:
-                        id: table_container
-                        orientation: 'vertical'
-                        padding: [10, 10, 10, 10]
-                        size_hint_y: 1
-                        # height: self.minimum_height
+                    # MDDataTable:
+                    #     id: id_results_table
+                    #     size_hint_y: 1
+                    #     size_hint_x: 1
+                    #     pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    #     column_data:
+                    #         [("ID Number", dp(30)), ("First Name", dp(30)), ("Last Name", dp(30)), ("Date of Birth", dp(30)), ("Gender", dp(30))]
+                    #     row_data: []
 
-                        # MDDataTable:
-                        #     id: id_results_table
-                        #     size_hint_y: 1
-                        #     size_hint_x: 1
-                        #     pos_hint: {'center_x': 0.5, 'center_y': 0.5}
-                        #     column_data:
-                        #         [("ID Number", dp(30)), ("First Name", dp(30)), ("Last Name", dp(30)), ("Date of Birth", dp(30)), ("Gender", dp(30))]
-                        #     row_data: []
-
-                        #     on_row_press:
-                        #         app.on_row_press(*args)
-            # Label:
-            #     size_hint_y: .2
-        
-        #Footer
-        BoxLayout:
-            orientation: "horizontal"
-            id: footer
-            size_hint_y: .1
-            size_hint_x: 1
-            pos_hint: {"center_x": 0.5, "center_y": 0.5}
-            # height: 50
-            padding: [5]
-            canvas.before:
-                Color:
-                    rgba: (0.7, 0.7, 0.7, 1)  # Dark teal color
-                RoundedRectangle:
-                    size: self.size
-                    pos: self.pos
-                    radius: [10, 10, 10, 10]  # Rounded corners
+                    #     on_row_press:
+                    #         app.on_row_press(*args)
+            

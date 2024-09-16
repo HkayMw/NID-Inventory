@@ -3,17 +3,15 @@
 class Controller:
     def __init__(self, model):
         self.model = model
-        
 
-    def create_record(self, table, data):
-        self.model.create(data)
+    def create(self, data):
+        return self.model.create(data)
 
-    def read_records(self, table, where_clause=None):
-        data = self.model.read(where_clause)
-        self.view.display_data(data)
+    def read(self, where_clause=None, params=None):
+        return self.model.read(where_clause, params)
 
-    def update_record(self, table, data, where_clause):
-        self.model.update(data, where_clause)
+    def update(self, data, where_clause, params=None):
+        return self.model.update(data, where_clause, params)
 
-    def delete_record(self, table, where_clause):
-        self.model.delete(where_clause)
+    def delete(self, where_clause, params=None):
+        return self.model.delete(where_clause, params)

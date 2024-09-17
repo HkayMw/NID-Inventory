@@ -1,5 +1,6 @@
 # screens/login/login_view.py
 
+from kivymd.app import MDApp
 from kivy.uix.screenmanager import Screen
 from controller.user_controller import UserController
 from kivy.lang import Builder
@@ -21,7 +22,9 @@ class LoginScreen(Screen):
     def validate_user(self):
         id_number = self.ids.id_no_field
         password = self.ids.password_field
-        notice = self.ids.notice
+        # notice = self.ids.notice# Clear notice
+        notice = self.parent.parent.parent.ids.notice
+        # notice.text = ''
 
         # print(id_no + " " + password)
 
@@ -61,8 +64,15 @@ class LoginScreen(Screen):
                 )
                 
                 # print(current_user.get_user_details())
+                app = MDApp.get_running_app()
+                # app.update_navigation(current_user.get_user_details())
 
-                self.parent.parent.current = 'add_id_view'
-                self.manager.current                 = "add_id_view"
+                # self.parent.parent.current = 'add_id_view'
+                # self.manager.current = "search_id_view"
+                app.root.ids.screen_manager.current = 'search_id_view'
+                app.roo.ids.side_nav.current = 'clerk_nav'
             else:
+                app = MDApp.get_running_app()
+                # app.update_navigation()
+                
                 notice.text = f"{message}"

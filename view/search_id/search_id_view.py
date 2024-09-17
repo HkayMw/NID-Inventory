@@ -77,7 +77,7 @@ class SearchIDScreen(Screen):
     def search_id(self, search_type):
         
         # Clear notice
-        notice = self.parent.parent.ids.notice
+        notice = self.parent.parent.parent.ids.notice
         notice.text = ''
         # print("some notice: ",notice.text)
         

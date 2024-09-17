@@ -22,7 +22,6 @@
             size_hint_x: .07
             pos_hint: {'x':0}
 
-
         Label:
             text: "ID Inventory Manager"
             color: 1, 1, 1, 1  # White text
@@ -39,46 +38,42 @@
             keep_ratio: True
             size_hint_x: .07
             pos_hint: {'x':1}
+
     # Main Window
     MDBoxLayout:
         id: main_window
         size_hint_y: .75
-        
-        # Side Navigation
+
+        # Side Navigation Rail
         ScreenManager:
             id: side_nav
-            width: 0
+            name: 'side_nav'
             size_hint_x: 0
+            width: 0
+
+
         # Main Section
         ScreenManager:
             id: screen_manager
             name: 'screen_manager'
             size_hint_x: 1
 
-        
-
-    #Footer
+    # Footer
     MDBoxLayout:
         orientation: "horizontal"
         id: footer
         size_hint_y: .1
-        # size_hint_x: .997
         pos_hint: {"center_x": 0.5, "center_y": 0.5}
-        # height: 50
         padding: [5]
         canvas.before:
             Color:
-                rgba: (.2, .2, .2, 1) 
-                # rgba: (0.7, 0.7, 0.7, 1)
+                rgba: (.2, .2, .2, 1)
             Rectangle:
                 size: self.size
                 pos: self.pos
-                # radius: [10, 10, 10, 10]  # Rounded corners
 
-        
         MDLabel:
             id: notice
-            # name: 'notice'
             text: ''
             halign: "center"
             theme_text_color: "Custom"

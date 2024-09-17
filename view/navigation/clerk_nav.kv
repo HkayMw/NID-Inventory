@@ -1,0 +1,174 @@
+#:kivy 2.3.0
+# view/navigation/clerk_nav.kv
+
+<DrawerClickableItem@MDNavigationDrawerItem>
+    focus_color: "#e7e4c0"
+    text_color: "#4a4939"
+    icon_color: "#4a4939"
+    ripple_color: "#c5bdd2"
+    selected_color: "#0c6c4d"
+
+
+<DrawerLabelItem@MDNavigationDrawerItem>
+    text_color: "#4a4939"
+    icon_color: "#4a4939"
+    focus_behavior: False
+    selected_color: "#4a4939"
+    _no_ripple_effect: True
+
+
+
+<ClerkNav>:
+
+    # MDNavigationLayout:
+
+    #     MDScreenManager:
+
+    #         MDScreen:
+
+    #             MDRaisedButton:
+    #                 text: "Open Drawer"
+    #                 pos_hint: {"center_x": .5, "center_y": .5}
+    #                 on_release: nav_drawer.set_state("toggle")
+
+    #Navigation Rail
+    # MDNavigationLayout:
+
+        # ScreenManager:
+
+            # MDScreen:
+
+    MDBoxLayout:
+        orientation: "vertical"
+
+        # MDBoxLayout:
+        #     adaptive_height: True
+        #     md_bg_color: "#fffcf4"
+        #     padding: "12dp"
+
+        #     MDLabel:
+        #         text: "12:00"
+        #         adaptive_height: True
+        #         pos_hint: {"center_y": .5}
+
+        MDBoxLayout:
+
+            MDNavigationRail:
+                id: navigation_rail
+                md_bg_color: "#fffcf4"
+                selected_color_background: "#e7e4c0"
+                ripple_color_item: "#e7e4c0"
+                # on_item_release: app.switch_screen(*args)
+
+                MDNavigationRailMenuButton:
+                    on_release: 
+                        nav_drawer.set_state("toggle")
+                        # app.on_navigation_state('open')  # Call method on state change
+
+
+                # MDNavigationRailFabButton:
+                #     md_bg_color: "#b0f0d6"
+
+                MDNavigationRailItem:
+                    icon: "card-plus"
+                    text: "Add Card"
+                    on_release: app.root.ids.screen_manager.current = 'add_id_view'
+
+
+                MDNavigationRailItem:
+                    icon: "magnify"
+                    text: "Search"
+                    on_release: app.root.ids.screen_manager.current = 'search_id_view'
+
+
+                MDNavigationRailItem:
+                    icon: "sort-variant"
+                    text: "Sort Cards"
+                    on_release: app.root.ids.screen_manager.current = 'sort_id_view'
+
+
+                MDNavigationRailItem:
+                    icon: "account-box"
+                    text: "Contacts"
+                    on_release: app.root.ids.screen_manager.current = 'contact_view'
+
+
+            # ScreenManager:
+            #     id: screen_manager
+            #     transition:
+            #         FadeTransition(duration=.2, clearcolor=app.theme_cls.bg_dark)
+    #Navigation Rail
+
+
+    MDNavigationDrawer:
+        id: nav_drawer
+        # state: "open"  # Ensure the drawer is always open
+        # disable_swiping: True  # Disable gesture to close the drawer
+        # close_on_click: False
+        md_bg_color: "#b0f0d6"
+        radius: (0, dp(16), dp(16), 0)
+        on_status: app.on_navigation_state(self.status)  # Call method on state change
+
+        MDNavigationDrawerMenu:
+
+            DrawerClickableItem:
+                icon: "menu"
+                # right_text: "+99"
+                text_right_color: "#4a4939"
+                text: "Menu"
+                on_release: 
+                    nav_drawer.set_state("toggle")
+                    
+                
+
+            MDNavigationDrawerHeader:
+                title: "Clerk"
+                title_color: "#4a4939"
+                text: "clerk nav"
+                spacing: "4dp"
+                padding: "12dp", 0, 0, "56dp"
+
+            # MDNavigationDrawerLabel:
+            #     text: "Mail"
+
+            # DrawerClickableItem:
+            #     icon: "gmail"
+            #     right_text: "+99"
+            #     text_right_color: "#4a4939"
+            #     text: "Inbox"
+
+            # DrawerClickableItem:
+            #     icon: "send"
+            #     text: "Outbox"
+
+            MDNavigationDrawerDivider:
+
+            DrawerClickableItem:
+                icon: "card-plus"
+                text: "Add Card"
+                on_release: 
+                    app.root.ids.screen_manager.current = 'add_id_view'
+                    nav_drawer.set_state("toggle")
+
+            DrawerClickableItem:
+                icon: "magnify"
+                text: "Search"
+                on_release: 
+                    app.root.ids.screen_manager.current = 'search_id_view'
+                    nav_drawer.set_state("toggle")
+
+
+            DrawerClickableItem:
+                icon: "sort-variant"
+                text: "Sort Cards"
+                on_release: 
+                    app.root.ids.screen_manager.current = 'sort_id_view'
+                    nav_drawer.set_state("toggle")
+
+
+            DrawerClickableItem:
+                icon: "account-box"
+                text: "Contacts"
+                on_release: 
+                    app.root.ids.screen_manager.current = 'contact_view'
+                    nav_drawer.set_state("toggle")

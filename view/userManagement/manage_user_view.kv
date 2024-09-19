@@ -1,11 +1,19 @@
 #:kivy 2.3.0
-# view/contact/contact_view.kv
+# view/userManagement/manage_user_view.kv
 
-<ContactScreen>:
-    id: contact_view
-    name: 'contact_view'
+<ManageUser>:
+    id: manage_user_view
+    name: 'manage_user_view'
     orientation: "vertical"
-    
+    # space_x: self.size[0]/3
+    # canvas.before:
+    #     # Gray background
+    #     Color:
+    #         rgba: app.theme_cls.bg_light
+    #         # rgba: (0.4, 0.4, 0.4, 1)
+    #     Rectangle:
+    #         size: self.size
+    #         pos: self.pos
         
 
     # Window Section
@@ -33,7 +41,7 @@
             # Title
             MDLabel:
                 id: screen_title
-                text: 'Contacts'
+                text: 'Manage Users'
                 halign: 'center'
                 font_style: 'H4'
                 size_hint_y: None
@@ -45,6 +53,7 @@
         MDSeparator:
             height: "1dp"  # Thickness of the line
             color: "#B0BEC5"  # Color of the line
+            
 
         # Main Section
         MDBoxLayout:

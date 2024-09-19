@@ -4,6 +4,7 @@ from kivy.lang import Builder
 
 Builder.load_file('view/adminDashboard/adminDashboard_view.kv')
 
-
 class AdminDashboardScreen(Screen):
-    pass
+    def __init__(self, **kwargs):
+        super(AdminDashboardScreen, self).__init__(**kwargs)
+        

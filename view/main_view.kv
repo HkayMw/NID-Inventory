@@ -7,7 +7,7 @@
 
     # Teal Header Section
     MDBoxLayout:
-        size_hint_y: .15
+        size_hint_y: .14
         pos_hint: {'x': 0, 'y': 0}
         canvas.before:
             Color:
@@ -22,16 +22,18 @@
             size_hint_x: .07
             pos_hint: {'x':0}
 
-        Label:
+        MDLabel:
+            id: header_label
             text: "ID Inventory Manager"
             color: 1, 1, 1, 1  # White text
             bold: True
             halign: 'center'
             valign: 'middle'
-            font_size: min(self.width * .4, self.height * .4)
-            padding: [10, (self.height - self.line_height) / 2]
-            text_size: self.size
-            size_hint_x: .86
+            font_style: 'H3'
+            size_hint_y: None
+            size_hint_x: 1
+            pos_hint: {"center_x": .5, "center_y": .5}
+            # width: '300dp'
 
         Image:
             source: 'Assets/Coat_of_arms_of_Malawi.svg'
@@ -42,7 +44,7 @@
     # Main Window
     MDBoxLayout:
         id: main_window
-        size_hint_y: .75
+        # size_hint_y: .75
 
         # Side Navigation Rail
         ScreenManager:
@@ -78,4 +80,5 @@
             halign: "center"
             theme_text_color: "Custom"
             text_color: 0, 1, 0, 1
-            font_size: min(self.width * .6, self.height * .6)
+            font_style: 'H4'
+            # font_size: min(self.width * .6, self.height * .6)

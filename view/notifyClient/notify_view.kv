@@ -1,12 +1,22 @@
 #:kivy 2.3.0
-# view/contact/contact_view.kv
+# view/notifyClient/notify_view.kv
 
-<ContactScreen>:
-    id: contact_view
-    name: 'contact_view'
+<NotifyScreen>:
+    id: notify_view
+    name: 'notify_view'
     orientation: "vertical"
-    
+    # space_x: self.size[0]/3
+    # canvas.before:
+    #     # Gray background
+    #     Color:
+    #         rgba: app.theme_cls.bg_light
+    #         # rgba: (0.4, 0.4, 0.4, 1)
+    #     Rectangle:
+    #         size: self.size
+    #         pos: self.pos
         
+    MDLabel:
+        text: "SMS Notifications"
 
     # Window Section
     MDBoxLayout:
@@ -33,7 +43,7 @@
             # Title
             MDLabel:
                 id: screen_title
-                text: 'Contacts'
+                text: 'Notify Clients'
                 halign: 'center'
                 font_style: 'H4'
                 size_hint_y: None

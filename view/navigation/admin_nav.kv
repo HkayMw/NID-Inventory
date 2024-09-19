@@ -1,55 +1,26 @@
 #:kivy 2.3.0
-# view/navigation/clerk_nav.kv
+# view/navigation/admin_nav.kv
 
-<DrawerClickableItem@MDNavigationDrawerItem>
-    focus_color: "#e7e4c0"
-    text_color: "#4a4939"
-    icon_color: "#4a4939"
-    ripple_color: "#c5bdd2"
-    selected_color: "#0c6c4d"
-
-
-<DrawerLabelItem@MDNavigationDrawerItem>
-    text_color: "#4a4939"
-    icon_color: "#4a4939"
-    focus_behavior: False
-    selected_color: "#4a4939"
-    _no_ripple_effect: True
+# <DrawerClickableItem@MDNavigationDrawerItem>
+#     focus_color: "#e7e4c0"
+#     text_color: "#4a4939"
+#     icon_color: "#4a4939"
+#     ripple_color: "#c5bdd2"
+#     selected_color: "#0c6c4d"
 
 
+# <DrawerLabelItem@MDNavigationDrawerItem>
+#     text_color: "#4a4939"
+#     icon_color: "#4a4939"
+#     focus_behavior: False
+#     selected_color: "#4a4939"
+#     _no_ripple_effect: True
 
-<ClerkNav>:
 
-    # MDNavigationLayout:
-
-    #     MDScreenManager:
-
-    #         MDScreen:
-
-    #             MDRaisedButton:
-    #                 text: "Open Drawer"
-    #                 pos_hint: {"center_x": .5, "center_y": .5}
-    #                 on_release: nav_drawer.set_state("toggle")
-
-    #Navigation Rail
-    # MDNavigationLayout:
-
-        # ScreenManager:
-
-            # MDScreen:
+<AdminNav>:
 
     MDBoxLayout:
         orientation: "vertical"
-
-        # MDBoxLayout:
-        #     adaptive_height: True
-        #     md_bg_color: "#fffcf4"
-        #     padding: "12dp"
-
-        #     MDLabel:
-        #         text: "12:00"
-        #         adaptive_height: True
-        #         pos_hint: {"center_y": .5}
 
         MDBoxLayout:
 
@@ -58,54 +29,54 @@
                 md_bg_color: "#fffcf4"
                 selected_color_background: "#e7e4c0"
                 ripple_color_item: "#e7e4c0"
-                # on_item_release: app.switch_screen(*args)
+                # current_selected_item: 
 
                 MDNavigationRailMenuButton:
                     on_release: 
                         nav_drawer.set_state("toggle")
-                        # app.on_navigation_state('open')  # Call method on state change
-
-
-                # MDNavigationRailFabButton:
-                #     md_bg_color: "#b0f0d6"
 
                 MDNavigationRailItem:
-                    icon: "card-plus"
-                    text: "Add Card"
-                    on_release: app.root.ids.screen_manager.current = 'add_id_view'
-
+                    size_hint_x: 0
+                MDNavigationRailItem:
+                    icon: "view-dashboard"
+                    text: "Dashboard"
+                    
+                    on_release: app.change_screen('adminDashboard_view')
 
                 MDNavigationRailItem:
-                    icon: "magnify"
-                    text: "Search"
-                    on_release: app.root.ids.screen_manager.current = 'search_id_view'
-
-
-                MDNavigationRailItem:
-                    icon: "sort-variant"
-                    text: "Sort Cards"
-                    on_release: app.root.ids.screen_manager.current = 'sort_id_view'
-
+                    icon: "account-cog"
+                    text: "Users"
+                    
+                    on_release: app.change_screen('manage_user_view')
 
                 MDNavigationRailItem:
-                    icon: "account-box"
-                    text: "Contacts"
-                    on_release: app.root.ids.screen_manager.current = 'contact_view'
+                    icon: "cog"
+                    text: "Config"
+                    
+                    on_release: app.change_screen('config_view')
 
+                MDNavigationRailItem:
+                    icon: "message-text"
+                    text: "Send SMS"
+                    
+                    on_release: app.change_screen('notify_view')
 
-            # ScreenManager:
-            #     id: screen_manager
-            #     transition:
-            #         FadeTransition(duration=.2, clearcolor=app.theme_cls.bg_dark)
-    #Navigation Rail
+                MDNavigationRailItem:
+                    icon: "chart-box-outline"
+                    text: "Reports"
+                    
+                    on_release: app.change_screen('report_view')
 
+                MDNavigationRailItem:
+                    icon: "logout"
+                    text: "Logout"
+                    active: False
+                    on_release: 
+                        app.show_logout_dialog()  # Call the logout method in your app
 
     MDNavigationDrawer:
         id: nav_drawer
-        # state: "open"  # Ensure the drawer is always open
-        # disable_swiping: True  # Disable gesture to close the drawer
-        # close_on_click: False
-        md_bg_color: "#b0f0d6"
+        
         radius: (0, dp(16), dp(16), 0)
         on_status: app.on_navigation_state(self.status)  # Call method on state change
 
@@ -113,13 +84,10 @@
 
             DrawerClickableItem:
                 icon: "menu"
-                # right_text: "+99"
                 text_right_color: "#4a4939"
                 text: "Menu"
                 on_release: 
                     nav_drawer.set_state("toggle")
-                    
-                
 
             MDNavigationDrawerHeader:
                 title: "Admin"
@@ -127,48 +95,49 @@
                 text: "admin nav"
                 spacing: "4dp"
                 padding: "12dp", 0, 0, "56dp"
+            
+            MDNavigationDrawerDivider:
 
-            # MDNavigationDrawerLabel:
-            #     text: "Mail"
+            DrawerClickableItem:
+                icon: "view-dashboard"
+                text: "Dashboard"
+                on_release: 
+                    nav_drawer.set_state("toggle")
+                    app.change_screen('adminDashboard_view')
 
-            # DrawerClickableItem:
-            #     icon: "gmail"
-            #     right_text: "+99"
-            #     text_right_color: "#4a4939"
-            #     text: "Inbox"
+            DrawerClickableItem:
+                icon: "account-cog"
+                text: "Manage Users"
+                on_release: 
+                    nav_drawer.set_state("toggle")
+                    app.change_screen('manage_user_view')
 
-            # DrawerClickableItem:
-            #     icon: "send"
-            #     text: "Outbox"
+            DrawerClickableItem:
+                icon: "cog"
+                text: "Configurations"
+                on_release: 
+                    nav_drawer.set_state("toggle")
+                    app.change_screen('config_view')
+
+            DrawerClickableItem:
+                icon: "bell"
+                text: "Notifications"
+                on_release: 
+                    nav_drawer.set_state("toggle")
+                    app.change_screen('notify_view')
+
+            DrawerClickableItem:
+                icon: "chart-box-outline"
+                text: "Reports"
+                on_release: 
+                    nav_drawer.set_state("toggle")
+                    app.change_screen('report_view')
 
             MDNavigationDrawerDivider:
 
             DrawerClickableItem:
-                icon: "card-plus"
-                text: "Add Card"
+                icon: "logout"
+                text: "Logout"
                 on_release: 
-                    app.root.ids.screen_manager.current = 'add_id_view'
-                    nav_drawer.set_state("toggle")
-
-            DrawerClickableItem:
-                icon: "magnify"
-                text: "Search"
-                on_release: 
-                    app.root.ids.screen_manager.current = 'search_id_view'
-                    nav_drawer.set_state("toggle")
-
-
-            DrawerClickableItem:
-                icon: "sort-variant"
-                text: "Sort Cards"
-                on_release: 
-                    app.root.ids.screen_manager.current = 'sort_id_view'
-                    nav_drawer.set_state("toggle")
-
-
-            DrawerClickableItem:
-                icon: "account-box"
-                text: "Contacts"
-                on_release: 
-                    app.root.ids.screen_manager.current = 'contact_view'
+                    app.show_logout_dialog()  # Call the logout method in your app
                     nav_drawer.set_state("toggle")

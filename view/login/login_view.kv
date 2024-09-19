@@ -5,105 +5,219 @@
     id: login_view
     name: 'login_view'
     orientation: "vertical"
-    # spacing: 10
-    space_x: self.size[0]/3
-    canvas.before:
-        # Gray background
-        Color:
-            rgba: app.theme_cls.bg_light
-            # rgba: (0.4, 0.4, 0.4, 1)
-        Rectangle:
-            size: self.size
-            pos: self.pos
 
 # Main Section
     MDBoxLayout:
-        id: main_section
+        md_bg_color: app.theme_cls.bg_light
+        id: window_section
+        name: "window_section"
         orientation: "vertical"
-        padding: login_view.space_x, 20
-        # size_hint_y: .85
+        padding: 0, 10
+        # size_hint_y: .75
         height: self.minimum_height
         spacing: 20
 
-        Label:
-            id: notice
-            text: ''
-            size_hint_y: .1
-
-        # ID Input
+        # Screen Title
         MDBoxLayout:
-            pos_hint: {'top': 1}
+            orientation: 'horizontal'
+            padding: '10dp'
+            spacing: '10dp'
             size_hint_y: .1
-            canvas.before:
-                Color:
-                    rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
-                RoundedRectangle:
-                    size: self.size
-                    pos: self.pos
-                    radius: [10, 10, 10, 10]  # Rounded corners
-
-            TextInput:
-                id: id_no_field
-                hint_text: "Enter ID No. / Scan ID"
-                foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
-                background_color: (0, 0, 0, 0)  # Transparent to show canvas color
+            size_hint_x: .3
+            # width: '300dp'
+            pos_hint: {"center_x": .5, "center_y": .5}
+            
+            # Title
+            MDLabel:
+                id: screen_title
+                text: 'Login'
                 halign: 'center'
-                focus: True
-                multiline: False
-                font_size: self.height * 0.5
-                padding: [10, (self.height - self.line_height) / 2]
-                on_text_validate: password_field.focus = True
+                font_style: 'H4'
+                size_hint_y: None
+                # size_hint_x: None
+                pos_hint: {"center_x": .5, "center_y": .5}
+                # width: '300dp'
 
-        # Password Input
+        # horizontal line
+        MDSeparator:
+            height: "1dp"  # Thickness of the line
+            color: "#B0BEC5"  # Color of the line
+
+        # Login controls
         MDBoxLayout:
-            size_hint_y: .1
-            canvas.before:
-                Color:
-                    rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
-                RoundedRectangle:
-                    size: self.size
-                    pos: self.pos
-                    radius: [10, 10, 10, 10]  # Rounded corners
+            orientation: 'vertical'
+            padding: dp(20)
+            spacing: dp(10)
+            size_hint_x: None
+            width: '500dp'
+            pos_hint: {"center_x": .5, "center_y": .5}
 
-            TextInput:
-                id: password_field
-                hint_text: "Enter password"
-                foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
-                background_color: (0, 0, 0, 0)  # Transparent to show canvas color
-                halign: 'center'
-                multiline: False
-                font_size: self.height * 0.5
-                padding: [10, (self.height - self.line_height) / 2]
-                password: True
-                on_text_validate: root.validate_user()
+            MDCard:
+                # size_hint_y: None
+                # height: self.minimum_height
+                # elevation: 1
+                padding: dp(20)
+                orientation: 'vertical'
+                spacing: dp(10)
 
-        # Login Button
-        MDBoxLayout:
-            size_hint_y: .1
-            size_hint_x: .5
-            pos_hint: {"center_x": 0.5, "center_y": 0.5}
-            # height: 50
-            padding: [5]
-            canvas.before:
-                Color:
-                    rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
-                RoundedRectangle:
-                    size: self.size
-                    pos: self.pos
-                    radius: [10, 10, 10, 10]  # Rounded corners
+                # ID Input
+                MDTextField:
+                    id: id_no_field
+                    hint_text: "Enter ID No. / Scan ID"
+                    mode: "rectangle"
+                    # required: True
+                    foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
+                    text_color_normal: (0, 0, 0, 1)  # Text color
+                    text_color_focus: (0, 0, 0, 1)   # Text color when focused
+                    size_hint_x: .8
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    height: dp(60)
+                    icon_left: "account"
+                    # icon_right: "qrcode"
+                    multiline: False
+                    font_size: '16sp'
+                    # halign: 'center'
+                    padding: [10, 5]
+                    on_text_validate: password_field.focus = True
+                    
+                # MDIconButton:
+                #     icon: "eye-off"
+                #     pos_hint: {"center_y": .5}
+                #     pos: id_no_field.width - self.width + dp(8), 0
+                #     theme_text_color: "Hint"
+                #     on_release:
+                #         self.icon = "eye" if self.icon == "eye-off" else "eye-off"
+                #         id_no_field.password = False if id_no_field.password == True else True
 
-            Button:
-                text: "Login"
-                background_normal: ''
-                background_color: (0.14, 0.31, 0.31, 1)  # Dark teal color
-                size_hint_x: 1
-                font_size: self.height * 0.5
-                padding: [10, (self.height - self.line_height) / 2]
-                color: 1, 1, 1, 1  # White text
-                on_press: root.validate_user()
+                # Password Input with Eye Button using FloatLayout
+                FloatLayout:
+                    size_hint_x: .8
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    size_hint_y: None
+                    height: dp(60)
 
-        Label:
-            id: bottom
-            size_hint_y: .6
+                    # Password Input Field
+                    MDTextField:
+                        id: password_field
+                        hint_text: "Enter password"
+                        mode: "rectangle"
+                        # required: True
+                        foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
+                        text_color_normal: (0, 0, 0, 1)  # Text color
+                        text_color_focus: (0, 0, 0, 1)   # Text color when focused
+                        # size_hint_x: 1  # Full width inside FloatLayout
+                        pos_hint: {"center_y": .5, "right": 1}  # Position it on the right
+                        height: dp(60)
+                        icon_left: "key-variant"
+                        multiline: False
+                        font_size: '16sp'
+                        password: True  # Initially, password field hides text
+                        on_text_validate: root.validate_user()
+                        # padding: [10, 5]
+
+                    # Eye Icon Button placed on the right of the TextInput
+                    MDIconButton:
+                        icon: "eye-off"
+                        pos_hint: {"center_y": .5, "right": 1}  # Position it on the right
+                        on_release:
+                            # Toggle between showing/hiding the password
+                            self.icon = "eye" if self.icon == "eye-off" else "eye-off"
+                            password_field.password = False if password_field.password else True
+                            password_field.focus = True
+
+
+                MDLabel:
+                    size_hint_y: .03
+
+                # Login Button
+                MDRaisedButton:
+                    text: "Login"
+                    size_hint_x: .3
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    elevation: 1
+                    md_bg_color: (0.14, 0.31, 0.31, 1)  # Dark teal color
+                    text_color: (1, 1, 1, 1)  # White text
+                    font_size: '16sp'
+                    padding: [20]
+                    on_release: root.validate_user()
+
+                MDLabel:
+                    size_hint_y: .6
+
+        # # ID Input
+        # MDBoxLayout:
+        #     pos_hint: {'top': 1}
+        #     size_hint_y: .1
+        #     canvas.before:
+        #         Color:
+        #             rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
+        #         RoundedRectangle:
+        #             size: self.size
+        #             pos: self.pos
+        #             radius: [10, 10, 10, 10]  # Rounded corners
+
+        #     TextInput:
+        #         id: id_no_field
+        #         hint_text: "Enter ID No. / Scan ID"
+        #         foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
+        #         background_color: (0, 0, 0, 0)  # Transparent to show canvas color
+        #         halign: 'center'
+        #         focus: True
+        #         multiline: False
+        #         font_size: self.height * 0.5
+        #         padding: [10, (self.height - self.line_height) / 2]
+        #         on_text_validate: password_field.focus = True
+
+        # # Password Input
+        # MDBoxLayout:
+        #     size_hint_y: .1
+        #     canvas.before:
+        #         Color:
+        #             rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
+        #         RoundedRectangle:
+        #             size: self.size
+        #             pos: self.pos
+        #             radius: [10, 10, 10, 10]  # Rounded corners
+
+        #     TextInput:
+        #         id: password_field
+        #         hint_text: "Enter password"
+        #         foreground_color: (0.7, 0.7, 0.7, 1)  # Light gray text
+        #         background_color: (0, 0, 0, 0)  # Transparent to show canvas color
+        #         halign: 'center'
+        #         multiline: False
+        #         font_size: self.height * 0.5
+        #         padding: [10, (self.height - self.line_height) / 2]
+        #         password: True
+        #         on_text_validate: root.validate_user()
+
+        # # Login Button
+        # MDBoxLayout:
+        #     size_hint_y: .1
+        #     size_hint_x: .5
+        #     pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        #     # height: 50
+        #     padding: [5]
+        #     canvas.before:
+        #         Color:
+        #             rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
+        #         RoundedRectangle:
+        #             size: self.size
+        #             pos: self.pos
+        #             radius: [10, 10, 10, 10]  # Rounded corners
+
+        #     Button:
+        #         text: "Login"
+        #         background_normal: ''
+        #         background_color: (0.14, 0.31, 0.31, 1)  # Dark teal color
+        #         size_hint_x: 1
+        #         font_size: self.height * 0.5
+        #         padding: [10, (self.height - self.line_height) / 2]
+        #         color: 1, 1, 1, 1  # White text
+        #         on_press: root.validate_user()
+
+        # Label:
+        #     id: bottom
+        #     size_hint_y: .6
                 
     

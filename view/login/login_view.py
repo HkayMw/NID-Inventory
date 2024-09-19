@@ -24,7 +24,7 @@ class LoginScreen(Screen):
         password = self.ids.password_field
         # notice = self.ids.notice# Clear notice
         notice = self.parent.parent.parent.ids.notice
-        # notice.text = ''
+        notice.text = ''
 
         # print(id_no + " " + password)
 
@@ -44,7 +44,8 @@ class LoginScreen(Screen):
                     except Exception as e:
                         print(f"Error: {e}")
                 else:
-                    print(message)
+                    notice.text = f"QR Code error: {message}"
+                    return  # Exit the method to avoid further processing
             else:
                 id_number = id_number.text
             
@@ -69,10 +70,29 @@ class LoginScreen(Screen):
 
                 # self.parent.parent.current = 'add_id_view'
                 # self.manager.current = "search_id_view"
-                app.root.ids.screen_manager.current = 'search_id_view'
-                app.roo.ids.side_nav.current = 'clerk_nav'
+                # print(current_user.user_details)
+                if current_user.user_details['user_type'] == 'admin':
+                    
+                    app.root.ids.side_nav.current = 'admin_nav'
+                    app.root.ids.side_nav.get_screen('admin_nav').ids.navigation_rail.current_selected_item = 0
+                    app.change_screen('adminDashboard_view')
+                    
+                    # print(f"logged in as {current_user.user_details['user_type']}")
+                
+                else:
+                    
+                    app.root.ids.side_nav.current = 'clerk_nav'
+                    app.root.ids.side_nav.get_screen('clerk_nav').ids.navigation_rail.current_selected_item = 1
+                    app.change_screen('search_id_view')
+                    
+                    
+                    # print(f"logged in as {current_user.user_details['user_type']}")
+                    
+                # Clear credentials
+                self.ids.id_no_field.text = ""
+                self.ids.password_field.text = ""
+                # print(app.root.ids.side_nav.get_screen('admin_nav').ids.navigation_rail.current_selected_item)
+                
             else:
-                app = MDApp.get_running_app()
-                # app.update_navigation()
                 
                 notice.text = f"{message}"

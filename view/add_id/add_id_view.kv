@@ -27,7 +27,33 @@
         padding: 0, 10
         # size_hint_y: .75
         height: self.minimum_height
-        spacing: 40
+        spacing: 20
+
+        # Screen Title
+        MDBoxLayout:
+            orientation: 'horizontal'
+            padding: '10dp'
+            spacing: '10dp'
+            size_hint_y: .1
+            size_hint_x: .3
+            # width: '300dp'
+            pos_hint: {"center_x": .5, "center_y": .5}
+            
+            # Title
+            MDLabel:
+                id: screen_title
+                text: 'Add IDs'
+                halign: 'center'
+                font_style: 'H4'
+                size_hint_y: None
+                # size_hint_x: None
+                pos_hint: {"center_x": .5, "center_y": .5}
+                # width: '300dp'
+
+        # horizontal line
+        MDSeparator:
+            height: "1dp"  # Thickness of the line
+            color: "#B0BEC5"  # Color of the line
 
         # Main Section
         MDBoxLayout:

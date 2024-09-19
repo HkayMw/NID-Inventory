@@ -6,10 +6,14 @@ from kivy.modules import inspector
 from kivy.uix.screenmanager import ScreenManager, NoTransition
 from kivy.uix.boxlayout import BoxLayout
 from kivy.animation import Animation
-# from kivymd.uix.navigationrail import MDNavigationRail, MDNavigationRailItem
 from kivymd.uix.list import OneLineIconListItem, IconLeftWidget
 from kivymd.uix.navigationdrawer import MDNavigationDrawer
 from kivymd.uix.navigationrail import MDNavigationRailItem
+from kivymd.uix.snackbar import MDSnackbar
+from model.current_user import CurrentUser
+from kivy.metrics import dp
+from kivymd.uix.dialog import MDDialog
+from kivymd.uix.button import MDFlatButton, MDRaisedButton
 
 
 # Importing navigation views
@@ -24,9 +28,14 @@ from view.add_id.add_id_view import AddIDScreen
 from view.sort_id.sort_id_view import SortIDScreen
 from view.contact.contact_view import ContactScreen
 from view.adminDashboard.adminDashboard_view import AdminDashboardScreen
+from view.userManagement.manage_user_view import ManageUser
+from view.configuration.config_view import ConfigScreen
+from view.notifyClient.notify_view import NotifyScreen
+from view.report.report_view import ReportScreen
+from view.user_profile.user_profile_view import ProfileScreen
 
 # Set the default window size
-default_width = 800
+default_width = 1024
 default_height = 600
 Config.set('graphics', 'width', str(default_width))
 Config.set('graphics', 'height', str(default_height))
@@ -43,10 +52,6 @@ class MainScreen(BoxLayout):
         self.ids.screen_manager.transition = NoTransition()
         # Bind the on_key_down event
         Window.bind(on_key_down=self.on_key_down)
-        
-        # Bind the drawer's state change event
-        # nav_drawer = .ids.nav_drawer
-        # nav_drawer.bind(state=main_container.on_navigation_state)
         
     # Focus management function
     def on_key_down(self, instance, keyboard, keycode, text, modifiers):
@@ -65,7 +70,6 @@ class MainScreen(BoxLayout):
             else:
                 next_index = 0
 
-            
             focusable_widgets[next_index].focus = True
             return True  # Indicate that the event was handled
 
@@ -89,6 +93,8 @@ class MainApp(MDApp):
         
         self.initialize_screens()
         # self.initialize_navigation_rail()
+        
+        self.animate_notice()
 
         # Set the initial screen to 'login_view'
         sm = self.root.ids.screen_manager
@@ -117,25 +123,17 @@ class MainApp(MDApp):
             side_nav.opacity = 0
             screen_manager.size_hint_x = 1
         else:
-            # Restore the side_nav and screen_manager to their original state
-            # side_nav.size_hint_x = 0.07
-            # side_nav.width = None  # This allows size_hint_x to take effect
             side_nav.opacity = 1
-            # screen_manager.size_hint_x = 0.93
             
             # Animate back to narrow container when drawer is closed
             Animation(size_hint_x=0.07, duration=0.2).start(side_nav)  # Collapse side nav width
             Animation(size_hint_x=0.93, duration=0.2).start(screen_manager)  
-            
+    
     def on_navigation_state(self, state):
         # Get current size hints for side navigation and screen manager
         side_nav = self.root.ids.side_nav
         screen_manager = self.root.ids.screen_manager
         
-        # side_nav_width = side_nav.size_hint_x
-        # screen_manager_width = screen_manager.size_hint_x
-        print(f'state: {state}')
-
         """Method to animate the container size when drawer state changes."""
         if state == 'opening_with_animation':
             # Animate to wider container when drawer is open
@@ -153,7 +151,13 @@ class MainApp(MDApp):
             'search_id_view': SearchIDScreen(name='search_id_view'),
             'add_id_view': AddIDScreen(name='add_id_view'),
             'sort_id_view': SortIDScreen(name='sort_id_view'),
-            'contact_view': ContactScreen(name='contact_view')
+            'contact_view': ContactScreen(name='contact_view'),
+            'adminDashboard_view': AdminDashboardScreen(name='adminDashboard_view'),
+            'manage_user_view': ManageUser(name='manage_user_view'),
+            'config_view': ConfigScreen(name='config_view'),
+            'notify_view': NotifyScreen(name='notify_view'),
+            'report_view': ReportScreen(name='report_view'),
+            'user_profile_view': ProfileScreen(name='user_profile_view')
         }
         for screen in screens.values():
             sm.add_widget(screen)
@@ -166,80 +170,52 @@ class MainApp(MDApp):
         for nav_option in nav_options.values():
             nav.add_widget(nav_option)
             
-            
-    
-            
-    # def initialize_navigation_rail(self):
-    #     nav_rail = self.root.ids.side_nav
-    #     items = [
-    #         ('Add IDs', 'plus', 'add_id_view'),
-    #         ('Search IDs', 'magnify', 'search_id_view'),
-    #         ('Sort IDs', 'sort', 'sort_id_view'),
-    #         ('Contacts', 'contacts', 'contact_view'),
-    #         ('Logout', 'logout', 'login_view')
-    #     ]
-    #     for text, icon, screen_name in items:
-    #         item = MDNavigationRailItem(
-    #             text=text,
-    #             icon=icon,
-    #             on_release=lambda x, sn=screen_name: self.change_screen(sn)
-    #         )
-    #         nav_rail.add_widget(item)
-            
-            
-    # def update_navigation(self, user = {'user_type' : 'guest'}):
-    #     print(self.root.ids)
-    #     if user['user_type'] == 'admin':
-    #         pass
-    #     else:
-    #         # Clear existing items
-    #         # self.root.ids.rail_items.clear_widgets()
-    #         # self.root.ids.drawer_items.clear_widgets()
-
-    #         # Example items for the rail
-    #         items = [
-    #             {"text": "Add IDs", "icon": "plus", "screen": "add_id_view"},
-    #             {"text": "Search IDs", "icon": "magnify", "screen": "search_id_view"},
-    #             {"text": "Sort IDs", "icon": "sort", "screen": "sort_id_view"},
-    #             {"text": "Contacts", "icon": "contacts", "screen": "contact_view"},
-    #             {"text": "Logout", "icon": "logout", "screen": "login_view"},
-    #         ]
-
-    #         # Update Navigation Rail
-    #         for item in items:
-    #             rail_item = MDNavigationRailItem(text=item['text'], icon=item['icon'])
-    #             rail_item.bind(on_release=lambda x=item['screen']: self.change_screen(x))
-    #             self.root.ids.rail_items.add_widget(rail_item)
-
-    #         # Update Navigation Drawer
-    #         for item in items:
-    #             drawer_item = OneLineIconListItem(text=item['text'])
-    #             drawer_item.add_widget(IconLeftWidget(icon=item['icon']))
-    #             drawer_item.bind(on_release=lambda x=item['screen']: self.change_screen(x))
-    #             self.root.ids.drawer_items.add_widget(drawer_item)
-            
     def change_screen(self, screen_name):
         self.root.ids.screen_manager.current = screen_name
-        # self.root.ids.nav_drawer.set_state("close")
+        
+    def show_logout_dialog(self):
+        if not hasattr(self, 'logout_dialog'):
+            self.logout_dialog = MDDialog(
+                title="Confirm Logout",
+                text="Are you sure you want to logout?",
+                size_hint=(0.4, 0.2),
+                buttons=[
+                    MDRaisedButton(
+                        text="Cancel",
+                        on_release=self.close_logout_dialog
+                    ),
+                    MDRaisedButton(
+                        text="Logout",
+                        on_release=self.logout
+                    )
+                ]
+            )
+        self.logout_dialog.open()
 
-    # def callback_function(self):
-    #     # Example callback for toolbar button actions
-    #     print("Toolbar button pressed!")
-    
-    def switch_screen(
-        self, instance_navigation_rail, instance_navigation_rail_item
-    ):
-        '''
-        Called when tapping on rail menu items. Switches application screens.
-        '''
+    def close_logout_dialog(self, instance):
+        self.logout_dialog.dismiss()
+        
+    def logout(self, instance):
+        # Clear user data
+        current_user = CurrentUser()
+        current_user.logout()
+        self.close_logout_dialog(instance)
 
-        self.root.ids.screen_manager.current = (
-            instance_navigation_rail_item.icon.split("-")[1].lower()
+        # Redirect to login screen
+        self.root.ids.screen_manager.current = 'login_view'
+
+    def animate_notice(self):
+        lable = self.root.ids.notice
+        lable_size = lable.font_size
+        
+        animation = Animation(
+            font_size = (lable_size * 1.05), duration = .6
+        ) + Animation(
+            font_size = lable_size, duration = .6
         )
-
-
-
-    
+        
+        animation.repeat = True
+        animation.start(lable)
 
 if __name__ == "__main__":
     MainApp().run()

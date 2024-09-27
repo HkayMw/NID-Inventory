@@ -1,0 +1,264 @@
+#:kivy 2.3.0
+# view/user/contact/contact_view.kv
+
+<ContactScreen>:
+    id: contact_view
+    name: 'contact_view'
+    orientation: "vertical"
+    
+        
+
+    # Window Section
+    MDBoxLayout:
+        # adaptive_height: True
+        md_bg_color: app.theme_cls.bg_light
+        id: window_section
+        name: "window_section"
+        orientation: "vertical"
+        padding: 0, 10
+        # size_hint_y: .75
+        height: self.minimum_height
+        spacing: 20
+
+        # Screen Title
+        MDBoxLayout:
+            orientation: 'horizontal'
+            padding: '10dp'
+            spacing: '10dp'
+            size_hint_y: .1
+            size_hint_x: .3
+            # width: '300dp'
+            pos_hint: {"center_x": .5, "center_y": .5}
+            
+            # Title
+            MDLabel:
+                id: screen_title
+                text: 'Contacts'
+                halign: 'center'
+                font_style: 'H4'
+                size_hint_y: None
+                # size_hint_x: None
+                pos_hint: {"center_x": .5, "center_y": .5}
+                # width: '300dp'
+
+        # horizontal line
+        MDSeparator:
+            height: "1dp"  # Thickness of the line
+            color: "#B0BEC5"  # Color of the line
+
+        # Main Section
+        MDBoxLayout:
+            orientation: "horizontal"
+            id: main_section
+            name: "main_section"
+            size_hint_y: .95
+
+            #Controls Section
+            MDBoxLayout:
+                orientation: "vertical"
+                id: controls_section
+                name: "controls_section"
+                size_hint_x: .3
+                size_hint_y: .96
+                padding: [10]
+                spacing: 30
+                pos_hint: {"center_x": .5, "center_y": .5}
+
+                MDCard:
+                    elevation: 3
+                    orientation: "vertical"
+
+                # Label:
+                #     size_hint_y: .05
+
+                    #Add Contact controls
+                    MDBoxLayout:
+                        orientation: "vertical"
+                        size_hint_y: .65
+
+                        MDLabel:
+                            id: add_contact_label
+                            text: "Add Contact"
+                            size_hint_y: .2
+                            halign: "left"
+                            font_style: 'H6'
+                            size_hint_x: .85
+                            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+
+
+                        # ID Number field container
+                        MDBoxLayout:
+                            orientation: "vertical"
+                            id: id_number_container
+                            size_hint_y: .3
+                            # size_hint_y: .6
+                            size_hint_x: .9
+                            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                            padding: [5]
+                            spacing: 10
+                            
+                            MDBoxLayout:
+                                orientation: 'horizontal'
+                                # padding: dp(20)
+                                spacing: dp(10)
+                                size_hint_y: .3
+
+                                # MDLabel:
+                                #     text: "Upload File"
+                                #     halign: "center"
+                                #     font_style: "H5"
+
+                                MDCard:
+                                    orientation: 'horizontal'
+                                    padding: dp(5)
+                                    size_hint: (0.9, None)
+                                    height: dp(56)
+                                    size_hint_x: .7
+                                    elevation: 1
+                                    radius: dp(7)
+                                    pos_hint: {"center_x": 0.5}
+
+                                    MDIcon:
+                                        icon: "file-upload"  # Upload icon
+                                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                                        size_hint_x: None
+                                        width: dp(40)
+                                        theme_text_color: "Secondary"
+
+                                    MDLabel:
+                                        id: file_name
+                                        text: "Upload CSV file"
+                                        halign: "center"
+
+                                    MDRectangleFlatButton:
+                                        text: "Browse"
+                                        size_hint_x: .3
+                                        pos_hint: {"center_y": 0.5}
+                                        on_release: app.browse_file()  # This will simulate file browsing
+
+                                MDRaisedButton:
+                                    size_hint_x: .3
+                                    # size_hint_y: .4
+                                    text: "Submit"
+                                    pos_hint: {"center_x": 0.5}
+                                    # pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    
+                            # ID Number field
+                            MDTextField:
+                                id: id_no_field
+                                # size_hint_x: .7
+                                mode: "rectangle"
+                                hint_text: "ID Number/ Scan ID"
+                                # max_text_length: 8
+                                icon_right: "qrcode"
+                                pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                                    
+                            # Phone Number and submit button row
+                            MDBoxLayout:
+                                orientation: "horizontal"
+                                size_hint_y: .3
+                                spacing: 10
+
+                                # Phone Number field
+                                MDTextField:
+                                    id: id_no_field
+                                    size_hint_x: .7
+                                    mode: "rectangle"
+                                    hint_text: "Phone Number"
+                                    max_text_length: 10
+                                    icon_right: "phone"
+                                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+                                #Add/Update submit button
+                                MDRaisedButton:
+                                    size_hint_x: .3
+                                    # size_hint_y: .6
+                                    text: "Submit"
+                                    pos_hint: {"center_x": 0.5}
+                                    # pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+                            Label:
+                                size_hint_y: .1
+                    #Search Contact controls
+                    MDBoxLayout:
+                        orientation: "vertical"
+                        size_hint_y: .35
+
+                        MDLabel:
+                            id: search_contact_label
+                            text: "Search Contact"
+                            size_hint_y: .2
+                            halign: "left"
+                            font_style: 'H6'
+                            size_hint_x: .85
+                            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+
+
+                        # Search Phone Number controls
+                        MDBoxLayout:
+                            orientation: "vertical"
+                            id: qr_code_container
+                            size_hint_y: .8
+                            size_hint_x: .9
+                            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                            # height: 50
+                            padding: [5]
+                            spacing: 10
+                            
+                    
+                            MDTextField:
+                                id: qr_code
+                                mode: "rectangle"
+                                hint_text: "QR Code"
+                                # size_hint_x: .2
+                                icon_left: "qrcode"
+                                    
+                            # ID Number and submit button row
+                            MDBoxLayout:
+                                orientation: "horizontal"
+                                # size_hint_y: .5
+                                spacing: 10
+
+                                MDTextField:
+                                    id: id_no_field
+                                    size_hint_x: .7
+                                    mode: "rectangle"
+                                    hint_text: "ID Number"
+                                    max_text_length: 8
+                                    icon_right: "information"
+                                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+                                #Search with ID submit button
+                                MDRaisedButton:
+                                    size_hint_x: .3
+                                    # size_hint_y: .45
+                                    text: "Submit"
+                                    # pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                                    pos_hint: {"center_x": 0.5}
+                                
+                            Label:
+                                size_hint_y: .1
+                                
+
+                                
+                
+                
+                
+
+            Label:
+                size_hint_x:.03
+
+            #Search results Section
+            BoxLayout:
+                orientation: 'vertical'
+                padding: 10
+                size_hint_x: .50
+
+                BoxLayout:
+                    id: table_container
+                    orientation: 'vertical'
+                    padding: [10, 10, 10, 10]
+                    size_hint_y: 1
+            

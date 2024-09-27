@@ -7,6 +7,7 @@
     icon_color: "#4a4939"
     ripple_color: "#c5bdd2"
     selected_color: "#0c6c4d"
+    focus_behavior: False
 
 
 <DrawerLabelItem@MDNavigationDrawerItem>
@@ -15,29 +16,6 @@
     focus_behavior: False
     selected_color: "#4a4939"
     _no_ripple_effect: True
-
-# <CustomSwitch@MDNavigationRailItem>:
-#     orientation: 'horizontal'
-#     size_hint_y: None
-#     height: dp(48)
-#     padding: '8dp'
-#     spacing: '8dp'
-#     # md_bg_color: "#e0e0e0"  # Background color for debugging
-
-#     MDIconButton:
-#         id: theme_icon
-#         icon: 'weather-sunny' if app.theme_cls.theme_style == 'Light' else 'weather-night'
-#         user_font_size: "24sp"
-#         on_release:
-#             app.theme_cls.theme_style = 'Dark' if app.theme_cls.theme_style == 'Light' else 'Light'
-#             self.icon = 'weather-night' if app.theme_cls.theme_style == 'Dark' else 'weather-sunny'
-
-#     MDSwitch:
-#         id: theme_switch
-#         active: app.theme_cls.theme_style == 'Dark'
-#         on_active: 
-#             theme_icon.icon = 'weather-night' if self.active else 'weather-sunny'
-#             app.theme_cls.theme_style = 'Dark' if self.active else 'Light'
 
 
 <ClerkNav>:
@@ -49,36 +27,41 @@
 
             MDNavigationRail:
                 id: navigation_rail
-                md_bg_color: "#fffcf4"
+                md_bg_color: app.theme_cls.bg_light
                 selected_color_background: "#e7e4c0"
                 ripple_color_item: "#e7e4c0"
-                # current_selected_item: -18
+                # current_selected_item: 3
 
 
                 MDNavigationRailMenuButton:
+                    padding: [30]
                     on_release: 
                         nav_drawer.set_state("toggle")
 
                 MDNavigationRailItem:
+                    id: dashboard
+                    icon: "view-dashboard"
+                    text: "Dashboard"
+################################################################ comment to go on login page first##########################################################################################################
+                    # on_release: app.change_screen('dashboard_view')
+
+
                 MDNavigationRailItem:
                     id: add_id
                     icon: "card-plus"
                     text: "Add ID"
-                    
                     on_release: app.change_screen('add_id_view')
 
                 MDNavigationRailItem:
                     id: search_id
                     icon: "magnify"
                     text: "Search ID"
-                    
                     on_release: app.change_screen('search_id_view')
 
                 MDNavigationRailItem:
                     id: sort_id
                     icon: "sort-variant"
                     text: "Sort Cards"
-                    
                     on_release: app.change_screen('sort_id_view')
 
 
@@ -86,7 +69,6 @@
                     id: contacts
                     icon: "account-box"
                     text: "Contacts"
-                    
                     on_release: app.change_screen('contact_view')
 
                 MDNavigationRailItem:
@@ -106,7 +88,7 @@
     MDNavigationDrawer:
         id: nav_drawer
         
-        md_bg_color: "#fffcf4"
+        md_bg_color: app.theme_cls.bg_light
         elevation: 1
         # md_bg_color: "#b0f0d6"
         radius: (0, dp(16), dp(16), 0)

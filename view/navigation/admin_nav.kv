@@ -21,62 +21,67 @@
 
     MDBoxLayout:
         orientation: "vertical"
+        elevation: 4
 
-        MDBoxLayout:
+        # MDBoxLayout:
 
-            MDNavigationRail:
-                id: navigation_rail
-                md_bg_color: "#fffcf4"
-                selected_color_background: "#e7e4c0"
-                ripple_color_item: "#e7e4c0"
-                # current_selected_item: 
+        MDNavigationRail:
+            id: navigation_rail
+            md_bg_color: app.theme_cls.bg_light
+            selected_color_background: "#e7e4c0"
+            ripple_color_item: "#e7e4c0"
+            # current_selected_item: 3
 
-                MDNavigationRailMenuButton:
-                    on_release: 
-                        nav_drawer.set_state("toggle")
+            MDNavigationRailMenuButton:
+                padding: [30]
+                on_release: 
+                    nav_drawer.set_state("toggle")
 
-                MDNavigationRailItem:
-                    size_hint_x: 0
-                MDNavigationRailItem:
-                    icon: "view-dashboard"
-                    text: "Dashboard"
-                    
-                    on_release: app.change_screen('adminDashboard_view')
+            # MDNavigationRailItem:
+            #     size_hint_x: 0
+            MDNavigationRailItem:
+                id: dashboard
+                icon: "view-dashboard"
+                text: "Dashboard"
+################################################################ comment to go on login page first##########################################################################################################
+                # on_release: app.change_screen('adminDashboard_view')
 
-                MDNavigationRailItem:
-                    icon: "account-cog"
-                    text: "Users"
-                    
-                    on_release: app.change_screen('manage_user_view')
+            MDNavigationRailItem:
+                icon: "account-cog"
+                text: "Users"
+                on_release: app.change_screen('manage_user_view')
 
-                MDNavigationRailItem:
-                    icon: "cog"
-                    text: "Config"
-                    
-                    on_release: app.change_screen('config_view')
+            MDNavigationRailItem:
+                icon: "cog"
+                text: "Config"
+                on_release: app.change_screen('config_view')
 
-                MDNavigationRailItem:
-                    icon: "message-text"
-                    text: "Send SMS"
-                    
-                    on_release: app.change_screen('notify_view')
+            MDNavigationRailItem:
+                icon: "message-text"
+                text: "Send SMS"
+                on_release: app.change_screen('notify_view')
 
-                MDNavigationRailItem:
-                    icon: "chart-box-outline"
-                    text: "Reports"
-                    
-                    on_release: app.change_screen('report_view')
+            MDNavigationRailItem:
+                icon: "chart-box-outline"
+                text: "Reports"
+                on_release: app.change_screen('report_view')
 
-                MDNavigationRailItem:
-                    icon: "logout"
-                    text: "Logout"
-                    active: False
-                    on_release: 
-                        app.show_logout_dialog()  # Call the logout method in your app
+            MDNavigationRailItem:
+                icon: "logout"
+                text: "Logout"
+                active: False
+                on_release: 
+                    app.show_logout_dialog()  # Call the logout method in your app
+            
+            MDNavigationRailItem:
+                icon: "account-circle"  # You can use a custom icon if needed
+                user_font_size: "48sp"  # Adjust icon size
+                # on_release:
 
     MDNavigationDrawer:
         id: nav_drawer
-        
+        md_bg_color: app.theme_cls.bg_light
+        elevation: 1
         radius: (0, dp(16), dp(16), 0)
         on_status: app.on_navigation_state(self.status)  # Call method on state change
 
@@ -84,7 +89,7 @@
 
             DrawerClickableItem:
                 icon: "menu"
-                text_right_color: "#4a4939"
+                text_right_color: app.theme_cls.bg_light
                 text: "Menu"
                 on_release: 
                     nav_drawer.set_state("toggle")

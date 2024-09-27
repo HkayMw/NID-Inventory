@@ -1,7 +1,7 @@
 import sqlite3
 
 class Model:
-    def __init__(self, db_name="database/id_inventory.db"):
+    def __init__(self, db_name="database/id_inventorydb.db"):
         self.conn = sqlite3.connect(db_name)
         self.cursor = self.conn.cursor()
         self.table = ''

@@ -1,0 +1,119 @@
+#:kivy 2.3.0
+# view/user/add_id/add_id_view.kv
+
+<AddIDScreen>:
+    id: add_id_view
+    name: 'add_id_view'
+    orientation: "vertical"
+    # space_x: self.size[0]/3
+    # canvas.before:
+    #     # Gray background
+    #     Color:
+    #         rgba: app.theme_cls.bg_light
+    #         # rgba: (0.4, 0.4, 0.4, 1)
+    #     Rectangle:
+    #         size: self.size
+    #         pos: self.pos
+        
+
+
+    # Window Section
+    MDBoxLayout:
+        # adaptive_height: True
+        md_bg_color: app.theme_cls.bg_light
+        id: window_section
+        name: "window_section"
+        orientation: "vertical"
+        padding: 0, 10
+        # size_hint_y: .75
+        height: self.minimum_height
+        spacing: 20
+
+        # Screen Title
+        MDBoxLayout:
+            orientation: 'horizontal'
+            padding: '10dp'
+            spacing: '10dp'
+            size_hint_y: .1
+            size_hint_x: .3
+            # width: '300dp'
+            pos_hint: {"center_x": .5, "center_y": .5}
+            
+            # Title
+            MDLabel:
+                id: screen_title
+                text: 'Add IDs'
+                halign: 'center'
+                font_style: 'H4'
+                size_hint_y: None
+                # size_hint_x: None
+                pos_hint: {"center_x": .5, "center_y": .5}
+                # width: '300dp'
+
+        # horizontal line
+        MDSeparator:
+            height: "1dp"  # Thickness of the line
+            color: "#B0BEC5"  # Color of the line
+
+        # Main Section
+        MDBoxLayout:
+            orientation: "vertical"
+            id: main_section
+            name: "main_section"
+            size_hint_y: .9
+            spacing: 30
+
+            Label:
+                size_hint_y: .05
+
+            # Input Section
+            MDBoxLayout:
+                orientation: "vertical"
+                id: input_section
+                name: "input_section"
+                size_hint_y: .95
+                size_hint_x: .5
+                pos_hint: {"center_x": .5, "center_y": .5}
+                padding: [10, (self.height - self.height) / 1]
+                spacing: 30
+
+                # Issue Date Input
+                MDBoxLayout:
+                    pos_hint: {'top': 1}
+                    size_hint_y: .1
+                    size_hint_x: .4
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                       
+                    MDTextField:
+                        id: issue_date
+                        mode: "rectangle"
+                        hint_text: "Issue Date"
+                        size_hint_x: .2
+                        icon_left: "calendar"
+                        # on_focus: root.show_date_picker()
+                        on_text_validate: qr_code.focus = True
+
+                
+                
+                
+                # ID Input
+                MDBoxLayout:
+                    pos_hint: {'top': 1}
+                    size_hint_y: .1
+                    size_hint_x: .7
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    
+
+                    MDTextField:
+                        id: qr_code
+                        mode: "rectangle"
+                        hint_text: "QR Code"
+                        size_hint_x: .5
+                        icon_left: "qrcode"
+                        on_text_validate: root.add_id()
+
+
+                Label:
+                    size_hint_y: .55
+
+        

@@ -17,13 +17,14 @@ class LoginScreen(Screen):
     def __init__(self, **kwargs):
         super(LoginScreen, self).__init__(**kwargs)
         self.controller = UserController()
-        # Window.bind(on_key_down=self.on_key_down)  # Bind the on_key_down event
+        self.app = MDApp.get_running_app()
 
     def validate_user(self):
         id_number = self.ids.id_no_field
         password = self.ids.password_field
-        # notice = self.ids.notice# Clear notice
-        notice = self.parent.parent.parent.ids.notice
+        
+        # Clear notice
+        notice = self.app.root.ids.notice
         notice.text = ''
 
         # print(id_no + " " + password)
@@ -65,29 +66,34 @@ class LoginScreen(Screen):
                 )
                 
                 # print(current_user.get_user_details())
-                app = MDApp.get_running_app()
+                user_data = current_user.get_user_details()
                 # app.update_navigation(current_user.get_user_details())
-
+                
                 # self.parent.parent.current = 'add_id_view'
                 # self.manager.current = "search_id_view"
                 # print(current_user.user_details)
-                if current_user.user_details['user_type'] == 'admin':
+                if user_data['user_type'] == 'admin':
                     
-                    app.root.ids.side_nav.current = 'admin_nav'
-                    app.root.ids.side_nav.get_screen('admin_nav').ids.navigation_rail.current_selected_item = 0
-                    app.change_screen('adminDashboard_view')
+                    self.app.root.ids.side_nav.current = 'admin_nav'
+                    self.app.root.ids.side_nav.get_screen('admin_nav').ids.navigation_rail.current_selected_item = 0
+                    self.app.change_screen('adminDashboard_view')
                     
                     # print(f"logged in as {current_user.user_details['user_type']}")
                 
                 else:
                     
-                    app.root.ids.side_nav.current = 'clerk_nav'
-                    app.root.ids.side_nav.get_screen('clerk_nav').ids.navigation_rail.current_selected_item = 1
-                    app.change_screen('search_id_view')
+                    self.app.root.ids.side_nav.current = 'clerk_nav'
+                    self.app.root.ids.side_nav.get_screen('clerk_nav').ids.navigation_rail.current_selected_item = 1
+                    self.app.change_screen('dashboard_view')
                     
                     
                     # print(f"logged in as {current_user.user_details['user_type']}")
+                
+                self.app.load_user_info(user_data)
                     
+                self.app.root.ids.side_nav.get_screen('clerk_nav').ids.dashboard.on_release = lambda: self.app.change_screen('dashboard_view')
+                self.app.root.ids.side_nav.get_screen('admin_nav').ids.dashboard.on_release = lambda: self.app.change_screen('adminDashboard_view')
+                
                 # Clear credentials
                 self.ids.id_no_field.text = ""
                 self.ids.password_field.text = ""

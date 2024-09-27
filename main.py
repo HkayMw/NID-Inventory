@@ -1,20 +1,34 @@
+from kivy.config import Config
+
+# Set the default window size
+default_width = 1024
+default_height = 600
+
+# Config.set('graphics', 'width', str(default_width))
+# Config.set('graphics', 'height', str(default_height))
+
+
+from kivy.metrics import dp
 from kivymd.app import MDApp
 from kivy.lang import Builder
-from kivy.config import Config
 from kivy.core.window import Window
+from kivy.clock import Clock
 from kivy.modules import inspector
 from kivy.uix.screenmanager import ScreenManager, NoTransition
 from kivy.uix.boxlayout import BoxLayout
 from kivy.animation import Animation
+
+# KivyMD
+from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.list import OneLineIconListItem, IconLeftWidget
 from kivymd.uix.navigationdrawer import MDNavigationDrawer
 from kivymd.uix.navigationrail import MDNavigationRailItem
 from kivymd.uix.snackbar import MDSnackbar
-from model.current_user import CurrentUser
-from kivy.metrics import dp
 from kivymd.uix.dialog import MDDialog
-from kivymd.uix.button import MDFlatButton, MDRaisedButton
+from kivymd.uix.label import MDLabel
+from kivymd.uix.button import MDFlatButton, MDRaisedButton, MDIconButton, MDTextButton,MDFillRoundFlatIconButton
 
+from model.current_user import CurrentUser
 
 # Importing navigation views
 from view.navigation.clerk_nav import ClerkNav
@@ -23,26 +37,32 @@ from view.navigation.admin_nav import AdminNav
 
 # Importing custom screens
 from view.login.login_view import LoginScreen
-from view.search_id.search_id_view import SearchIDScreen
-from view.add_id.add_id_view import AddIDScreen
-from view.sort_id.sort_id_view import SortIDScreen
-from view.contact.contact_view import ContactScreen
-from view.adminDashboard.adminDashboard_view import AdminDashboardScreen
-from view.userManagement.manage_user_view import ManageUser
-from view.configuration.config_view import ConfigScreen
-from view.notifyClient.notify_view import NotifyScreen
-from view.report.report_view import ReportScreen
 from view.user_profile.user_profile_view import ProfileScreen
 
-# Set the default window size
-default_width = 1024
-default_height = 600
-Config.set('graphics', 'width', str(default_width))
-Config.set('graphics', 'height', str(default_height))
+from view.user.dashboard.dashboard_view import DashboardScreen
+from view.user.search_id.search_id_view import SearchIDScreen
+from view.user.add_id.add_id_view import AddIDScreen
+from view.user.sort_id.sort_id_view import SortIDScreen
+from view.user.contact.contact_view import ContactScreen
+
+from view.admin.adminDashboard.adminDashboard_view import AdminDashboardScreen
+from view.admin.userManagement.manage_user_view import ManageUser
+from view.admin.configuration.config_view import ConfigScreen
+from view.admin.notifyClient.notify_view import NotifyScreen
+from view.admin.report.report_view import ReportScreen
+
 
 # Set the minimum size to be the same as the default size
 Window.minimum_width = default_width
 Window.minimum_height = default_height
+
+# Function to force layout refresh
+def refresh_layout(*args):
+    Window.size = (default_width + 1, default_height + 1)  # Temporary resize to force refresh
+    Window.size = (default_width, default_height)  # Reset to desired size
+
+# # Schedule a layout refresh on the next frame
+# Clock.schedule_once(refresh_layout, 0.1)
 
 # Define MainScreen as a ScreenManager
 class MainScreen(BoxLayout):
@@ -81,7 +101,10 @@ class MainApp(MDApp):
         # Set up the theme
         self.theme_cls.theme_style = "Light"
         self.theme_cls.material_style = "M3"
-        self.theme_cls.primary_palette = "Orange"
+        self.theme_cls.primary_palette = "Green"
+        self.theme_cls.theme_style_switch_animation = True
+        self.theme_cls.theme_style_switch_animation_duration = 0.5
+        
 
         # Load the KV file containing the main layout
         Builder.load_file('view/main_view.kv')
@@ -91,11 +114,13 @@ class MainApp(MDApp):
 
     def on_start(self):
         
+        refresh_layout()
+        
         self.initialize_screens()
         # self.initialize_navigation_rail()
         
         self.animate_notice()
-
+        
         # Set the initial screen to 'login_view'
         sm = self.root.ids.screen_manager
         sm.current = 'login_view'
@@ -112,60 +137,70 @@ class MainApp(MDApp):
         notice = self.root.ids.notice
         notice.text = ''
         
-        # Get the side_nav and screen_manager references
+        # Get current size hints for side navigation and main screen
         side_nav = self.root.ids.side_nav
-        screen_manager = self.root.ids.screen_manager
+        main_window = self.root.ids.main_window
 
         if value == 'login_view':
             # Hide the side_nav by setting width to zero and opacity to zero
             side_nav.size_hint_x = 0
             side_nav.width = 0
             side_nav.opacity = 0
-            screen_manager.size_hint_x = 1
+            main_window.size_hint_x = 1
         else:
             side_nav.opacity = 1
             
             # Animate back to narrow container when drawer is closed
-            Animation(size_hint_x=0.07, duration=0.2).start(side_nav)  # Collapse side nav width
-            Animation(size_hint_x=0.93, duration=0.2).start(screen_manager)  
+            Animation(size_hint_x=0.065, duration=0.2).start(side_nav)  # Collapse side nav width
+            Animation(size_hint_x=0.945, duration=0.2).start(main_window)  
     
     def on_navigation_state(self, state):
-        # Get current size hints for side navigation and screen manager
+        # Get current size hints for side navigation and main screen
         side_nav = self.root.ids.side_nav
-        screen_manager = self.root.ids.screen_manager
+        main_window = self.root.ids.main_window
         
         """Method to animate the container size when drawer state changes."""
         if state == 'opening_with_animation':
             # Animate to wider container when drawer is open
             Animation(size_hint_x=0.15, duration=0.2).start(side_nav)  # Expand side nav width
-            Animation(size_hint_x=0.85, duration=0.2).start(screen_manager)  # Shrink screen manager width
+            Animation(size_hint_x=0.85, duration=0.2).start(main_window)  # Shrink screen manager width
         if state == 'closing_with_animation':
             # Animate back to narrow container when drawer is closed
-            Animation(size_hint_x=0.07, duration=0.2).start(side_nav)  # Collapse side nav width
-            Animation(size_hint_x=0.93, duration=0.2).start(screen_manager)  # Expand screen manager widthollapse rail width to 
+            Animation(size_hint_x=0.065, duration=0.2).start(side_nav)  # Collapse side nav width
+            Animation(size_hint_x=0.945, duration=0.2).start(main_window)  # Expand screen manager widthollapse rail width to 
 
     def initialize_screens(self):
         sm = self.root.ids.screen_manager
         screens = {
+            
+            # common Screens
             'login_view': LoginScreen(name='login_view'),
-            'search_id_view': SearchIDScreen(name='search_id_view'),
+            'user_profile_view': ProfileScreen(name='user_profile_view'),
+            
+            # User Screens
+            'dashboard_view': DashboardScreen(name='dashboard_view'),
             'add_id_view': AddIDScreen(name='add_id_view'),
+            'search_id_view': SearchIDScreen(name='search_id_view'),
             'sort_id_view': SortIDScreen(name='sort_id_view'),
             'contact_view': ContactScreen(name='contact_view'),
+            
+            # Admin Screens
             'adminDashboard_view': AdminDashboardScreen(name='adminDashboard_view'),
             'manage_user_view': ManageUser(name='manage_user_view'),
             'config_view': ConfigScreen(name='config_view'),
             'notify_view': NotifyScreen(name='notify_view'),
-            'report_view': ReportScreen(name='report_view'),
-            'user_profile_view': ProfileScreen(name='user_profile_view')
+            'report_view': ReportScreen(name='report_view')
+            
         }
         for screen in screens.values():
             sm.add_widget(screen)
             
         nav = self.root.ids.side_nav
         nav_options = {
+            
+            # Navigation Screens
             'clerk_nav': ClerkNav(name='clerk_nav'),
-            'admin_nav': AdminNav(name='admin_nav')
+            'admin_nav': AdminNav(name='admin_nav'),
         }
         for nav_option in nav_options.values():
             nav.add_widget(nav_option)
@@ -180,11 +215,11 @@ class MainApp(MDApp):
                 text="Are you sure you want to logout?",
                 size_hint=(0.4, 0.2),
                 buttons=[
-                    MDRaisedButton(
+                    MDFlatButton(
                         text="Cancel",
                         on_release=self.close_logout_dialog
                     ),
-                    MDRaisedButton(
+                    MDFlatButton(
                         text="Logout",
                         on_release=self.logout
                     )
@@ -217,5 +252,34 @@ class MainApp(MDApp):
         animation.repeat = True
         animation.start(lable)
 
+    def load_user_info(self, user_data):
+        # Create a new BoxLayout to hold the user avatar, name, and role
+        user_box = self.root.ids.user
+        user_box.clear_widgets()  # Clear any existing widgets (if any)
+        
+        avatar = MDIconButton(
+        icon='account-circle',  # Or use a path to the avatar image
+        user_font_size="82sp",
+        pos_hint={'center_y': 0.5},
+        
+    )
+
+        # Add user name and role label
+        name_role_label = MDLabel(
+            text=f"[b]{user_data['firstname']} {user_data['lastname']}[/b]\n[size=16sp]({user_data['user_type'].capitalize()}/ Mzuzu[/size])",
+            halign="center",
+            markup= True,
+            valign="middle",
+            size_hint_x=None,
+            width=200,
+            font_style='Subtitle1'  # Adjust font size as needed
+        )
+        user_box.add_widget(name_role_label)
+        user_box.add_widget(avatar)
+    
+    def clear_user_info(self):
+        user_box = self.root.ids.user
+        user_box.clear_widgets()
+        
 if __name__ == "__main__":
     MainApp().run()

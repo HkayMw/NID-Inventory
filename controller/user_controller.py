@@ -28,5 +28,11 @@ class UserController(Controller):
         else:
             return False, message, None
 
-    def add_user(self):
-        pass
+    def add_user(self, user_data):
+        
+        success, message, last_row_id = self.create(user_data)
+        
+        if success:
+            return success, message, last_row_id
+        else:
+            return success, message, last_row_id

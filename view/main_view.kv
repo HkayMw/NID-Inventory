@@ -3,82 +3,110 @@
 
 <MainScreen>:
     id: main_screen
-    orientation: "vertical"
+    orientation: "horizontal"
 
-    # Teal Header Section
-    MDBoxLayout:
-        size_hint_y: .14
-        pos_hint: {'x': 0, 'y': 0}
-        canvas.before:
-            Color:
-                rgba: (0, 0.5, 0.5, 1)  # Teal color
-            Rectangle:
-                size: self.size
-                pos: self.pos
-
-        Image:
-            source: 'Assets/Coat_of_arms_of_Malawi.svg'
-            keep_ratio: True
-            size_hint_x: .07
-            pos_hint: {'x':0}
-
-        MDLabel:
-            id: header_label
-            text: "ID Inventory Manager"
-            color: 1, 1, 1, 1  # White text
-            bold: True
-            halign: 'center'
-            valign: 'middle'
-            font_style: 'H3'
-            size_hint_y: None
-            size_hint_x: 1
-            pos_hint: {"center_x": .5, "center_y": .5}
-            # width: '300dp'
-
-        Image:
-            source: 'Assets/Coat_of_arms_of_Malawi.svg'
-            keep_ratio: True
-            size_hint_x: .07
-            pos_hint: {'x':1}
-
+    # Side Navigation Rail
+    ScreenManager:
+        id: side_nav
+        name: 'side_nav'
+        size_hint_x: 0
+        width: 0
+        
     # Main Window
     MDBoxLayout:
         id: main_window
-        # size_hint_y: .75
+        orientation: "vertical"
 
-        # Side Navigation Rail
-        ScreenManager:
-            id: side_nav
-            name: 'side_nav'
-            size_hint_x: 0
-            width: 0
+        # Header Section
+        MDBoxLayout:
+            size_hint_y: .14
+            pos_hint: {'x': 0, 'y': 0}
+            md_bg_color: app.theme_cls.bg_normal
 
+            MDBoxLayout:
+                size_hint_x: .8
+
+                Image:
+                    source: 'Assets/Coat_of_arms_of_Malawi.svg'
+                    keep_ratio: True
+                    size_hint_x: .07
+                    pos_hint: {'x':0, 'center_y': .5}
+
+                MDLabel:
+                    id: header_label
+                    text: "[b]ID Inventory Manager[/b] [size=16sp](v1.0.0)[/size]"
+                    markup: True  # Enable markup for styling
+                    halign: 'right'
+                    color: app.theme_cls.primary_color
+                    padding: [self.width*0.15, 5]
+                    valign: 'middle'
+                    font_style: 'H4'
+                    # size_hint_y: None
+                    size_hint_x: .93
+                    # pos_hint: {"x": 1, "center_y": .5}
+                    # width: '300dp'
+
+                # Image:
+                #     source: 'Assets/Coat_of_arms_of_Malawi.svg'
+                #     keep_ratio: True
+                #     size_hint_x: .07
+                #     pos_hint: {'x':1}
+            #User info
+            MDBoxLayout:
+                # id: user
+                size_hint_x: .2
+
+                MDCard:
+                    id: user
+                    md_bg_color: app.theme_cls.bg_normal
+                    size_hint_x: .8
+                
+                MDIconButton:
+                    icon: 'weather-night'
+                    id: theme_icon
+                    user_font_size: "64sp"
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    theme_text_color: "Primary"
+                    size_hint_x: .2
+                    on_release:
+                        app.theme_cls.theme_style = 'Dark' if app.theme_cls.theme_style == 'Light' else 'Light'
+                        theme_icon.icon = 'weather-night' if self.icon == 'weather-sunny' else 'weather-sunny'
+                        # theme_icon.text_color = (1, 1, 1, 1) if self.active else (0, 0, 0, 1)
+
+
+        # horizontal line
+        MDSeparator:
+            height: "1dp"  # Thickness of the line
+            color: "#B0BEC5"  # Color of the line
 
         # Main Section
         ScreenManager:
             id: screen_manager
             name: 'screen_manager'
-            size_hint_x: 1
+            # size_hint_x: 1
 
-    # Footer
-    MDBoxLayout:
-        orientation: "horizontal"
-        id: footer
-        size_hint_y: .1
-        pos_hint: {"center_x": 0.5, "center_y": 0.5}
-        padding: [5]
-        canvas.before:
-            Color:
-                rgba: (.2, .2, .2, 1)
-            Rectangle:
-                size: self.size
-                pos: self.pos
+        # Footer
+        MDBoxLayout:
+            orientation: "horizontal"
+            id: footer
+            size_hint_y: .1
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+            md_bg_color: app.theme_cls.bg_dark
 
-        MDLabel:
-            id: notice
-            text: ''
-            halign: "center"
-            theme_text_color: "Custom"
-            text_color: 0, 1, 0, 1
-            font_style: 'H4'
-            # font_size: min(self.width * .6, self.height * .6)
+
+            MDLabel:
+                id: notice
+                text: ''
+                halign: "center"
+                theme_text_color: "Custom"
+                text_color: 0, 1, 0, 1
+                font_style: 'H4'
+                # font_size: min(self.width * .6, self.height * .6)
+
+            MDSpinner:
+                id: progress
+                size_hint: None, None
+                size: dp(46), dp(46)
+                pos_hint: {'center_x': .5, 'center_y': .5}
+                padding: [10]
+                active: False

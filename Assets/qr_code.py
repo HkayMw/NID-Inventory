@@ -7,18 +7,26 @@ from typing import List, Tuple, Optional
 class QRCode:
     def __init__(self, qr_code: str):
         self.qr_code = qr_code
+        
+    def remove_matching_chars(self, s, chars_to_remove):
+        translation_table = str.maketrans('', '', chars_to_remove)
+        return s.translate(translation_table)
 
     def process(self) -> Optional[Tuple[str, str, str, str, str, str]]:
         array = self.qr_code.split('~') if '~' in self.qr_code else self.qr_code.split(',')
         array = [element.strip() for element in array]  # Clean up any extra spaces
         
         # print(f"Length: {len(array)}\n{array}")
+        # print(array)
 
         # Runs if it is ID QR Code
         if '03' in self.qr_code[:4]:
             if self.qr_code[0] != '~':
                 if len(array) == 12:
                     type = array[0]
+                    
+                    sig1 = array[1] + array[2]
+                    
                     firstname = array[6]
                     othernames = array[7]
                     lastname = array[4]
@@ -27,6 +35,9 @@ class QRCode:
                     d_o_b = self.db_date(array[9])
                 elif len(array) == 11:
                     type = array[0]
+                    
+                    sig1 = array[1] + array[2]
+                    
                     firstname = array[6]
                     othernames = ''
                     lastname = array[4]
@@ -38,6 +49,9 @@ class QRCode:
             else:
                 if len(array) == 13:
                     type = array[1]
+                    
+                    sig1 = array[2] + array[3]
+                    
                     firstname = array[7]
                     othernames = array[8]
                     lastname = array[5]
@@ -46,6 +60,9 @@ class QRCode:
                     d_o_b = self.db_date(array[10])
                 elif len(array) == 12:
                     type = array[1]
+                    
+                    sig1 = array[2] + array[3]
+                    
                     firstname = array[7]
                     othernames = ''
                     lastname = array[5]
@@ -57,7 +74,11 @@ class QRCode:
             # Extract sorting key from surname
             # sorting_key= lastname[:3]
             
-            return True, 'QR successfully processed', {'type': type, 'firstname': firstname, 'othernames': othernames, 'lastname': lastname, 'gender': gender, 'id_number': id_number, 'd_o_b': d_o_b}
+            # generate ID signature
+            signature= self.remove_matching_chars(sig1, '<')
+            
+            
+            return True, 'QR successfully processed', {'type': type, 'signature': signature, 'firstname': firstname, 'othernames': othernames, 'lastname': lastname, 'gender': gender, 'id_number': id_number, 'd_o_b': d_o_b}
         
         #Runs if it is General Sticker QR Code
         elif '01' in self.qr_code[:4]:
@@ -97,5 +118,10 @@ class QRCode:
 # # Example usage
 # qr_processor = QRCode("~03~I<############<<<<<<<<<<<<<<<~##############MWI<<<<<<<<<<<4~DOE<<JOHN<<<<<<<<<<<<<<~DOE~A1B23C4D~JOHN~MALE~01 Jan 1991~01 jan 2017~")
 # qr_processor = QRCode("hhhhhhh~hhhhhhhhh")
+# result = qr_processor.process()
+# print(result)
+
+
+# qr_processor = QRCode("03~I<MWI0W8A2R9CX9<<<<<<<<<<<<<<<~9710016F3410015MWI<<<<<<<<<<<0~SAMBO<<MERCY<LUSUNGU<<<<<<<<<<~SAMBO~W8A2R9CX~MERCY~LUSUNGU~Female~01 Oct 1997~12 Sep 2017~")
 # result = qr_processor.process()
 # print(result)

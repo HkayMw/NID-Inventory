@@ -4,6 +4,9 @@ class Controller:
     def __init__(self, model):
         self.model = model
 
+    def custom_query(self, data):
+        return self.model.custom_query(data)
+    
     def create(self, data):
         return self.model.create(data)
 

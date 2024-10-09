@@ -35,20 +35,12 @@ class SearchIDScreen(Screen):
         
     def on_enter(self, *args):
         self.initialize_table()
-        # print(self.parent.current)
-        
-    # def on_kv_post(self, base_widget):
-    #     print("Table container size:", self.ids.table_container.size)
-    #     print("Table container pos:", self.ids.table_container.pos)
+        self.data_tables.bind(on_row_press=self.on_row_press)
 
     def initialize_table(self):
-        # print("oryt!!!!!!")
         # Initialize the table with default headers and an empty state
         layout = AnchorLayout()
         self.data_tables = MDDataTable(
-            # size_hint=(0.9, 0.9),
-            # background_color_header="#008080",
-            # background_color_cell="#451938",
             use_pagination=True,
 
             # check=True,
@@ -59,12 +51,12 @@ class SearchIDScreen(Screen):
                 ("Othernames", dp(20)),
                 ("D_O_B", dp(20)),
                 ("ID Number", dp(20)),
-                ("Issue Date", dp(20)),
+                # ("Issue Date", dp(20)),
                 ("Sex", dp(20)),
-                ("Sorting Key", dp(20)),
-                ("Unit", dp(20)),
+                ("Batch Name", dp(20)),
+                ("Storage", dp(20)),
                 ("Status", dp(20)),
-                ("Action", dp(20)),
+                # ("Action", dp(20)),
             ],
             row_data=[]
         )
@@ -189,14 +181,18 @@ class SearchIDScreen(Screen):
         :return: A list of lists containing only the necessary columns for MDDataTable.
         """
         # Define the columns to include in the datatable
-        required_columns = ['lastname', 'firstname', 'othernames', 'd_o_b', 'id_number', 'issue_date', 'gender', 'sorting_key', 'Unit', 'status']
+        required_columns = ['lastname', 'firstname', 'othernames', 'd_o_b', 'id_number', 'gender', 'batch', 'Unit', 'status']
         
         # Transform the data
         transformed_data = []
         for result in search_results:
             row = [result.get(col, '') for col in required_columns]
-            row.append(f'')
+            # row.append(f'')
             transformed_data.append(row)
         
         return transformed_data    
         
+    def on_row_press(self, instance_table, instance_row):
+        '''Called when a table row is clicked.'''
+
+        print(instance_table, instance_row)

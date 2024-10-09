@@ -26,14 +26,13 @@ from kivymd.uix.navigationrail import MDNavigationRailItem
 from kivymd.uix.snackbar import MDSnackbar
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.label import MDLabel
-from kivymd.uix.button import MDFlatButton, MDRaisedButton, MDIconButton, MDTextButton,MDFillRoundFlatIconButton
+from kivymd.uix.button import MDFlatButton, MDRaisedButton, MDIconButton, MDTextButton, MDFillRoundFlatIconButton
 
-from model.current_user import CurrentUser
+# from model.current_user import CurrentUser
 
 # Importing navigation views
 from view.navigation.clerk_nav import ClerkNav
 from view.navigation.admin_nav import AdminNav
-
 
 # Importing custom screens
 from view.login.login_view import LoginScreen
@@ -42,6 +41,7 @@ from view.user_profile.user_profile_view import ProfileScreen
 from view.user.dashboard.dashboard_view import DashboardScreen
 from view.user.search_id.search_id_view import SearchIDScreen
 from view.user.add_id.add_id_view import AddIDScreen
+from view.user.allocate_id.allocate_id_view import AllocateIDScreen
 from view.user.sort_id.sort_id_view import SortIDScreen
 from view.user.contact.contact_view import ContactScreen
 
@@ -51,15 +51,16 @@ from view.admin.configuration.config_view import ConfigScreen
 from view.admin.notifyClient.notify_view import NotifyScreen
 from view.admin.report.report_view import ReportScreen
 
-
 # Set the minimum size to be the same as the default size
 Window.minimum_width = default_width
 Window.minimum_height = default_height
+
 
 # Function to force layout refresh
 def refresh_layout(*args):
     Window.size = (default_width + 1, default_height + 1)  # Temporary resize to force refresh
     Window.size = (default_width, default_height)  # Reset to desired size
+
 
 # # Schedule a layout refresh on the next frame
 # Clock.schedule_once(refresh_layout, 0.1)
@@ -72,7 +73,7 @@ class MainScreen(BoxLayout):
         self.ids.screen_manager.transition = NoTransition()
         # Bind the on_key_down event
         Window.bind(on_key_down=self.on_key_down)
-        
+
     # Focus management function
     def on_key_down(self, instance, keyboard, keycode, text, modifiers):
         # print(f"Keycode: {keycode}, Text: {text}, Modifiers: {modifiers}")
@@ -94,9 +95,32 @@ class MainScreen(BoxLayout):
             return True  # Indicate that the event was handled
 
         return False  # Indicate that the event was not handled
-    
-    
+
+
 class MainApp(MDApp):
+    
+    # App variables
+    current_batch = {"batch_name": '', "ids": []}
+    user_details = {
+            'id_number': '',
+            'firstname': '',
+            'lastname': '',
+            'othernames': '',
+            'user_type': ''
+        }
+    
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        # self.logout_dialog = None
+        
+    def set_user_details(self, id_number, firstname, lastname,othernames, user_type):
+        self.user_details['id_number'] = id_number
+        self.user_details['firstname'] = firstname
+        self.user_details['lastname'] = lastname
+        self.user_details['othernames'] = othernames
+        self.user_details['user_type'] = user_type
+        print("user setting done: ", self.user_details)
+
     def build(self):
         # Set up the theme
         self.theme_cls.theme_style = "Light"
@@ -104,7 +128,6 @@ class MainApp(MDApp):
         self.theme_cls.primary_palette = "Green"
         self.theme_cls.theme_style_switch_animation = True
         self.theme_cls.theme_style_switch_animation_duration = 0.5
-        
 
         # Load the KV file containing the main layout
         Builder.load_file('view/main_view.kv')
@@ -113,30 +136,30 @@ class MainApp(MDApp):
         return MainScreen()
 
     def on_start(self):
-        
-        refresh_layout()
-        
+
+        # refresh_layout()
+
         self.initialize_screens()
         # self.initialize_navigation_rail()
-        
+
         self.animate_notice()
-        
+
         # Set the initial screen to 'login_view'
         sm = self.root.ids.screen_manager
         sm.current = 'login_view'
-        
+
         # Bind the event to a method to handle screen changes
         sm.bind(current=self.on_screen_change)
 
         # Create inspector for debugging
         inspector.create_inspector(Window, sm)
-        
+
     def on_screen_change(self, instance, value):
-        
+
         # Clear notice
         notice = self.root.ids.notice
         notice.text = ''
-        
+
         # Get current size hints for side navigation and main screen
         side_nav = self.root.ids.side_nav
         main_window = self.root.ids.main_window
@@ -149,16 +172,16 @@ class MainApp(MDApp):
             main_window.size_hint_x = 1
         else:
             side_nav.opacity = 1
-            
+
             # Animate back to narrow container when drawer is closed
             Animation(size_hint_x=0.065, duration=0.2).start(side_nav)  # Collapse side nav width
-            Animation(size_hint_x=0.945, duration=0.2).start(main_window)  
-    
+            Animation(size_hint_x=0.945, duration=0.2).start(main_window)
+
     def on_navigation_state(self, state):
         # Get current size hints for side navigation and main screen
         side_nav = self.root.ids.side_nav
         main_window = self.root.ids.main_window
-        
+
         """Method to animate the container size when drawer state changes."""
         if state == 'opening_with_animation':
             # Animate to wider container when drawer is open
@@ -167,47 +190,49 @@ class MainApp(MDApp):
         if state == 'closing_with_animation':
             # Animate back to narrow container when drawer is closed
             Animation(size_hint_x=0.065, duration=0.2).start(side_nav)  # Collapse side nav width
-            Animation(size_hint_x=0.945, duration=0.2).start(main_window)  # Expand screen manager widthollapse rail width to 
+            Animation(size_hint_x=0.945, duration=0.2).start(
+                main_window)  # Expand screen manager widthollapse rail width to
 
     def initialize_screens(self):
         sm = self.root.ids.screen_manager
         screens = {
-            
+
             # common Screens
             'login_view': LoginScreen(name='login_view'),
             'user_profile_view': ProfileScreen(name='user_profile_view'),
-            
+
             # User Screens
             'dashboard_view': DashboardScreen(name='dashboard_view'),
             'add_id_view': AddIDScreen(name='add_id_view'),
+            'allocate_id_view': AllocateIDScreen(name='allocate_id_view'),
             'search_id_view': SearchIDScreen(name='search_id_view'),
             'sort_id_view': SortIDScreen(name='sort_id_view'),
             'contact_view': ContactScreen(name='contact_view'),
-            
+
             # Admin Screens
             'adminDashboard_view': AdminDashboardScreen(name='adminDashboard_view'),
             'manage_user_view': ManageUser(name='manage_user_view'),
             'config_view': ConfigScreen(name='config_view'),
             'notify_view': NotifyScreen(name='notify_view'),
             'report_view': ReportScreen(name='report_view')
-            
+
         }
         for screen in screens.values():
             sm.add_widget(screen)
-            
+
         nav = self.root.ids.side_nav
         nav_options = {
-            
+
             # Navigation Screens
-            'clerk_nav': ClerkNav(name='clerk_nav'),
             'admin_nav': AdminNav(name='admin_nav'),
+            'clerk_nav': ClerkNav(name='clerk_nav'),
         }
         for nav_option in nav_options.values():
             nav.add_widget(nav_option)
-            
+
     def change_screen(self, screen_name):
         self.root.ids.screen_manager.current = screen_name
-        
+
     def show_logout_dialog(self):
         if not hasattr(self, 'logout_dialog'):
             self.logout_dialog = MDDialog(
@@ -215,11 +240,11 @@ class MainApp(MDApp):
                 text="Are you sure you want to logout?",
                 size_hint=(0.4, 0.2),
                 buttons=[
-                    MDFlatButton(
+                    MDRaisedButton(
                         text="Cancel",
                         on_release=self.close_logout_dialog
                     ),
-                    MDFlatButton(
+                    MDRaisedButton(
                         text="Logout",
                         on_release=self.logout
                     )
@@ -229,46 +254,54 @@ class MainApp(MDApp):
 
     def close_logout_dialog(self, instance):
         self.logout_dialog.dismiss()
-        
+
     def logout(self, instance):
         # Clear user data
-        current_user = CurrentUser()
-        current_user.logout()
+        # current_user = CurrentUser()
+        # current_user.logout()
+        self.user_details = {
+            'id_number': '',
+            'firstname': '',
+            'lastname': '',
+            'othernames': '',
+            'user_type': ''
+        }
+        self.clear_user_info()
         self.close_logout_dialog(instance)
 
         # Redirect to login screen
         self.root.ids.screen_manager.current = 'login_view'
 
     def animate_notice(self):
-        lable = self.root.ids.notice
-        lable_size = lable.font_size
-        
+        label = self.root.ids.notice
+        label_size = label.font_size
+
         animation = Animation(
-            font_size = (lable_size * 1.05), duration = .6
+            font_size=(label_size * 1.05), duration=.6
         ) + Animation(
-            font_size = lable_size, duration = .6
+            font_size=label_size, duration=.6
         )
-        
+
         animation.repeat = True
-        animation.start(lable)
+        animation.start(label)
 
     def load_user_info(self, user_data):
         # Create a new BoxLayout to hold the user avatar, name, and role
         user_box = self.root.ids.user
         user_box.clear_widgets()  # Clear any existing widgets (if any)
-        
+
         avatar = MDIconButton(
-        icon='account-circle',  # Or use a path to the avatar image
-        user_font_size="82sp",
-        pos_hint={'center_y': 0.5},
-        
-    )
+            icon='account-circle',  # Or use a path to the avatar image
+            user_font_size="82sp",
+            pos_hint={'center_y': 0.5},
+
+        )
 
         # Add user name and role label
         name_role_label = MDLabel(
             text=f"[b]{user_data['firstname']} {user_data['lastname']}[/b]\n[size=16sp]({user_data['user_type'].capitalize()}/ Mzuzu[/size])",
             halign="center",
-            markup= True,
+            markup=True,
             valign="middle",
             size_hint_x=None,
             width=200,
@@ -276,10 +309,11 @@ class MainApp(MDApp):
         )
         user_box.add_widget(name_role_label)
         user_box.add_widget(avatar)
-    
+
     def clear_user_info(self):
         user_box = self.root.ids.user
         user_box.clear_widgets()
-        
+
+
 if __name__ == "__main__":
     MainApp().run()

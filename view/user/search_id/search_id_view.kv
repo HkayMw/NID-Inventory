@@ -121,8 +121,8 @@
                 
             
             #Search results Section
-            BoxLayout:
-                orientation: 'vertical'
+            MDBoxLayout:
+                # orientation: 'vertical'
                 padding: 10
                 # size_hint_x: .75
 
@@ -131,6 +131,14 @@
                     orientation: 'vertical'
                     padding: [10, 10, 10, 10]
                     size_hint_y: 1
+                    size_hint_x: .8
+
+                MDCard:
+                    elevation: 1
+                    size_hint_y: .97
+                    size_hint_x: .2
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    
                    
                         
         

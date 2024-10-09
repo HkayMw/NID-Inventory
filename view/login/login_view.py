@@ -4,7 +4,7 @@ from kivymd.app import MDApp
 from kivy.uix.screenmanager import Screen
 from controller.user_controller import UserController
 from kivy.lang import Builder
-from model.current_user import CurrentUser
+# from model.current_user import CurrentUser
 from kivy.core.window import Window
 from Assets.qr_code import QRCode
 from kivy.uix.boxlayout import BoxLayout
@@ -55,9 +55,9 @@ class LoginScreen(Screen):
                 # user = message
                 # notice.text = f"[color=#00ff00]{message}, {user}[/color]"
                 # print(user)
-                current_user = CurrentUser()
+                # current_user = CurrentUser()
                 # print(user)
-                current_user.set_user_details(
+                self.app.set_user_details(
                     id_number=user[0],
                     firstname=user[1],
                     lastname=user[2],
@@ -66,7 +66,7 @@ class LoginScreen(Screen):
                 )
                 
                 # print(current_user.get_user_details())
-                user_data = current_user.get_user_details()
+                user_data = self.app.user_details
                 # app.update_navigation(current_user.get_user_details())
                 
                 # self.parent.parent.current = 'add_id_view'

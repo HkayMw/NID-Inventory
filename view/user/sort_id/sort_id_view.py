@@ -30,6 +30,12 @@ class SortIDScreen(Screen):
         self.initialize_sorting_guide_table()
         self.initialize_allocate_storage_table()
         self.initialize_generate_sorting_key_table()
+        # for tab in self.ids.tabs.get_tab_list():
+        #     tab.disabled = True
+        # def disable_tab_touch(instance, touch):
+        #     return True
+        
+        # self.ids.tabs.on_touch_down = disable_tab_touch
         
     def initialize_sorting_guide_table(self):
         # print("oryt!!!!!!")

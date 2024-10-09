@@ -1,10 +1,18 @@
 import sqlite3
 
 class Model:
-    def __init__(self, db_name="database/id_inventorydb.db"):
+    def __init__(self, db_name="database/id_inventory1.db"):
         self.conn = sqlite3.connect(db_name)
         self.cursor = self.conn.cursor()
         self.table = ''
+        
+    def custom_query(self, query):
+        try:
+            self.cursor.execute(query)
+            rows = self.cursor.fetchall()
+            return True, 'Read operation was successfull', rows
+        except Exception as e:
+            return False, f"An error occurred: {e} from {__name__}", None
     
     def create(self, data):
         try:
@@ -33,8 +41,8 @@ class Model:
             return True, 'Read operation was successfull', rows
         
         except Exception as e:
-            print(f"An error occurred during read operation: {e}")
-            return False, f"An error occurred during read operation: {e} from {__name__}"
+            print(f"An error occurred during read operation: {e} from {__name__}")
+            return False, f"An error occurred during read operation: {e} from {__name__}", None
 
     def update(self, data, where_clause, params=None):
         try:

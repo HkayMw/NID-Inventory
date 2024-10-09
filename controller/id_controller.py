@@ -1,15 +1,15 @@
 # controller/id_controller.py
 
 from controller.controller import Controller
+from controller.batch_controller import BatchController
 from model.id_model import IdModel
 from Assets.qr_code import QRCode
-
-
 
 
 class IdController(Controller):
     def __init__(self):
         super().__init__(IdModel())
+        self.batch_controller = BatchController()
         
     def add_id(self,data):
         
@@ -21,7 +21,7 @@ class IdController(Controller):
         else:
             return False, message, None
         
-    def search_id(self, search_type, id_number=None, firstname=None, lastname=None, qr_code=None):
+    def search_id(self, search_type, id_number=None, firstname=None, lastname=None, signature=None, qr_code=None):
         """
         Searches for records based on the provided search type and parameters.
         
@@ -40,6 +40,13 @@ class IdController(Controller):
             # Search by ID Number
             where_clause = 'id_number = :id_number'
             params = {'id_number': id_number.upper()}
+            
+        elif search_type == 'signature':
+            
+            # self.ids.notice.theme_text_color = "Error"
+            # Search by ID Signature
+            where_clause = 'signature = :signature'
+            params = {'signature': signature.upper()}
         
         elif search_type == 'name':
             #validate names
@@ -84,7 +91,7 @@ class IdController(Controller):
         
         if success:
             if result:
-                columns = ['id_number', 'issue_date', 'firstname', 'lastname', 'othernames', 'gender', 'd_o_b', 'status', 'sorting_key', 'notified_on', 'created_on', 'updated_on', 'created_by', 'updated_by']
+                columns = ['signature', 'id_number', 'firstname', 'lastname', 'othernames', 'gender', 'd_o_b', 'status', 'batch', 'notified_on', 'created_on', 'updated_on', 'created_by', 'updated_by']
                 
                 result = [dict(zip(columns, row)) for row in result]
 

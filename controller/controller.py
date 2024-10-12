@@ -10,8 +10,8 @@ class Controller:
     def create(self, data):
         return self.model.create(data)
 
-    def read(self, where_clause=None, params=None):
-        return self.model.read(where_clause, params)
+    def read(self, where_clause=None, params=None, order_by=None, order_type=None):
+        return self.model.read(where_clause, params, order_by, order_type)
 
     def update(self, data, where_clause, params=None):
         return self.model.update(data, where_clause, params)

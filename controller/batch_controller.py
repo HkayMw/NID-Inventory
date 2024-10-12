@@ -13,7 +13,21 @@ class BatchController(Controller):
         # self.current_user = self.app.user_details
         # self.user_id = self.current_user['id_number']
 
-    def get_batch(self, batch_prefix):
+    def get_batch(self, batch_prefix=None, id=None):
+        
+        if id:
+            where_clause = 'id = :id'
+            params = {'id': id}
+            
+            success, message, result = self.read(where_clause, params)
+        
+            if success:
+                batch = {'id': result[0][0], 'name': result[0][1], 'storage': result[0][2], 'count': result[0][3], 'qr_text': result[0][4], 'created_on': result[0][5], 'updated_on': result[0][6], 'created_by': result[0][7], 'updated_by': result[0][8], }
+                
+                return success, message, batch
+            else:
+                return success, message, None
+            
         
         where_clause = 'name LIKE :name'
         params = {'name': f'{batch_prefix}%'}
@@ -28,7 +42,7 @@ class BatchController(Controller):
     def add_batch(self, batch_name, count, storage, qr_text, user_id):
         
         #check if batch already exists
-        success, message, row = self.get_batch(batch_name)
+        success, message, row = self.get_batch(batch_prefix=batch_name)
         if success:
             if len(row) > 0:
                 # count = int(row[3]) + count

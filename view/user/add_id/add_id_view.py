@@ -79,7 +79,7 @@ class AddIDScreen(Screen):
             self.reset_dialog = MDDialog(
                 title="Confirm Reset",
                 text="Are you sure you want to reset?, all IDs scanned this session will not be added to database",
-                size_hint=(0.4, 0.2),
+                size_hint=(0.4, 0.25),
                 buttons=[
                     MDRaisedButton(
                         text="Cancel",
@@ -96,7 +96,6 @@ class AddIDScreen(Screen):
     def close_reset_dialog(self, instance):
         self.reset_dialog.dismiss()
         
-    # todo: fix progress bar on reset
     def reset(self, instance):
         self.app.current_batch = {"batch_name": '', "ids": []}
         self.ids.count.text = str(len(self.app.current_batch['ids']))
@@ -212,7 +211,7 @@ class AddIDScreen(Screen):
         batch_prefix = today_date.strftime("%B%Y")
         
         #get batch number
-        success, message, result = self.batch_controller.get_batch(batch_prefix)
+        success, message, result = self.batch_controller.get_batch(batch_prefix=batch_prefix)
         
         if success:
             batch_number = len(result) + 1

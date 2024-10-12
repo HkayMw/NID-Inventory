@@ -31,11 +31,13 @@ class Model:
             # print(f"An unexpected error occurred: {e}")
             return False, f"An unexpected error occurred: {e} from {__name__}", None
 
-    def read(self, where_clause=None, params=None):
+    def read(self, where_clause=None, params=None, order_by=None, order_type=None):
         try:
             sql = f"SELECT * FROM {self.table}"
             if where_clause:
                 sql += f" WHERE {where_clause}"
+            if order_by and order_type:
+                sql += f" ORDER BY {order_by} {order_type}"
             self.cursor.execute(sql, params or {})
             rows = self.cursor.fetchall()
             return True, 'Read operation was successfull', rows

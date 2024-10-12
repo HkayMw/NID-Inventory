@@ -17,7 +17,6 @@ from kivymd.uix.label import MDLabel
 
 import qrcode
 from io import BytesIO
-import qrcode
 from PIL import Image as PILImage, ImageDraw, ImageFont
 from Assets.label_printer import LabelPrinter
 
@@ -76,7 +75,7 @@ class AllocateIDScreen(Screen):
         # Clear existing widgets
         self.ids.storage_unit_grid.clear_widgets()
         
-        # Fetch storage units and counts (mocked for this example)
+        # Fetch storage units and counts
         success, message, storage_units = self.storage_unit_controller.get_storage_units()
         # print(storage_units)
         # return
@@ -109,7 +108,7 @@ class AllocateIDScreen(Screen):
     def on_card_click(self, card_instance, storage_id, storage_label):
         # Reset the background color of the previously selected card, if any
         if self.selected_card:
-            self.selected_card.md_bg_color = [1, 1, 1, 1]  # White background
+            self.selected_card.md_bg_color = self.app.theme_cls.bg_light
         
         # Change background color of the clicked card to primary color
         card_instance.md_bg_color = self.app.theme_cls.primary_color 
@@ -133,26 +132,6 @@ class AllocateIDScreen(Screen):
         # print(f"cols: {cols} Card width with spacing: {card_width_with_spacing} Parent width: {available_width}")
         self.ids.storage_unit_grid.cols = cols
     
-    # def initialize_allocate_storage_table(self):
-    #     # Initialize the table with default headers and an empty state
-    #     layout = AnchorLayout()
-    #     self.data_tables = MDDataTable(
-    #         use_pagination=True,
-
-    #         check=True,
-    #         column_data=[
-    #             ("Storage Unit", dp(40)),
-    #             ("ID Count", dp(40)),
-    #             ("Action", dp(20)),
-    #         ],
-    #         row_data=[]
-    #     )
-       
-
-    #     self.ids.allocate_storage_table_container.clear_widgets()
-    #     layout.add_widget(self.data_tables)
-    #     self.ids.allocate_storage_table_container.add_widget(layout)
-        
     def add_batch(self):
         self.progress.active = True
         
@@ -170,7 +149,8 @@ class AllocateIDScreen(Screen):
         count = int(self.ids.count.text)
         
         storage = self.storage_id
-        qr_text = f"Batch Name: {batch_name}, Allocated Storage: {storage}"
+        storage_label = self.ids.allocated_storage.text
+        qr_text = f"Batch Name: {batch_name}, Allocated Storage: {storage_label}"
         user_id = self.user_id
         
         if not storage:

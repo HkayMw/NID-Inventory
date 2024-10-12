@@ -1,15 +1,18 @@
 # controller/id_controller.py
 
+from kivymd.app import MDApp
 from controller.controller import Controller
 from controller.batch_controller import BatchController
 from model.id_model import IdModel
 from Assets.qr_code import QRCode
+from datetime import datetime
 
 
 class IdController(Controller):
     def __init__(self):
         super().__init__(IdModel())
         self.batch_controller = BatchController()
+        self.app = MDApp.get_running_app()
         
     def add_id(self,data):
         
@@ -40,6 +43,8 @@ class IdController(Controller):
             # Search by ID Number
             where_clause = 'id_number = :id_number'
             params = {'id_number': id_number.upper()}
+            order_by = 'lastname'
+            order_type = 'ASC'
             
         elif search_type == 'signature':
             
@@ -47,6 +52,8 @@ class IdController(Controller):
             # Search by ID Signature
             where_clause = 'signature = :signature'
             params = {'signature': signature.upper()}
+            order_by = 'lastname'
+            order_type = 'ASC'
         
         elif search_type == 'name':
             #validate names
@@ -56,11 +63,15 @@ class IdController(Controller):
                 # Search by Name using regex on both first and last name
                 where_clause = 'firstname LIKE :firstname AND lastname LIKE :lastname'
                 params = {'firstname': f'%{firstname}%', 'lastname': f'%{lastname}%'}
+                order_by = 'lastname'
+                order_type = 'ASC'
         
         elif search_type == 'qr_code':
             #validate and process qr code
             qr_code = QRCode(qr_code.upper())
             success, message, qr = qr_code.process()
+            order_by = 'lastname'
+            order_type = 'ASC'
             # print(id)
             
             if success:
@@ -69,6 +80,8 @@ class IdController(Controller):
                     # Search by ID Number
                     where_clause = 'id_number = :id_number'
                     params = {'id_number': qr['id_number'].upper()}
+                    order_by = 'lastname'
+                    order_type = 'ASC'
                     
                 #check if its general sticker
                 if qr['type'] == '01':
@@ -84,10 +97,12 @@ class IdController(Controller):
         else:
             where_clause = None
             params = None
+            order_by = 'lastname'
+            order_type = 'ASC'
             print(f"Invalid search type: {search_type}. Error from {__name__}")
 
         # Perform the search using the read_records method from the Controller class
-        success, message, result = self.read(where_clause, params)
+        success, message, result = self.read(where_clause, params, order_by, order_type)
         
         if success:
             if result:
@@ -101,3 +116,19 @@ class IdController(Controller):
         else:
             return False, f"Search error: {message}", None
         
+    def issue_id(self, signature):
+        # self.current_user = self.app.user_details
+        # self.user_id = self.current_user['id_number']
+        print(signature)
+        updated_on = str(datetime.now())
+        updated_by = self.app.user_details['id_number']
+        
+        where_clause = 'signature = :signature'
+        params = {'signature': signature}
+        data = {'status': 'Issued', 'updated_on': updated_on, 'updated_by': updated_by}
+        
+        success, message, row = self.update(data, where_clause, params)
+        if success:
+            return success, message, row
+        else:
+            return False, message, row

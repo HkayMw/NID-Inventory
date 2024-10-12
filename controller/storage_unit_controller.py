@@ -40,6 +40,21 @@ class StorageUnitController(Controller):
             return success, message, None
         
         return success, message, storage_units
+    
+    def get_storage_unit(self, id):
+        
+        where_clause = 'id = :id'
+        params = {'id': id}
+        
+        success, message, result = self.read(where_clause, params)
+    
+        if success:
+            storage = {'id': result[0][0], 'label': result[0][1], 'created_on': result[0][2], 'updated_on': result[0][3], 'created_by': result[0][4], 'updated_by': result[0][5]}
+            
+            return success, message, storage
+        else:
+            return success, message, None
+            
         
     def create_storage_units(self, number_of_units):
         storage_units = []

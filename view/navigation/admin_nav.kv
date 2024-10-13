@@ -31,14 +31,14 @@
             selected_color_background: "#e7e4c0"
             ripple_color_item: "#e7e4c0"
             size_hint_x: 1
-            current_selected_item: 2
+            current_selected_item: 3
             # anchor: "center"
 
-            MDNavigationRailMenuButton:
-                padding: [30]
-                size_hint_y: .2
-                on_release: 
-                    nav_drawer.set_state("toggle")
+            # MDNavigationRailMenuButton:
+            #     padding: [30]
+            #     size_hint_y: .2
+            #     on_release: 
+            #         nav_drawer.set_state("toggle")
 
             # MDNavigationRailItem:
             #     size_hint_x: 0
@@ -47,7 +47,7 @@
                 icon: "view-dashboard"
                 text: "Dashboard"
 ################################################################ comment to go on login page first##########################################################################################################
-                # on_release: app.change_screen('adminDashboard_view')
+                on_release: app.change_screen('adminDashboard_view')
 
             MDNavigationRailItem:
                 icon: "account-cog"
@@ -75,11 +75,6 @@
                 active: False
                 on_release: 
                     app.show_logout_dialog()  # Call the logout method in your app
-            
-            MDNavigationRailItem:
-                icon: "account-circle"  # You can use a custom icon if needed
-                user_font_size: "48sp"  # Adjust icon size
-                # on_release:
 
     MDNavigationDrawer:
         id: nav_drawer

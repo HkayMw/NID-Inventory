@@ -74,7 +74,8 @@ class SearchIDScreen(Screen):
         self.data_tables = MDDataTable(
             use_pagination=True,
             background_color_selected_cell=self.app.theme_cls.primary_color,
-            # elevation = 3,
+            elevation = 3,
+            
 
             # check=True,
             # name column, width column, sorting function column(optional), custom tooltip
@@ -205,7 +206,7 @@ class SearchIDScreen(Screen):
             # print(f"Row data updated successfully.\nSignature Map {self.id_map}")
         
         except ValueError as e:
-            self.notice = f"Error: {e}. from {__name__}"
+            self.notice.text = f"Error: {e}. from {__name__}"
             
         # self.progress.active = False
         
@@ -431,12 +432,12 @@ class SearchIDScreen(Screen):
                 # print(len(search_results))
                 self.update_row_data(self.data_tables, id)
                 
-            self.notice = "ID issued successfully"
+            self.notice.text = "ID issued successfully"
             self.ids.qr_card.clear_widgets()
             
         else:
             print(f"Failed to issue ID: {message}")
-            self.notice = "Something went wrong trying to issue an ID"
+            self.notice.text = "Something went wrong trying to issue an ID"
 
         self.close_issue_id_dialog(instance)   
 

@@ -42,7 +42,7 @@ from view.user.dashboard.dashboard_view import DashboardScreen
 from view.user.search_id.search_id_view import SearchIDScreen
 from view.user.add_id.add_id_view import AddIDScreen
 from view.user.allocate_id.allocate_id_view import AllocateIDScreen
-from view.user.sort_id.sort_id_view import SortIDScreen
+# from view.user.sort_id.sort_id_view import SortIDScreen
 from view.user.contact.contact_view import ContactScreen
 
 from view.admin.adminDashboard.adminDashboard_view import AdminDashboardScreen
@@ -91,7 +91,8 @@ class MainScreen(BoxLayout):
             else:
                 next_index = 0
 
-            focusable_widgets[next_index].focus = True
+            if focusable_widgets:
+                focusable_widgets[next_index].focus = True
             return True  # Indicate that the event was handled
 
         return False  # Indicate that the event was not handled
@@ -112,6 +113,7 @@ class MainApp(MDApp):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         # self.logout_dialog = None
+        # self.logout_dialog = None
         
     def set_user_details(self, id_number, firstname, lastname,othernames, user_type):
         self.user_details['id_number'] = id_number
@@ -119,7 +121,7 @@ class MainApp(MDApp):
         self.user_details['lastname'] = lastname
         self.user_details['othernames'] = othernames
         self.user_details['user_type'] = user_type
-        print("user setting done: ", self.user_details)
+        # print("user setting done: ", self.user_details)
 
     def build(self):
         # Set up the theme
@@ -162,7 +164,7 @@ class MainApp(MDApp):
 
         # Get current size hints for side navigation and main screen
         side_nav = self.root.ids.side_nav
-        main_window = self.root.ids.main_window
+        main_window = self.root.ids.screen_manager
 
         if value == 'login_view':
             # Hide the side_nav by setting width to zero and opacity to zero
@@ -206,7 +208,7 @@ class MainApp(MDApp):
             'add_id_view': AddIDScreen(name='add_id_view'),
             'allocate_id_view': AllocateIDScreen(name='allocate_id_view'),
             'search_id_view': SearchIDScreen(name='search_id_view'),
-            'sort_id_view': SortIDScreen(name='sort_id_view'),
+            # 'sort_id_view': SortIDScreen(name='sort_id_view'),
             'contact_view': ContactScreen(name='contact_view'),
 
             # Admin Screens
@@ -294,6 +296,7 @@ class MainApp(MDApp):
             icon='account-circle',  # Or use a path to the avatar image
             user_font_size="82sp",
             pos_hint={'center_y': 0.5},
+            
 
         )
 
@@ -307,6 +310,7 @@ class MainApp(MDApp):
             width=200,
             font_style='Subtitle1'  # Adjust font size as needed
         )
+        avatar.bind(on_release = self.open_user_profile)
         user_box.add_widget(name_role_label)
         user_box.add_widget(avatar)
 
@@ -314,6 +318,8 @@ class MainApp(MDApp):
         user_box = self.root.ids.user
         user_box.clear_widgets()
 
+    def open_user_profile(self, *args):
+        self.change_screen('user_profile_view')
 
 if __name__ == "__main__":
     MainApp().run()

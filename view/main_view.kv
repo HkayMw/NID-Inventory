@@ -5,12 +5,12 @@
     id: main_screen
     orientation: "horizontal"
 
-    # Side Navigation Rail
-    ScreenManager:
-        id: side_nav
-        name: 'side_nav'
-        size_hint_x: 0
-        width: 0
+    # # Side Navigation Rail
+    # ScreenManager:
+    #     id: side_nav
+    #     name: 'side_nav'
+    #     size_hint_x: 0
+    #     width: 0
         
     # Main Window
     MDBoxLayout:
@@ -72,11 +72,21 @@
             height: "1dp"  # Thickness of the line
             color: "#B0BEC5"  # Color of the line
 
-        # Main Section
-        ScreenManager:
-            id: screen_manager
-            name: 'screen_manager'
-            # size_hint_x: 1
+        MDBoxLayout:
+            orientation: "horizontal"
+
+            # Side Navigation Rail
+            ScreenManager:
+                id: side_nav
+                name: 'side_nav'
+                size_hint_x: 0
+                width: 0
+
+            # Main Section
+            ScreenManager:
+                id: screen_manager
+                name: 'screen_manager'
+                # size_hint_x: 1
         
         # horizontal line
         MDSeparator:

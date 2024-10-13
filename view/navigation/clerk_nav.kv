@@ -31,21 +31,21 @@
             selected_color_background: "#e7e4c0"
             ripple_color_item: "#e7e4c0"
             size_hint_x: 1
-            current_selected_item: 2
+            current_selected_item: 3
             # anchor: "center"
 
 
-            MDNavigationRailMenuButton:
-                padding: [30]
-                on_release: 
-                    nav_drawer.set_state("toggle")
+            # MDNavigationRailMenuButton:
+            #     padding: [30]
+            #     on_release: 
+            #         nav_drawer.set_state("toggle")
 
             MDNavigationRailItem:
                 id: dashboard
                 icon: "view-dashboard"
                 text: "Dashboard"
 ################################################################ comment to go on login page first##########################################################################################################
-                # on_release: app.change_screen('dashboard_view')
+                on_release: app.change_screen('dashboard_view')
 
 
             MDNavigationRailItem:
@@ -60,11 +60,11 @@
                 text: "Search ID"
                 on_release: app.change_screen('search_id_view')
 
-            MDNavigationRailItem:
-                id: sort_id
-                icon: "sort-variant"
-                text: "Sort Cards"
-                on_release: app.change_screen('sort_id_view')
+            # MDNavigationRailItem:
+            #     id: sort_id
+            #     icon: "sort-variant"
+            #     text: "Sort Cards"
+            #     on_release: app.change_screen('sort_id_view')
 
 
             MDNavigationRailItem:

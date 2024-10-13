@@ -9,8 +9,16 @@ class Model:
     def custom_query(self, query):
         try:
             self.cursor.execute(query)
+            
+            # Commit the transaction for modification queries
+            if query.strip().upper().startswith(('INSERT', 'UPDATE', 'DELETE')):
+                self.conn.commit()  # Commit the changes to the database
+                return True, 'Operation was successful', None
+            
+            # Fetch results for SELECT queries
             rows = self.cursor.fetchall()
-            return True, 'Read operation was successfull', rows
+            return True, 'Operation was successful', rows
+
         except Exception as e:
             return False, f"An error occurred: {e} from {__name__}", None
     

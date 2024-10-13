@@ -1,71 +1,411 @@
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.screenmanager import Screen
-from kivy.properties import ObjectProperty
-from kivy.garden.matplotlib import FigureCanvasKivyAgg
-import kivy.garden.matplotlib
-from kivy.garden.matplotlib.backend_kivyagg import FigureCanvasKivyAgg
 
-import matplotlib.pyplot as plt
-import datetime
 
-from model.model import Model
 from controller.controller import Controller
+from model.model import Model
+from datetime import datetime, timedelta
+
 
 class DashboardController(Controller):
     def __init__(self):
-        super().__init__(Model)
-    
-    
-    graph_layout = ObjectProperty(None)
-
-    # def __init__(self, **kwargs):
-    #     super().__init__(**kwargs)
-    #     self.figure, self.ax = plt.subplots()
-    #     self.canvas = FigureCanvasKivyAgg(self.figure)
-    #     self.graph_layout.add_widget(self.canvas)  # Add graph to the layout
-
-    def load_data(self, period):
-        data, x_ticks = self.get_data_by_period(period)
-
-        # Clear the current graph and plot new data
-        self.ax.clear()
-        self.ax.plot(x_ticks, data, label=f"Data for {period}")
-        self.ax.set_xlabel("Time")
-        self.ax.set_ylabel("Count")
-        self.ax.legend()
-
-        # Refresh the canvas without reloading the entire graph
-        self.canvas.draw()
-
-    def get_data_by_period(self, period):
-        conn = sqlite3.connect('your_database.db')
-        cursor = conn.cursor()
-
-        if period == 'day':
+        super().__init__(Model())
+        
+    def load_dashboard(self, period):
+        
+        if period == 'Day':
             # Fetch data for the last 24 hours, changes each hour
             query = "SELECT hour, COUNT(id) FROM ids_added WHERE date = ? GROUP BY hour"
-            date_today = datetime.date.today()
-            cursor.execute(query, (date_today,))
-        elif period == 'week':
+            
+            date_today = datetime.today().date()
+            # print(date_today)
+            # print(dir(date_today))
+            
+            
+            all_query = "SELECT COUNT(*) AS Total_inventory FROM id WHERE status != 'Issued'"
+            added_query = F"SELECT COUNT(*) AS Added_today FROM id WHERE created_on LIKE '%{date_today}%'"
+            issued_query = F"SELECT COUNT(*) AS Issued_today FROM collection WHERE issued_out_on LIKE '%{date_today}%'"
+            
+            sms_query = F"SELECT COUNT(*) FROM id WHERE notified_on LIKE '%{date_today}%'"
+            
+            users_query = "SELECT COUNT(*) FROM user"
+            
+            batch_query = "SELECT COUNT(*) FROM batch"
+            
+            storage_query = "SELECT COUNT(*) FROM storage_unit"
+            
+            
+            data = {}
+            
+            success, message, total_ids = self.custom_query(all_query)
+            if success:
+                # print(int(total_ids[0][0]))
+                # print(all_query)
+                
+                data['total_ids'] = int(total_ids[0][0])
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+            
+            success, message, added_ids = self.custom_query(added_query)
+            if success:
+                # print(int(added_ids[0][0]))
+                # print(added_query)
+                
+                data['added_ids'] = int(added_ids[0][0])
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+            
+            success, message, issued_ids = self.custom_query(issued_query)
+            if success:
+                # print(int(issued_ids[0][0]))
+                # print(issued_query)
+                
+                data['issued_ids'] = int(issued_ids[0][0])
+
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+            
+            success, message, sent_sms = self.custom_query(sms_query)
+            if success:
+                # print(int(sent_sms[0][0]))
+                # print(sms_query)
+                
+                data['sent_sms'] = int(sent_sms[0][0])
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+            
+            success, message, users = self.custom_query(users_query)
+            if success:
+                # print(int(users[0][0]))
+                # print(users_query)
+                
+                data['users'] = int(users[0][0])
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+
+            success, message, batches = self.custom_query(batch_query)
+            if success:
+                # print(int(batches[0][0]))
+                # print(users_query)
+                
+                data['batches'] = int(batches[0][0])
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+
+            success, message, storage_units = self.custom_query(storage_query)
+            if success:
+                # print(int(storage_units[0][0]))
+                # print(storage_query)
+                
+                data['storage_units'] = int(storage_units[0][0])
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+            
+            return success, message, data
+            
+            
+            
+
+            
+            # cursor.execute(query, (date_today,))
+        elif period == 'Week':
             # Fetch data for the last 7 days, changes each day
             query = "SELECT day, COUNT(id) FROM ids_added WHERE week = ? GROUP BY day"
-            current_week = datetime.date.today().isocalendar()[1]
-            cursor.execute(query, (current_week,))
-        elif period == 'month':
+            
+            year = datetime.today().year
+            week = datetime.today().isocalendar()[1]
+            
+            
+            week_start = datetime.strptime(f'{year}-W{week}-1', "%Y-W%W-%w").date()
+    
+            # Calculate the last day of the week (Sunday)
+            week_end = week_start + timedelta(days=6)
+            
+            # print(week_start, ' ', week_end)
+            
+            all_query = "SELECT COUNT(*) AS Total_inventory FROM id WHERE status != 'Issued'"
+            added_query = F"SELECT COUNT(*) AS Added_today FROM id WHERE {week_start} <= created_on <= {week_end}"
+            issued_query = F"SELECT COUNT(*) AS Issued_today FROM collection WHERE {week_start} <= issued_out_on <= {week_end}"
+            
+            sms_query = F"SELECT COUNT(*) FROM id WHERE {week_start} <= notified_on <= {week_end}"
+            
+            users_query = "SELECT COUNT(*) FROM user"
+            
+            batch_query = "SELECT COUNT(*) FROM batch"
+            
+            storage_query = "SELECT COUNT(*) FROM storage_unit"
+            
+            
+            data = {}
+            
+            success, message, total_ids = self.custom_query(all_query)
+            if success:
+                # print(int(total_ids[0][0]))
+                # print(all_query)
+                
+                data['total_ids'] = int(total_ids[0][0])
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+            
+            success, message, added_ids = self.custom_query(added_query)
+            if success:
+                # print(int(added_ids[0][0]))
+                # print(added_query)
+                
+                data['added_ids'] = int(added_ids[0][0])
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+            
+            success, message, issued_ids = self.custom_query(issued_query)
+            if success:
+                # print(int(issued_ids[0][0]))
+                # print(issued_query)
+                
+                data['issued_ids'] = int(issued_ids[0][0])
+
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+            
+            success, message, sent_sms = self.custom_query(sms_query)
+            if success:
+                # print(int(sent_sms[0][0]))
+                # print(sms_query)
+                
+                data['sent_sms'] = int(sent_sms[0][0])
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+            
+            success, message, users = self.custom_query(users_query)
+            if success:
+                # print(int(users[0][0]))
+                # print(users_query)
+                
+                data['users'] = int(users[0][0])
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+
+            success, message, batches = self.custom_query(batch_query)
+            if success:
+                # print(int(batches[0][0]))
+                # print(users_query)
+                
+                data['batches'] = int(batches[0][0])
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+
+            success, message, storage_units = self.custom_query(storage_query)
+            if success:
+                # print(int(storage_units[0][0]))
+                # print(storage_query)
+                
+                data['storage_units'] = int(storage_units[0][0])
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+            
+            return success, message, data
+            
+            
+            # cursor.execute(query, (current_week,))
+        elif period == 'Month':
             # Fetch data for the last 4 weeks, changes each week
-            query = "SELECT week, COUNT(id) FROM ids_added WHERE month = ? GROUP BY week"
-            current_month = datetime.date.today().month
-            cursor.execute(query, (current_month,))
-        elif period == 'year':
+            year = datetime.today().year
+            month = datetime.today().month
+            
+            current_month = f'{year}-{month}'
+            
+            # print(current_month)
+            # cursor.execute(query, (current_month,))
+            
+            all_query = "SELECT COUNT(*) AS Total_inventory FROM id WHERE status != 'Issued'"
+            added_query = F"SELECT COUNT(*) AS Added_today FROM id WHERE created_on LIKE '%{current_month}%'"
+            issued_query = F"SELECT COUNT(*) AS Issued_today FROM collection WHERE issued_out_on LIKE '%{current_month}%'"
+            
+            sms_query = F"SELECT COUNT(*) FROM id WHERE notified_on LIKE '%{current_month}%'"
+            
+            users_query = "SELECT COUNT(*) FROM user"
+            
+            batch_query = "SELECT COUNT(*) FROM batch"
+            
+            storage_query = "SELECT COUNT(*) FROM storage_unit"
+            
+            
+            data = {}
+            
+            success, message, total_ids = self.custom_query(all_query)
+            if success:
+                # print(int(total_ids[0][0]))
+                # print(all_query)
+                
+                data['total_ids'] = int(total_ids[0][0])
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+            
+            success, message, added_ids = self.custom_query(added_query)
+            if success:
+                # print(int(added_ids[0][0]))
+                # print(added_query)
+                
+                data['added_ids'] = int(added_ids[0][0])
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+            
+            success, message, issued_ids = self.custom_query(issued_query)
+            if success:
+                # print(int(issued_ids[0][0]))
+                # print(issued_query)
+                
+                data['issued_ids'] = int(issued_ids[0][0])
+
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+            
+            success, message, sent_sms = self.custom_query(sms_query)
+            if success:
+                # print(int(sent_sms[0][0]))
+                # print(sms_query)
+                
+                data['sent_sms'] = int(sent_sms[0][0])
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+            
+            success, message, users = self.custom_query(users_query)
+            if success:
+                # print(int(users[0][0]))
+                # print(users_query)
+                
+                data['users'] = int(users[0][0])
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+
+            success, message, batches = self.custom_query(batch_query)
+            if success:
+                # print(int(batches[0][0]))
+                # print(users_query)
+                
+                data['batches'] = int(batches[0][0])
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+
+            success, message, storage_units = self.custom_query(storage_query)
+            if success:
+                # print(int(storage_units[0][0]))
+                # print(storage_query)
+                
+                data['storage_units'] = int(storage_units[0][0])
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+            
+            return success, message, data
+            
+        elif period == 'Year':
             # Fetch data for the last 12 months, changes each month
-            query = "SELECT month, COUNT(id) FROM ids_added WHERE year = ? GROUP BY month"
-            current_year = datetime.date.today().year
-            cursor.execute(query, (current_year,))
-        
-        data = cursor.fetchall()
-        x_ticks, y_data = zip(*data) if data else ([], [])
+            current_year = datetime.today().year
+            # print(current_year)
+            # cursor.execute(query, (current_year,))
+            
+            all_query = "SELECT COUNT(*) AS Total_inventory FROM id WHERE status != 'Issued'"
+            added_query = F"SELECT COUNT(*) AS Added_today FROM id WHERE created_on LIKE '%{current_year}%'"
+            issued_query = F"SELECT COUNT(*) AS Issued_today FROM collection WHERE issued_out_on LIKE '%{current_year}%'"
+            
+            sms_query = F"SELECT COUNT(*) FROM id WHERE notified_on LIKE '%{current_year}%'"
+            
+            users_query = "SELECT COUNT(*) FROM user"
+            
+            batch_query = "SELECT COUNT(*) FROM batch"
+            
+            storage_query = "SELECT COUNT(*) FROM storage_unit"
+            
+            
+            data = {}
+            
+            success, message, total_ids = self.custom_query(all_query)
+            if success:
+                # print(int(total_ids[0][0]))
+                # print(all_query)
+                
+                data['total_ids'] = int(total_ids[0][0])
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+            
+            success, message, added_ids = self.custom_query(added_query)
+            if success:
+                # print(int(added_ids[0][0]))
+                # print(added_query)
+                
+                data['added_ids'] = int(added_ids[0][0])
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+            
+            success, message, issued_ids = self.custom_query(issued_query)
+            if success:
+                # print(int(issued_ids[0][0]))
+                # print(issued_query)
+                
+                data['issued_ids'] = int(issued_ids[0][0])
 
-        conn.close()
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+            
+            success, message, sent_sms = self.custom_query(sms_query)
+            if success:
+                # print(int(sent_sms[0][0]))
+                # print(sms_query)
+                
+                data['sent_sms'] = int(sent_sms[0][0])
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+            
+            success, message, users = self.custom_query(users_query)
+            if success:
+                # print(int(users[0][0]))
+                # print(users_query)
+                
+                data['users'] = int(users[0][0])
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
 
-        return y_data, x_ticks
+            success, message, batches = self.custom_query(batch_query)
+            if success:
+                # print(int(batches[0][0]))
+                # print(users_query)
+                
+                data['batches'] = int(batches[0][0])
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
 
+            success, message, storage_units = self.custom_query(storage_query)
+            if success:
+                # print(int(storage_units[0][0]))
+                # print(storage_query)
+                
+                data['storage_units'] = int(storage_units[0][0])
+            else:
+                print(f'success: {success} message: {message}')
+                return success, message, None
+            
+            return success, message, data

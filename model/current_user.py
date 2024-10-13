@@ -30,3 +30,8 @@
 #     def logout(self):
 #         # Clear user details
 #         self._initialize()
+
+
+from kivymd.app import MDApp
+
+dir(ThemeManager)

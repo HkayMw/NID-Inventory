@@ -5,7 +5,7 @@ from controller.controller import Controller
 from controller.batch_controller import BatchController
 from model.id_model import IdModel
 from Assets.qr_code import QRCode
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 class IdController(Controller):
@@ -129,6 +129,14 @@ class IdController(Controller):
         
         success, message, row = self.update(data, where_clause, params)
         if success:
-            return success, message, row
+            query = f"insert into collection (signature, issued_out_on, issued_out_by) values('{signature}', '{updated_on}', '{updated_by}')"
+            
+            success1, message, row = self.custom_query(query)
+            
+            print(success1, message, row)
+            
+            if success1:
+                return success, message, row
         else:
             return False, message, row
+        

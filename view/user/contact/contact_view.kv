@@ -58,18 +58,15 @@
                 orientation: "vertical"
                 id: controls_section
                 name: "controls_section"
-                size_hint_x: .3
-                size_hint_y: .96
+                size_hint_x: .4
+                size_hint_y: 1
                 padding: [10]
                 spacing: 30
                 pos_hint: {"center_x": .5, "center_y": .5}
 
                 MDCard:
-                    elevation: 3
+                    elevation: 1
                     orientation: "vertical"
-
-                # Label:
-                #     size_hint_y: .05
 
                     #Add Contact controls
                     MDBoxLayout:
@@ -79,7 +76,7 @@
                         MDLabel:
                             id: add_contact_label
                             text: "Add Contact"
-                            size_hint_y: .2
+                            size_hint_y: .1
                             halign: "left"
                             font_style: 'H6'
                             size_hint_x: .85
@@ -91,7 +88,7 @@
                         MDBoxLayout:
                             orientation: "vertical"
                             id: id_number_container
-                            size_hint_y: .3
+                            size_hint_y: .4
                             # size_hint_y: .6
                             size_hint_x: .9
                             pos_hint: {"center_x": 0.5, "center_y": 0.5}
@@ -135,23 +132,24 @@
                                         text: "Browse"
                                         size_hint_x: .3
                                         pos_hint: {"center_y": 0.5}
-                                        on_release: app.browse_file()  # This will simulate file browsing
+                                        on_release: root.open_file_manager() 
 
                                 MDRaisedButton:
                                     size_hint_x: .3
                                     # size_hint_y: .4
                                     text: "Submit"
                                     pos_hint: {"center_x": 0.5}
+                                    on_release: root.add_contacts() 
                                     # pos_hint: {"center_x": 0.5, "center_y": 0.5}
                     
                             # ID Number field
                             MDTextField:
-                                id: id_no_field
+                                id: id_number_field
                                 # size_hint_x: .7
                                 mode: "rectangle"
-                                hint_text: "ID Number/ Scan ID"
-                                # max_text_length: 8
-                                icon_right: "qrcode"
+                                hint_text: "ID Number"
+                                max_text_length: 8
+                                icon_right: "information"
                                 pos_hint: {"center_x": 0.5, "center_y": 0.5}
                                     
                             # Phone Number and submit button row
@@ -162,7 +160,7 @@
 
                                 # Phone Number field
                                 MDTextField:
-                                    id: id_no_field
+                                    id: phone_number_field
                                     size_hint_x: .7
                                     mode: "rectangle"
                                     hint_text: "Phone Number"
@@ -176,6 +174,7 @@
                                     # size_hint_y: .6
                                     text: "Submit"
                                     pos_hint: {"center_x": 0.5}
+                                    on_release: root.add_contact(id_number_field.text, phone_number_field.text) 
                                     # pos_hint: {"center_x": 0.5, "center_y": 0.5}
 
                             Label:
@@ -183,7 +182,7 @@
                     #Search Contact controls
                     MDBoxLayout:
                         orientation: "vertical"
-                        size_hint_y: .35
+                        size_hint_y: .4
 
                         MDLabel:
                             id: search_contact_label
@@ -214,6 +213,7 @@
                                 hint_text: "QR Code"
                                 # size_hint_x: .2
                                 icon_left: "qrcode"
+                                on_text_validate: root.search_contact(qr_code=qr_code.text) 
                                     
                             # ID Number and submit button row
                             MDBoxLayout:
@@ -222,7 +222,7 @@
                                 spacing: 10
 
                                 MDTextField:
-                                    id: id_no_field
+                                    id: id_number_field1
                                     size_hint_x: .7
                                     mode: "rectangle"
                                     hint_text: "ID Number"
@@ -237,7 +237,9 @@
                                     text: "Submit"
                                     # pos_hint: {"center_x": 0.5, "center_y": 0.5}
                                     pos_hint: {"center_x": 0.5}
+                                    on_release: root.search_contact(id_number=id_number_field1.text) 
                                 
+                                    # on_release: root.search_contact(id_number='wt3e6mqf')
                             Label:
                                 size_hint_y: .1
                                 

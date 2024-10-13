@@ -1,0 +1,357 @@
+#:kivy 2.3.0
+# view/user/sort_id/sort_id_view.kv
+
+
+
+<SortIDScreen>:
+    id: sort_id_view
+    name: 'sort_id_view'
+    orientation: "vertical"
+
+    BoxLayout:
+        orientation: "vertical"
+        height: self.minimum_height
+
+        # Window Section
+        MDBoxLayout:
+            # adaptive_height: True
+            md_bg_color: app.theme_cls.bg_light
+            id: window_section
+            name: "window_section"
+            orientation: "vertical"
+            padding: 0, 10
+            # size_hint_y: .75
+            height: self.minimum_height
+            spacing: 20
+
+            # Screen Title
+            MDBoxLayout:
+                orientation: 'horizontal'
+                padding: '10dp'
+                spacing: '10dp'
+                size_hint_y: .1
+                size_hint_x: .3
+                # width: '300dp'
+                pos_hint: {"center_x": .5, "center_y": .5}
+                
+                # Title
+                MDLabel:
+                    id: screen_title
+                    text: 'Sort IDs'
+                    halign: 'center'
+                    font_style: 'H4'
+                    size_hint_y: None
+                    # size_hint_x: None
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    # width: '300dp'
+
+            # horizontal line
+            MDSeparator:
+                height: "1dp"  # Thickness of the line
+                color: "#B0BEC5"  # Color of the line
+
+           # Main Section
+            BoxLayout:
+                orientation: "vertical"
+                id: main_section
+                name: "main_section"
+                size_hint_y: .9
+
+
+                MDTabs:
+                    # md_bg_color: app.theme_cls.bg_light
+                    id: tabs
+                    background_color: 1, 1, 1, 1
+                    on_touch_down: None
+                    background_color: app.theme_cls.bg_dark
+                    elevation: 3
+                    # tab_indicator_type: 'line-rect'
+
+
+                    # Generate Sorting Key tab view
+                    Tab:
+                        title: "Generate Sorting Key"
+                        content_text: "tab 1"
+                        touch: True
+
+                        BoxLayout:
+                            orientation: "horizontal"
+                            id: main_section
+                            name: "main_section"
+                            size_hint_y: .9
+
+                            #Controls Section
+                            MDBoxLayout:
+                                id: controls_section
+                                name: "controls_section"
+                                orientation: "vertical"
+                                size_hint_y: .95
+                                size_hint_x: .3
+                                padding: [10]
+                                pos_hint: {"center_x": .5, "center_y": .5}
+
+                                MDCard:
+                                    orientation: "vertical"
+                                    elevation: 2
+                                    spacing: 20
+
+                                    Label:
+                                        size_hint_y: .02
+
+                                
+                                    MDTextField:
+                                        id: issue_date
+                                        pos_hint: {'top': 1}
+                                        mode: "rectangle"
+                                        hint_text: "From (yyyy-mm-dd)"
+                                        size_hint_y: .1
+                                        size_hint_x: .9
+                                        icon_left: "calendar"
+                                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                                    
+                                    MDTextField:
+                                        id: issue_date
+                                        pos_hint: {'top': 1}
+                                        mode: "rectangle"
+                                        hint_text: "To (yyyy-mm-dd)"
+                                        size_hint_y: .1
+                                        size_hint_x: .9
+                                        icon_left: "calendar"
+                                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+                                    Label:
+                                        size_hint_y: .02
+
+                                    MDRaisedButton:
+                                        size_hint_x: .6
+                                        size_hint_y: .08
+                                        text: "find unsorted IDs"
+                                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                                    Label:
+                                        size_hint_y: .02
+                                    MDRaisedButton:
+                                        size_hint_x: .6
+                                        size_hint_y: .08
+                                        text: "Generate"
+                                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+                                    Label:
+                                        size_hint_y: .02
+
+
+                            Label:
+                                size_hint_x: .05    
+                            
+                            # Allocate storage results Section
+                            BoxLayout:
+                                orientation: 'vertical'
+                                padding: 10
+                                size_hint_x: .5
+                                pos_hint: {"center_x": .5, "center_y": .5}
+
+                                BoxLayout:
+                                    id: generate_sorting_key_table_container
+                                    orientation: 'vertical'
+                                    padding: [10, 10, 10, 10]
+                                    size_hint_y: 1
+
+                    # Sorting Guide tab view
+                    Tab:
+                        title: "Sorting Guide"
+                        content_text: "tab 2"
+
+                        BoxLayout:
+                            orientation: "horizontal"
+                            id: main_section
+                            name: "main_section"
+                            size_hint_y: .9
+
+                            #Controls Section
+                            MDBoxLayout:
+                                id: controls_section
+                                name: "controls_section"
+                                orientation: "vertical"
+                                size_hint_y: .95
+                                size_hint_x: .3
+                                padding: [10]
+                                pos_hint: {"center_x": .5, "center_y": .5}
+
+                                MDCard:
+                                    orientation: "vertical"
+                                    elevation: 2
+                                    spacing: 20
+
+                                    Label:
+                                        size_hint_y: .02
+
+                                
+                                    MDTextField:
+                                        id: issue_date
+                                        pos_hint: {'top': 1}
+                                        mode: "rectangle"
+                                        hint_text: "From (yyyy-mm-dd)"
+                                        size_hint_y: .1
+                                        size_hint_x: .9
+                                        icon_left: "calendar"
+                                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                                    
+                                    MDTextField:
+                                        id: issue_date
+                                        pos_hint: {'top': 1}
+                                        mode: "rectangle"
+                                        hint_text: "To (yyyy-mm-dd)"
+                                        size_hint_y: .1
+                                        size_hint_x: .9
+                                        icon_left: "calendar"
+                                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+                                    MDTextField:
+                                        id: othernames_field
+                                        pos_hint: {'top': 1}
+                                        mode: "rectangle"
+                                        size_hint_y: .1
+                                        size_hint_x: .9
+                                        hint_text: "Letter"
+                                        icon_right: "chevron-right"
+                                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                                    Label:
+                                        size_hint_y: .02
+                                    MDRaisedButton:
+                                        size_hint_x: .6
+                                        size_hint_y: .1
+                                        text: "Submit"
+                                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+                                    Label:
+                                        size_hint_y: .02
+
+                                
+                            Label:
+                                size_hint_x: .05
+                            
+                            #Sorting results Section
+                            BoxLayout:
+                                orientation: 'vertical'
+                                padding: 10
+                                size_hint_x: .5
+                                pos_hint: {"center_x": .5, "center_y": .5}
+
+                                BoxLayout:
+                                    id: sorting_guide_table_container
+                                    orientation: 'vertical'
+                                    padding: [10, 10, 10, 10]
+                                    size_hint_y: 1
+                    
+                    # Allocate Storage tab view
+                    Tab:
+                        title: "Allocate Storage"
+                        content_text: "tab 3"
+
+                        BoxLayout:
+                            orientation: "horizontal"
+                            id: main_section
+                            name: "main_section"
+                            size_hint_y: .9
+
+                            #Controls Section
+                            MDBoxLayout:
+                                id: controls_section
+                                name: "controls_section"
+                                orientation: "vertical"
+                                size_hint_y: .95
+                                size_hint_x: .3
+                                padding: [10]
+                                pos_hint: {"center_x": .5, "center_y": .5}
+
+                                MDCard:
+                                    orientation: "vertical"
+                                    elevation: 2
+                                    spacing: 20
+
+                                    Label:
+                                        size_hint_y: .02
+
+                                
+                                    MDTextField:
+                                        id: issue_date
+                                        pos_hint: {'top': 1}
+                                        mode: "rectangle"
+                                        hint_text: "From (yyyy-mm-dd)"
+                                        size_hint_y: .1
+                                        size_hint_x: .9
+                                        icon_left: "calendar"
+                                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                                    
+                                    MDTextField:
+                                        id: issue_date
+                                        pos_hint: {'top': 1}
+                                        mode: "rectangle"
+                                        hint_text: "To (yyyy-mm-dd)"
+                                        size_hint_y: .1
+                                        size_hint_x: .9
+                                        icon_left: "calendar"
+                                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+                                    MDTextField:
+                                        id: othernames_field
+                                        pos_hint: {'top': 1}
+                                        mode: "rectangle"
+                                        size_hint_y: .1
+                                        size_hint_x: .9
+                                        hint_text: "Letter"
+                                        icon_right: "chevron-right"
+                                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                                    Label:
+                                        size_hint_y: .02
+                                    MDRaisedButton:
+                                        size_hint_x: .6
+                                        size_hint_y: .1
+                                        text: "Filter"
+                                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+                                    Label:
+                                        size_hint_y: .02
+
+
+                            Label:
+                                size_hint_x: .05    
+                            
+                            # Allocate storage results Section
+                            BoxLayout:
+                                orientation: 'vertical'
+                                padding: 10
+                                size_hint_x: .5
+                                pos_hint: {"center_x": .5, "center_y": .5}
+
+                                BoxLayout:
+                                    id: allocate_storage_table_container
+                                    orientation: 'vertical'
+                                    padding: [10, 10, 10, 10]
+                                    size_hint_y: 1
+
+
+           
+        
+        
+
+
+
+# Custom SpinnerOption class with padding
+<StyledSpinnerOption@SpinnerOption>:
+    background_color: (0, 0, 0, 0)  # Fully transparent default background
+    canvas.before:
+        Color:
+            rgba: (0.14, 0.31, 0.31, 1)  # Dark teal background
+        # RoundedRectangle:
+        #     size: self.size
+        #     pos: self.pos
+        #     radius: [0, 0, 0, 0]  # Rounded corners
+        Line:
+            width:1.5
+            rectangle: (self.x, self.y, self.width, self.height)
+    color: (1, 1, 1, 1)  # Light gray text
+    font_size: min(self.width * .4, self.height * .4)
+    # padding: [20, 10]  # Increase padding: [horizontal padding, vertical padding]
+
+<LimitedHeightDropDown@DropDown>:
+    max_height: 120  # Limit the dropdown height to show only 3 items at a time

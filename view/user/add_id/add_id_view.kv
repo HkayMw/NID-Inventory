@@ -5,27 +5,15 @@
     id: add_id_view
     name: 'add_id_view'
     orientation: "vertical"
-    # space_x: self.size[0]/3
-    # canvas.before:
-    #     # Gray background
-    #     Color:
-    #         rgba: app.theme_cls.bg_light
-    #         # rgba: (0.4, 0.4, 0.4, 1)
-    #     Rectangle:
-    #         size: self.size
-    #         pos: self.pos
-        
 
 
     # Window Section
     MDBoxLayout:
-        # adaptive_height: True
         md_bg_color: app.theme_cls.bg_light
         id: window_section
         name: "window_section"
         orientation: "vertical"
         padding: 0, 10
-        # size_hint_y: .75
         height: self.minimum_height
         spacing: 20
 
@@ -36,7 +24,6 @@
             spacing: '10dp'
             size_hint_y: .1
             size_hint_x: .3
-            # width: '300dp'
             pos_hint: {"center_x": .5, "center_y": .5}
             
             # Title
@@ -46,9 +33,7 @@
                 halign: 'center'
                 font_style: 'H4'
                 size_hint_y: None
-                # size_hint_x: None
                 pos_hint: {"center_x": .5, "center_y": .5}
-                # width: '300dp'
 
         # horizontal line
         MDSeparator:
@@ -77,29 +62,64 @@
                 padding: [10, (self.height - self.height) / 1]
                 spacing: 30
 
-                # Issue Date Input
                 MDBoxLayout:
-                    pos_hint: {'top': 1}
-                    size_hint_y: .1
-                    size_hint_x: .4
-                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                       
-                    MDTextField:
-                        id: issue_date
-                        mode: "rectangle"
-                        hint_text: "Issue Date"
-                        size_hint_x: .2
-                        icon_left: "calendar"
-                        # on_focus: root.show_date_picker()
-                        on_text_validate: qr_code.focus = True
+                    size_hint_y: .05
+                    size_hint_x: .6
+                    pos_hint: {"center_x": .5, "center_y": .5}
 
-                
-                
+                    MDLabel:
+                        text: "Batch Name: "
+                        halign: "right"
+                        bold: True
+
+                    MDLabel:
+                        id: batch_name
+                        halign: "left"
+                        # text: root.self.batch_prefix
+
+                MDBoxLayout:
+                    size_hint_y: .05
+                    size_hint_x: .6
+                    pos_hint: {"center_x": .5, "center_y": .5}
+
+                    MDProgressBar:
+                        id: progress_bar
+                        # value: (int(count.text)/50)*100
+                        max: 100
+                        color: "orange"
+                        size_hint_x: .8
+                        radius: [10]
+                        size_hint_y: None
+                        height: dp(8)
+                        pos_hint: {"center_x": .5, "center_y": .5}
+                    
+                    MDLabel:
+                        id: count
+                        text: "00"
+                        halign: 'right'
+                        valign: 'center'
+                        theme_text_color: "Primary"
+                        size_hint_x: .1
+                        size_hint_y: None
+                        height: self.texture_size[1]
+                        pos_hint: {"center_x": .5, "center_y": .5}
+
+                    MDLabel:
+                        id: count_total_label
+                        text: "/50"
+                        halign: 'left'
+                        valign: 'center'
+                        theme_text_color: "Primary"
+                        # font_style: "H5"
+                        size_hint_x: .1
+                        size_hint_y: None
+                        height: self.texture_size[1]
+                        pos_hint: {"center_x": .5, "center_y": .5}
                 
                 # ID Input
                 MDBoxLayout:
                     pos_hint: {'top': 1}
-                    size_hint_y: .1
+                    size_hint_y: .2
                     size_hint_x: .7
                     pos_hint: {"center_x": 0.5, "center_y": 0.5}
                     
@@ -110,7 +130,29 @@
                         hint_text: "QR Code"
                         size_hint_x: .5
                         icon_left: "qrcode"
-                        on_text_validate: root.add_id()
+                        on_text_validate: 
+                            root.add_id()
+                            qr_code.focus = True
+                        # font_size: dp(Window.width // 90)
+
+                MDRaisedButton:
+                    size_hint_x: .3
+                    # size_hint_y: .4
+                    text: "Next"
+                    color: app.theme_cls.bg_light
+                    pos_hint: {"center_x": 0.5}
+                    on_release: 
+                        root.assign_batch_name()
+                        app.change_screen('allocate_id_view')
+
+                MDRectangleFlatButton:
+                    text: "Reset"
+                    # size_hint_x: .3
+                    pos_hint: {"center_x": 0.5}
+                    # theme_text_color: "Custom"
+                    # text_color: "white"
+                    # line_color: "red"
+                    on_release: root.show_reset_dialog()
 
 
                 Label:

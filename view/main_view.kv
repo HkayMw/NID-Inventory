@@ -5,12 +5,12 @@
     id: main_screen
     orientation: "horizontal"
 
-    # Side Navigation Rail
-    ScreenManager:
-        id: side_nav
-        name: 'side_nav'
-        size_hint_x: 0
-        width: 0
+    # # Side Navigation Rail
+    # ScreenManager:
+    #     id: side_nav
+    #     name: 'side_nav'
+    #     size_hint_x: 0
+    #     width: 0
         
     # Main Window
     MDBoxLayout:
@@ -24,7 +24,7 @@
             md_bg_color: app.theme_cls.bg_normal
 
             MDBoxLayout:
-                size_hint_x: .8
+                size_hint_x: .74
 
                 Image:
                     source: 'Assets/Coat_of_arms_of_Malawi.svg'
@@ -38,23 +38,16 @@
                     markup: True  # Enable markup for styling
                     halign: 'right'
                     color: app.theme_cls.primary_color
-                    padding: [self.width*0.15, 5]
+                    padding: [self.width*0.06, 5]
                     valign: 'middle'
                     font_style: 'H4'
                     # size_hint_y: None
                     size_hint_x: .93
-                    # pos_hint: {"x": 1, "center_y": .5}
-                    # width: '300dp'
-
-                # Image:
-                #     source: 'Assets/Coat_of_arms_of_Malawi.svg'
-                #     keep_ratio: True
-                #     size_hint_x: .07
-                #     pos_hint: {'x':1}
+                   
             #User info
             MDBoxLayout:
                 # id: user
-                size_hint_x: .2
+                size_hint_x: .26
 
                 MDCard:
                     id: user
@@ -79,11 +72,26 @@
             height: "1dp"  # Thickness of the line
             color: "#B0BEC5"  # Color of the line
 
-        # Main Section
-        ScreenManager:
-            id: screen_manager
-            name: 'screen_manager'
-            # size_hint_x: 1
+        MDBoxLayout:
+            orientation: "horizontal"
+
+            # Side Navigation Rail
+            ScreenManager:
+                id: side_nav
+                name: 'side_nav'
+                size_hint_x: 0
+                width: 0
+
+            # Main Section
+            ScreenManager:
+                id: screen_manager
+                name: 'screen_manager'
+                # size_hint_x: 1
+        
+        # horizontal line
+        MDSeparator:
+            height: "1dp"  # Thickness of the line
+            color: "#B0BEC5"  # Color of the line
 
         # Footer
         MDBoxLayout:
@@ -91,7 +99,9 @@
             id: footer
             size_hint_y: .1
             pos_hint: {"center_x": 0.5, "center_y": 0.5}
-            md_bg_color: app.theme_cls.bg_dark
+            md_bg_color: app.theme_cls.bg_normal
+            spacing: 20
+            # md_bg_color: app.theme_cls.bg_dark
 
 
             MDLabel:
@@ -108,5 +118,8 @@
                 size_hint: None, None
                 size: dp(46), dp(46)
                 pos_hint: {'center_x': .5, 'center_y': .5}
-                padding: [10]
+                padding: [20]
                 active: False
+
+            MDLabel:
+                size_hint_x: .005

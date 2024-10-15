@@ -60,12 +60,19 @@
 
                 MDTabs:
                     # md_bg_color: app.theme_cls.bg_light
+                    id: tabs
                     background_color: 1, 1, 1, 1
+                    on_touch_down: None
+                    background_color: app.theme_cls.bg_dark
+                    elevation: 3
+                    # tab_indicator_type: 'line-rect'
+
 
                     # Generate Sorting Key tab view
                     Tab:
                         title: "Generate Sorting Key"
                         content_text: "tab 1"
+                        touch: True
 
                         BoxLayout:
                             orientation: "horizontal"

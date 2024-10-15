@@ -121,8 +121,8 @@
                 
             
             #Search results Section
-            BoxLayout:
-                orientation: 'vertical'
+            MDBoxLayout:
+                # orientation: 'vertical'
                 padding: 10
                 # size_hint_x: .75
 
@@ -131,6 +131,114 @@
                     orientation: 'vertical'
                     padding: [10, 10, 10, 10]
                     size_hint_y: 1
+                    size_hint_x: .7
+
+                MDCard:
+                    elevation: 1
+                    size_hint_y: .97
+                    radius: [10]
+                    size_hint_x: .3
+                    md_bg_color: app.theme_cls.bg_normal
+                    pos_hint: {"center_x": .5, "center_y": .5}
+
+                    MDBoxLayout:
+                        orientation: "vertical"
+
+                        MDLabel:
+                            text: "Card Location"
+                            font_style: "H5"
+                            bold: True
+                            size_hint_y: .135
+                            halign: "center"
+                            valign: 'middle'
+                        
+
+                        # horizontal line
+                        MDSeparator:
+                            height: "1dp"  # Thickness of the line
+                            color: "#B0BEC5"  # Color of the line
+
+                        MDLabel:
+                            size_hint_y: .05
+
+
+                        MDBoxLayout:
+                            id: batch_details
+                            size_hint_y: .765
+                            spacing: 20
+                            orientation: 'vertical'
+                            # size_hint_x: .7
+                            pos_hint: {'center_x': .5, 'center_y': .5}
+
+                            MDBoxLayout:
+                                size_hint_y: .1
+                                # size_hint_x: .5
+                                # pos_hint: {'center_x': .5, 'center_y': .5}
+
+                                MDLabel:
+                                    text: 'Batch Name: '
+                                    font_style: 'H6'
+                                    font_size: "18sp"
+                                    halign: 'right'
+
+                                MDLabel:
+                                    id: batch_name
+                                    # text: app.current_batch['batch_name']
+                                    halign: 'left'
+
+                            MDBoxLayout:
+                                size_hint_y: .1
+                                # size_hint_x: .5
+                                # pos_hint: {'center_x': .5, 'center_y': .5}
+
+                                MDLabel:
+                                    text: 'Batch Count: '
+                                    font_style: 'H6'
+                                    font_size: "18sp"
+                                    halign: 'right'
+
+                                MDLabel:
+                                    id: count
+                                    # text: str(len(app.current_batch['ids']))
+                                    halign: 'left'
+                            
+                            MDBoxLayout:
+                                size_hint_y: .1
+                                # size_hint_x: .5
+                                # pos_hint: {'center_x': .5, 'center_y': .5}
+
+                                MDLabel:
+                                    text: 'Allocated Storage: '
+                                    font_style: 'H6'
+                                    font_size: "18sp"
+                                    halign: 'right'
+
+                                MDLabel:
+                                    id: allocated_storage
+                                    # text: '15'
+                                    halign: 'left'
+                                    markup: True
+
+                            MDCard:
+                                id: qr_card
+                                md_bg_color: app.theme_cls.bg_normal
+                                size_hint_y: .4
+                                size_hint_x: .4
+                                radius: [10]
+                                # elevation: 1
+                                style: "outlined"
+                                pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                            
+                            MDRaisedButton:
+                                size_hint_x: .4
+                                text: "Issue ID"
+                                color: app.theme_cls.bg_light
+                                pos_hint: {"center_x": .5, "center_y": .5}
+                                on_release: root.show_issue_id_dialog()
+
+                            MDLabel:
+                                size_hint_y: .05
+                    
                    
                         
         

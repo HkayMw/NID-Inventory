@@ -41,9 +41,10 @@ class ContactScreen(Screen):
         
         self.contacts = []
         self.invalid_contact_input = []
+        self.path = None
+        Clock.schedule_once(self.initialize_table, 0.2)
 
     def on_enter(self, *args):
-        Clock.schedule_once(self.initialize_table, 0.5)
         # print(self.parent.current)
         self.current_user = self.app.user_details
         self.user_id = self.current_user['id_number']
@@ -60,7 +61,6 @@ class ContactScreen(Screen):
             column_data=[
                 ("ID Number", dp(40)),
                 ("Phone Number", dp(40)),
-                ("Action", dp(40)),
             ],
             row_data=[]
         )
@@ -69,7 +69,8 @@ class ContactScreen(Screen):
         self.ids.table_container.clear_widgets()
         layout.add_widget(self.data_tables)
         self.ids.table_container.add_widget(layout)
-        # print(self.root)
+        
+        self.data_tables.bind(on_row_press=self.on_row_press)
         
         
     def open_file_manager(self):
@@ -87,17 +88,22 @@ class ContactScreen(Screen):
         self.exit_manager()
         self.ids.file_name.text = f"{os.path.basename(path)}"
         # self.notice.text= f"Selected file: {path}"
+        self.path = path
 
         # Call a function to process the CSV file
-        self.process_csv(path)
+        # self.process_csv(path)
+        # self.ids.add_csv.on_release = self.process_csv(path)
 
     def exit_manager(self, *args):
         '''Exit the file manager.'''
         self.file_manager.close()
 
-    def process_csv(self, path):
+    def process_csv(self):
         '''Handle the selected CSV file, validate rows, and separate valid/invalid rows.'''
         
+        if not self.path:
+            return
+        path = self.path
         self.contacts = []
         self.invalid_contact_input = []
         
@@ -143,13 +149,54 @@ class ContactScreen(Screen):
                 toast(f"Invalid contacts saved to {invalid_file_path}")
 
             toast(f"Processed CSV. Valid: {len(valid_rows)}, Invalid: {len(invalid_rows)}")
+            
+            self.add_contacts(valid_rows)  
+            
+              
 
         except Exception as e:
             toast(f"Failed to open CSV: {str(e)}")
             
-    def add_contacts(self):
+        self.path = None
+        self.ids.file_name.text = 'Upload CSV file'
         
-        pass
+    def add_contacts(self, valid_contacts):
+        
+        id_numbers = []
+        
+        for contact in self.contacts:
+            # print(contact)
+            
+            id_number, phone_number = contact
+            
+            # print(id_number)
+            # print(phone_number)
+            
+            success, message, last_row_id = self.contact_controller.add_contact(id_number, phone_number)
+            if success:
+                # print(success, message, last_row_id)
+                
+                # # clear input fields
+                # self.ids.id_number_field.text = ''
+                # self.ids.phone_number_field.text = ''
+                
+                id_numbers.append(last_row_id)
+                
+                # display added contact on table
+                # self.search_contact(id_number=last_row_id)
+                
+                
+                # self.ids.add_contact_button.text = 'Add'
+                
+                # show notice
+                self.notice.text = message
+            else:
+                self.notice.text = message
+                # print(success, message, last_row_id)
+        if len(id_numbers):
+            self.search_contact(id_numbers=id_numbers)
+            self.notice.text = f'{len(valid_contacts)} Contacts Uploaded Successfully'
+            
     
     def add_contact(self,id_number, phone_number):
         self.notice.text = ''
@@ -167,17 +214,20 @@ class ContactScreen(Screen):
             # display added contact on table
             self.search_contact(id_number=last_row_id)
             
+            
+            self.ids.add_contact_button.text = 'Add'
+            
             # show notice
             self.notice.text = message
         else:
             self.notice.text = message
             # print(success, message, last_row_id)
 
-    def search_contact(self, qr_code=None, id_number=None):
+    def search_contact(self, qr_code=None, id_number=None, id_numbers=None):
         self.notice.text = ''
         
         
-        # print(qr_code, id_number)
+        # print(qr_code, id_number, id_numbers)
         # return
         if id_number:
         
@@ -192,15 +242,27 @@ class ContactScreen(Screen):
                     self.notice.text = "No Results found"
                 self.ids.id_number_field1.text = ''
             else:
-                self.notice.text = message
+                self.notice.text = 'Something went wrong while searching for contacts, Contact Administrator'
                     
+        if id_numbers:
+            success, message, contacts = self.contact_controller.search_contact(id_numbers=id_numbers)
             
+            # print(success, ' ', message, ' ', contact)
+            if success:
+                if contacts:
+                    self.update_row_data(self.data_tables, contacts)
+                    self.notice.text = "Search Results found"
+                else:
+                    self.notice.text = "No Results found"
+                self.ids.id_number_field1.text = ''
+            else:
+                self.notice.text = message    
                 
         if qr_code:
             code = QRCode(qr_code)
             success, message, id = code.process()
             if success:
-                print(id['id_number'])
+                # print(id['id_number'])
                 self.search_contact(id_number=id['id_number'])
             else:
                 self.notice.text = message
@@ -234,22 +296,12 @@ class ContactScreen(Screen):
             
             # Start adding rows one by one using Clock.schedule_interval
             Clock.schedule_interval(self.add_row_one_by_one, 1)  # Adjust time for speed
-            return
-            
-            # Update the table with new row data and store the signature separately
-            for index, row in enumerate(data):
-                instance_data_table.add_row(row)
-                # Store the signature in the signature map
-                self.id_map[index] = search_results[index].get('signature', '')
-            #     print(f"Row {index} added with hidden signature: {self.id_map[index]}")
-            # print(f"Row data updated successfully.\nSignature Map {self.id_map}")
         
         except ValueError as e:
             self.notice.text = f"Error: {e}. from {__name__}"
             
         # self.progress.active = False
         
-
     def transform_data_for_datatable(self, search_results):
         """
         Transforms search results into the format required by MDDataTable.
@@ -292,4 +344,44 @@ class ContactScreen(Screen):
         else:
             # Stop the interval once all rows are added
             return False 
-  
+    
+    def on_row_press(self, instance_table, instance_row):
+        '''Called when a table row is clicked.'''
+        
+        try:
+            
+            # Get the index of the pressed row
+            columns_per_row = len(instance_table.column_data)
+            cell_index = instance_row.index
+            if cell_index:
+                local_row_index = cell_index // columns_per_row
+            else:
+                local_row_index = cell_index
+                
+            # Get pagination info
+            rows_per_page = instance_table.rows_num    # Number of rows per page
+            current_page = self.current_page  # Current page number
+
+            # Calculate the global row index
+            global_row_index = (current_page - 1) * rows_per_page + local_row_index
+
+            # print(f"Local cell index: {cell_index}")
+            # print(f"Local row index: {local_row_index}")
+            # print(f"Rows per page: {rows_per_page}")
+            # print(f"Current page: {current_page}")
+            # print(f"Global row index: {global_row_index}")
+
+            # Get the global row data
+            row_data = instance_table.row_data[global_row_index]
+            # print(f"Row data: {row_data}")
+            
+            self.ids.id_number_field.text = row_data[0]
+            self.ids.phone_number_field.text = row_data[1]
+            self.ids.add_contact_button.text = 'Update'
+            
+        except IndexError as e:
+            print(f"IndexError occurred: {e}")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+            
+            

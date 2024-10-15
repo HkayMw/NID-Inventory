@@ -51,11 +51,11 @@ class SearchIDScreen(Screen):
         # Dictionary to store signatures by row index
         self.id_map = {}  # To store hidden signatures
         self.current_page = 1 
+        Clock.schedule_once(self.initialize_table, 0.2)
         
         
     def on_enter(self, *args):
         # self.initialize_table()
-        Clock.schedule_once(self.initialize_table, 0.5)
         self.clicked_id_signature = None
         self.clicked_id_batch = None
         self.clicked_id_data = None
@@ -195,15 +195,6 @@ class SearchIDScreen(Screen):
             
             # Start adding rows one by one using Clock.schedule_interval
             Clock.schedule_interval(self.add_row_one_by_one, 1)  # Adjust time for speed
-            return
-            
-            # Update the table with new row data and store the signature separately
-            for index, row in enumerate(data):
-                instance_data_table.add_row(row)
-                # Store the signature in the signature map
-                self.id_map[index] = search_results[index].get('signature', '')
-            #     print(f"Row {index} added with hidden signature: {self.id_map[index]}")
-            # print(f"Row data updated successfully.\nSignature Map {self.id_map}")
         
         except ValueError as e:
             self.notice.text = f"Error: {e}. from {__name__}"

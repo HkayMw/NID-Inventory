@@ -1,5 +1,6 @@
 #controller/storage_unit_controller.py
 
+from kivymd.app import MDApp
 from controller.controller import Controller
 from model.storage_unit_model import StorageUnitModel
 import datetime
@@ -8,6 +9,7 @@ import datetime
 class StorageUnitController(Controller):
     def __init__(self):
         super().__init__(StorageUnitModel())
+        self.app = MDApp.get_running_app()
         # self.storage_unit_controller = StorageUnitController()
     
     
@@ -59,6 +61,7 @@ class StorageUnitController(Controller):
     def create_storage_units(self, number_of_units):
         storage_units = []
         created_on = str(datetime.datetime.now())
+        created_by = self.app.user_details['id_number']
         
         success, message, old_storage_units = self.read()
         # print(old_storage_units)
@@ -69,7 +72,7 @@ class StorageUnitController(Controller):
             unit = {
                 'label': str(i),
                 'created_on': created_on,
-                'created_by': 'WT3E6MQF'  # Adjust this as necessary
+                'created_by': created_by
             }
             
             success, message, record_id = self.create(unit)

@@ -72,10 +72,10 @@ class LoginScreen(Screen):
                 # self.parent.parent.current = 'add_id_view'
                 # self.manager.current = "search_id_view"
                 # print(current_user.user_details)
-                if user_data['user_type'] == 'admin':
+                if user_data['user_type'].lower() == 'admin':
                     
                     self.app.root.ids.side_nav.current = 'admin_nav'
-                    self.app.root.ids.side_nav.get_screen('admin_nav').ids.navigation_rail.current_selected_item = 0
+                    # self.app.root.ids.side_nav.get_screen('admin_nav').ids.navigation_rail.current_selected_item = 0
                     self.app.change_screen('adminDashboard_view')
                     
                     # print(f"logged in as {current_user.user_details['user_type']}")
@@ -83,7 +83,7 @@ class LoginScreen(Screen):
                 else:
                     
                     self.app.root.ids.side_nav.current = 'clerk_nav'
-                    self.app.root.ids.side_nav.get_screen('clerk_nav').ids.navigation_rail.current_selected_item = 1
+                    # self.app.root.ids.side_nav.get_screen('clerk_nav').ids.navigation_rail.current_selected_item = 1
                     self.app.change_screen('dashboard_view')
                     
                     
@@ -91,8 +91,8 @@ class LoginScreen(Screen):
                 
                 self.app.load_user_info(user_data)
                     
-                self.app.root.ids.side_nav.get_screen('clerk_nav').ids.dashboard.on_release = lambda: self.app.change_screen('dashboard_view')
-                self.app.root.ids.side_nav.get_screen('admin_nav').ids.dashboard.on_release = lambda: self.app.change_screen('adminDashboard_view')
+                self.app.root.ids.side_nav.get_screen('clerk_nav').ids.dashboard.bind(on_release=lambda x: self.app.change_screen('dashboard_view'))
+                self.app.root.ids.side_nav.get_screen('admin_nav').ids.dashboard.bind(on_release=lambda x: self.app.change_screen('adminDashboard_view'))
                 
                 # Clear credentials
                 self.ids.id_no_field.text = ""

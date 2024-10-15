@@ -23,4 +23,4 @@ def add_admin(id_number, firstname, lastname, othernames, password, created_by):
 
 
 # Example usage:
-add_admin("WT3E6MQF1", "Harry", "Kanyumbu", "Banda", "password123", "WT3E6MQF")
+add_admin("WT3E6MQF2", "Harry", "Kanyumbu", "", "password123", "WT3E6MQF")

@@ -226,8 +226,8 @@ class MainApp(MDApp):
         nav_options = {
 
             # Navigation Screens
-            'admin_nav': AdminNav(name='admin_nav'),
             'clerk_nav': ClerkNav(name='clerk_nav'),
+            'admin_nav': AdminNav(name='admin_nav'),
         }
         for nav_option in nav_options.values():
             nav.add_widget(nav_option)
@@ -240,7 +240,7 @@ class MainApp(MDApp):
             self.logout_dialog = MDDialog(
                 title="Confirm Logout",
                 text="Are you sure you want to logout?",
-                size_hint=(0.4, 0.2),
+                size_hint=(0.25, 0.25),
                 buttons=[
                     MDRaisedButton(
                         text="Cancel",
@@ -306,8 +306,8 @@ class MainApp(MDApp):
             halign="center",
             markup=True,
             valign="middle",
-            size_hint_x=None,
-            width=200,
+            # size_hint_x=None,
+            # width=200,
             font_style='Subtitle1'  # Adjust font size as needed
         )
         avatar.bind(on_release = self.open_user_profile)

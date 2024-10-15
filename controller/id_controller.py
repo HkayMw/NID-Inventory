@@ -24,6 +24,28 @@ class IdController(Controller):
         else:
             return False, message, None
         
+    def update_notified_id(self, signatures):
+        
+        where_clause = 'signature = :signature'
+        updated_by = self.app.user_details['id_number']
+        
+        updated = 0
+        not_updated = 0
+        for signature in signatures:
+            params = {'signature': signature}
+            notified_on = str(datetime.now())
+            data = {'notified_on': notified_on, 'updated_by': updated_by}
+            
+            success, message, row = self.update(data,where_clause,params)
+            if success:
+                updated += 1
+            else:
+                not_updated += 1
+                
+        return True, not_updated, updated
+                
+            
+        
     def search_id(self, search_type, id_number=None, firstname=None, lastname=None, signature=None, qr_code=None):
         """
         Searches for records based on the provided search type and parameters.

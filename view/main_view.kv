@@ -21,7 +21,7 @@
         MDBoxLayout:
             size_hint_y: .14
             pos_hint: {'x': 0, 'y': 0}
-            md_bg_color: app.theme_cls.bg_normal
+            md_bg_color: app.theme_cls.primary_color
 
             MDBoxLayout:
                 size_hint_x: .74
@@ -34,11 +34,11 @@
 
                 MDLabel:
                     id: header_label
-                    text: "[b]ID Inventory Manager[/b] [size=16sp](v1.0.0)[/size]"
+                    text: "[b]ID Inventory Manager[/b]"
                     markup: True  # Enable markup for styling
-                    halign: 'right'
+                    halign: 'left'
                     color: app.theme_cls.primary_color
-                    padding: [self.width*0.06, 5]
+                    padding: [20, 5]
                     valign: 'middle'
                     font_style: 'H4'
                     # size_hint_y: None
@@ -47,11 +47,13 @@
             #User info
             MDBoxLayout:
                 # id: user
-                size_hint_x: .26
+                # size_hint_x: .26
+                size_hint_x: None
+                width: '350dp'
 
                 MDCard:
                     id: user
-                    md_bg_color: app.theme_cls.bg_normal
+                    md_bg_color: app.theme_cls.primary_color
                     size_hint_x: .8
                 
                 MDIconButton:
@@ -113,13 +115,37 @@
                 font_style: 'H4'
                 # font_size: min(self.width * .6, self.height * .6)
 
-            MDSpinner:
-                id: progress
-                size_hint: None, None
-                size: dp(46), dp(46)
-                pos_hint: {'center_x': .5, 'center_y': .5}
-                padding: [20]
-                active: False
+            # MDSpinner:
+            #     id: progress
+            #     size_hint: None, None
+            #     size: dp(46), dp(46)
+            #     pos_hint: {'center_x': .5, 'center_y': .5}
+            #     padding: [20]
+            #     active: False
+            MDBoxLayout:
+                orientation: 'vertical'
+                size_hint_x: None
+                width: '150dp'
+                padding: [12]
 
-            MDLabel:
-                size_hint_x: .005
+                MDLabel:
+                    # id: header_label
+                    text: "[size=16sp]© 2024 NRB[/size]"
+                    markup: True  # Enable markup for styling
+                    halign: 'left'
+                    color: app.theme_cls.primary_color
+                    padding: [20, 5]
+                    valign: 'middle'
+                    
+
+                MDLabel:
+                    # id: header_label
+                    text: "[size=16sp]Ver: 1.0.0[/size]"
+                    markup: True  # Enable markup for styling
+                    halign: 'left'
+                    color: app.theme_cls.primary_color
+                    padding: [20, 5]
+                    valign: 'middle'
+
+            # MDLabel:
+            #     size_hint_x: .005

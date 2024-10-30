@@ -55,10 +55,15 @@
 
             MDSegmentedControl:
                 id: time_toggle
+                # siz_hint_x: None
+                # width: '600dp'
                 pos_hint: {"center_x": .5}
                 theme_text_color: app.theme_cls.opposite_bg_light
                 theme_text_color_disabled: "Secondary"
-                selector_color: app.theme_cls.opposite_bg_light
+                # selector_color: app.theme_cls.opposite_bg_light
+                md_bg_color: app.theme_cls.bg_darkest
+                segment_color: app.theme_cls.primary_color
+                separator_color: app.theme_cls.opposite_bg_light
                 on_active: root.load_dashboard(self.current_active_segment.text)
 
                 MDSegmentedControlItem:

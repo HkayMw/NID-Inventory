@@ -42,7 +42,7 @@ class SearchIDScreen(Screen):
         self.batch_controller = BatchController()
         self.storage_controller = StorageUnitController()
         self.app = MDApp.get_running_app()
-        self.progress = self.app.root.ids.progress
+        # self.progress = self.app.root.ids.progress
         
         # Clear notice
         self.notice = self.app.root.ids.notice
@@ -375,7 +375,9 @@ class SearchIDScreen(Screen):
         self.issue_id_dialog = MDDialog(
             title="Confirm ID Details",
             text=f"Are you sure you want to Issue this ID?\n\nSurname: {surname}\nFirstname: {firstname}\nOthernames: {othernames}\nDate of Birth: {dob}\nSex: {sex}\nID Number: {id_number}",
-            size_hint=(0.4, 0.4),
+            # size_hint=(0.4, 0.4),
+            size_hint=(None, None),
+            size = (dp(480), dp(480)),
             buttons=[
                 MDRaisedButton(
                     text="Cancel",

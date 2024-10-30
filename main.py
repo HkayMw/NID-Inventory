@@ -17,6 +17,7 @@ from kivy.modules import inspector
 from kivy.uix.screenmanager import ScreenManager, NoTransition
 from kivy.uix.boxlayout import BoxLayout
 from kivy.animation import Animation
+from datetime import datetime
 
 # KivyMD
 from kivymd.uix.boxlayout import MDBoxLayout
@@ -27,6 +28,7 @@ from kivymd.uix.snackbar import MDSnackbar
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.label import MDLabel
 from kivymd.uix.button import MDFlatButton, MDRaisedButton, MDIconButton, MDTextButton, MDFillRoundFlatIconButton
+from kivymd.uix.pickers import MDDatePicker
 
 # from model.current_user import CurrentUser
 
@@ -44,6 +46,7 @@ from view.user.add_id.add_id_view import AddIDScreen
 from view.user.allocate_id.allocate_id_view import AllocateIDScreen
 # from view.user.sort_id.sort_id_view import SortIDScreen
 from view.user.contact.contact_view import ContactScreen
+from view.admin.storage.storage_view import StorageScreen
 
 from view.admin.adminDashboard.adminDashboard_view import AdminDashboardScreen
 from view.admin.userManagement.manage_user_view import ManageUser
@@ -129,7 +132,7 @@ class MainApp(MDApp):
         self.theme_cls.material_style = "M3"
         self.theme_cls.primary_palette = "Green"
         self.theme_cls.theme_style_switch_animation = True
-        self.theme_cls.theme_style_switch_animation_duration = 0.5
+        self.theme_cls.theme_style_switch_animation_duration = 0.2
 
         # Load the KV file containing the main layout
         Builder.load_file('view/main_view.kv')
@@ -210,6 +213,7 @@ class MainApp(MDApp):
             'search_id_view': SearchIDScreen(name='search_id_view'),
             # 'sort_id_view': SortIDScreen(name='sort_id_view'),
             'contact_view': ContactScreen(name='contact_view'),
+            'storage_view': StorageScreen(name='storage_view'),
 
             # Admin Screens
             'adminDashboard_view': AdminDashboardScreen(name='adminDashboard_view'),
@@ -226,8 +230,8 @@ class MainApp(MDApp):
         nav_options = {
 
             # Navigation Screens
-            'clerk_nav': ClerkNav(name='clerk_nav'),
             'admin_nav': AdminNav(name='admin_nav'),
+            'clerk_nav': ClerkNav(name='clerk_nav'),
         }
         for nav_option in nav_options.values():
             nav.add_widget(nav_option)
@@ -240,7 +244,9 @@ class MainApp(MDApp):
             self.logout_dialog = MDDialog(
                 title="Confirm Logout",
                 text="Are you sure you want to logout?",
-                size_hint=(0.25, 0.25),
+                # size_hint=(0.25, 0.25),
+                size_hint=(None, None),
+                size = (dp(480), dp(180)),
                 buttons=[
                     MDRaisedButton(
                         text="Cancel",
@@ -273,6 +279,49 @@ class MainApp(MDApp):
 
         # Redirect to login screen
         self.root.ids.screen_manager.current = 'login_view'
+
+    # def show_date_picker(self, text_field):
+    #     # Create the date picker
+    #     date_dialog = MDDatePicker(
+    #         primary_color=self.theme_cls.primary_color,
+    #         selector_color=self.theme_cls.accent_color,
+    #         text_button_color=self.theme_cls.primary_dark,
+    #     )
+
+    #     # Set the selected date callback with text_field
+    #     date_dialog.bind(on_save=lambda instance, value, date_range: self.on_save_date(text_field, value))
+
+    #     # Open the date picker
+    #     date_dialog.open()
+
+    # def on_save_date(self, text_field, value):
+    #     # Format the selected date
+    #     formatted_date = value.strftime('%Y-%m-%d')
+    #     text_field.text = formatted_date
+
+    #     # If the text field is 'end_date', check if it is less than 'start_date'
+    #     if text_field.id == 'end_date':
+    #         start_date_str = self.ids.start_date.text
+    #         if start_date_str:
+    #             start_date = datetime.strptime(start_date_str, '%Y-%m-%d')  # Parse start date
+    #             end_date = datetime.strptime(formatted_date, '%Y-%m-%d')  # Parse end date
+                
+    #             # Check if end date is less than start date
+    #             if end_date < start_date:
+    #                 # Set start date to end date
+    #                 self.ids.start_date.text = formatted_date
+                    
+    #     # If the text field is 'start_date', check if it is greater than 'end_date'
+    #     elif text_field.id == 'start_date':
+    #         start_date_str = self.ids.start_date.text
+    #         if start_date_str:
+    #             start_date = datetime.strptime(start_date_str, '%Y-%m-%d')  # Parse start date
+    #             end_date = datetime.strptime(formatted_date, '%Y-%m-%d')  # Parse end date
+                
+    #             # Check if end date is less than start date
+    #             if end_date < start_date:
+    #                 # Set start date to end date
+    #                 self.ids.end_date.text = formatted_date
 
     def animate_notice(self):
         label = self.root.ids.notice

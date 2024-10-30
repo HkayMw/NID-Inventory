@@ -33,7 +33,7 @@ class ManageUser(Screen):
 
 
     def on_enter(self, *args):
-        self.initialize_table()
+        # self.initialize_table()
         Clock.schedule_once(self.search_user, 0.5)
         Clock.schedule_once(self.clear_notice, 0.5)
         

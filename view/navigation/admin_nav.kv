@@ -28,10 +28,10 @@
         MDNavigationRail:
             id: navigation_rail
             md_bg_color: app.theme_cls.bg_dark
-            selected_color_background: "#e7e4c0"
-            ripple_color_item: "#e7e4c0"
+            selected_color_background: app.theme_cls.primary_color
+            ripple_color_item: app.theme_cls.primary_color
             size_hint_x: 1
-            # current_selected_item: 3
+            # current_selected_item: 4
             # anchor: "center"
 
             # MDNavigationRailMenuButton:
@@ -55,9 +55,9 @@
                 on_release: app.change_screen('manage_user_view')
 
             MDNavigationRailItem:
-                icon: "cog"
-                text: "Config"
-                on_release: app.change_screen('config_view')
+                icon: "archive"
+                text: "Storage"
+                on_release: app.change_screen('storage_view')
 
             MDNavigationRailItem:
                 icon: "message-text"
@@ -68,6 +68,7 @@
                 icon: "chart-box-outline"
                 text: "Reports"
                 on_release: app.change_screen('report_view')
+                # on_release: app.change_screen('user_profile_view')
 
             MDNavigationRailItem:
                 icon: "logout"

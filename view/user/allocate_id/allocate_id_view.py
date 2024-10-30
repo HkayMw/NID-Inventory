@@ -42,7 +42,7 @@ class AllocateIDScreen(Screen):
         self.notice = self.app.root.ids.notice
         # self.notice.text = ''
         
-        self.progress = self.app.root.ids.progress
+        # self.progress = self.app.root.ids.progress
         self.selected_card = None  # To track the currently selected card
         self.storage_id = None  # Variable to store selected storage_id
         
@@ -71,7 +71,7 @@ class AllocateIDScreen(Screen):
         return super().on_leave(*args)
     
     def populate_storage_units(self, *args):
-        self.progress.active = True
+        # self.progress.active = True
         # Clear existing widgets
         self.ids.storage_unit_grid.clear_widgets()
         
@@ -89,7 +89,7 @@ class AllocateIDScreen(Screen):
             # print(unit)
             
             # Create MDCards for each storage unit
-            card = MDCard(size_hint=(None, None), size=(dp(140), dp(100)), elevation=1, radius=[10])
+            card = MDCard(size_hint=(None, None), size=(dp(120), dp(100)), elevation=1, radius=[10])
             card_box = MDBoxLayout(orientation='vertical', padding=dp(10), spacing=dp(5))
 
             # Add label and total count to the card
@@ -102,7 +102,7 @@ class AllocateIDScreen(Screen):
             card.bind(on_release=lambda card_instance, s_id=storage_id, s_label=storage_label: self.on_card_click(card_instance, s_id, s_label))
             
             self.ids.storage_unit_grid.add_widget(card)
-        self.progress.active = False
+        # self.progress.active = False
             
  
     def on_card_click(self, card_instance, storage_id, storage_label):
@@ -124,7 +124,7 @@ class AllocateIDScreen(Screen):
     
     def update_grid_cols(self, layout, *args):
         # Card width + spacing between cards
-        card_width_with_spacing = dp(170)
+        card_width_with_spacing = dp(130)
         available_width = layout.width
         
         # Calculate and update the number of columns based on the available width
@@ -133,7 +133,7 @@ class AllocateIDScreen(Screen):
         self.ids.storage_unit_grid.cols = cols
     
     def add_batch(self):
-        self.progress.active = True
+        # self.progress.active = True
         
         
         current_batch = self.app.current_batch
@@ -156,7 +156,7 @@ class AllocateIDScreen(Screen):
         if not storage:
             # todo: make notice alert color
             self.notice.text = F"Please select storage unit first"
-            self.progress.active = False
+            # self.progress.active = False
             return
         # # keep batch name
         # current_batch['batch_name'] = batch_name
@@ -172,7 +172,7 @@ class AllocateIDScreen(Screen):
         else:
             self.notice.text = message
             self.label_controller.print_label()
-            self.progress.active = False
+            # self.progress.active = False
             return
         
         added = 0
@@ -189,18 +189,18 @@ class AllocateIDScreen(Screen):
                     
                 elif message == "An error occurred: UNIQUE constraint failed: id.id_number, id.issue_date":
                     self.notice.text = f"This record with ID Number: {id['id_number']} already exists in the database."
-                    self.progress.active = False
+                    # self.progress.active = False
                     return
                     
                 else:
                     self.notice.text = message
-                    self.progress.active = False
+                    # self.progress.active = False
                     return
                     
             except Exception as e:
             # print(f"An unexpected error occurred: {e}")    
                 self.notice.text = f"An unexpected error occurred: {e}"
-                self.progress.active = False
+                # self.progress.active = False
                 #
         if added == len(current_batch['ids']):
             # todo: make notice success color
@@ -245,7 +245,7 @@ class AllocateIDScreen(Screen):
             
             self.print_sticker(img, data)
         # self.notice.text = notice
-        self.progress.active = False
+        # self.progress.active = False
         
     def print_sticker(self, img, data):
         

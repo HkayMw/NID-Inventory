@@ -13,23 +13,54 @@ class StorageUnitController(Controller):
         # self.storage_unit_controller = StorageUnitController()
     
     
-    def get_storage_units(self):
+    def get_storage_units(self, sort_by = None):
         storage_units = []
-        
-        query = """
-                SELECT 
-                    storage_unit.id AS storage_unit_id,
-                    storage_unit.label AS storage_unit_label,
-                    SUM(batch.count) AS total_count
-                FROM 
-                    storage_unit
-                LEFT JOIN 
-                    batch ON storage_unit.id = batch.storage
-                GROUP BY 
-                    storage_unit.id, storage_unit.label
-          """
-                # ORDER BY
-                #     total_count ASC;
+        if sort_by:
+            if sort_by == 'count':
+                query = """
+                        SELECT 
+                            storage_unit.id AS storage_unit_id,
+                            storage_unit.label AS storage_unit_label,
+                            SUM(batch.count) AS total_count
+                        FROM 
+                            storage_unit
+                        LEFT JOIN 
+                            batch ON storage_unit.id = batch.storage
+                        GROUP BY 
+                            storage_unit.id, storage_unit.label
+                        ORDER BY
+                            total_count DESC;
+                        """
+            if sort_by == 'id':
+                query = """
+                        SELECT 
+                            storage_unit.id AS storage_unit_id,
+                            storage_unit.label AS storage_unit_label,
+                            SUM(batch.count) AS total_count
+                        FROM 
+                            storage_unit
+                        LEFT JOIN 
+                            batch ON storage_unit.id = batch.storage
+                        GROUP BY 
+                            storage_unit.id, storage_unit.label
+                        ORDER BY
+                            storage_unit.id DESC;
+                        """
+                        
+        else:
+            query = """
+                        SELECT 
+                            storage_unit.id AS storage_unit_id,
+                            storage_unit.label AS storage_unit_label,
+                            SUM(batch.count) AS total_count
+                        FROM 
+                            storage_unit
+                        LEFT JOIN 
+                            batch ON storage_unit.id = batch.storage
+                        GROUP BY 
+                            storage_unit.id, storage_unit.label;
+                        """
+                        
         success, message, rows = self.custom_query(query)
         #   print(f"success: {success} message: {message} rows: {rows}")
         if success:

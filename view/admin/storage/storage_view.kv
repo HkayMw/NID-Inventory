@@ -1,0 +1,161 @@
+#:kivy 2.3.0
+# view/admin/contact/contact_view.kv
+
+<StorageScreen>:
+    id: storage_view
+    name: 'storage_view'
+    orientation: "vertical"
+            
+    MDLabel:
+        text: "Configurations"
+
+    # Window Section
+    MDBoxLayout:
+        # adaptive_height: True
+        md_bg_color: app.theme_cls.bg_light
+        id: window_section
+        name: "window_section"
+        orientation: "vertical"
+        padding: 0, 10
+        # size_hint_y: .75
+        height: self.minimum_height
+        spacing: 20
+
+        # Screen Title
+        MDBoxLayout:
+            orientation: 'horizontal'
+            padding: '10dp'
+            spacing: '10dp'
+            size_hint_y: .1
+            size_hint_x: .3
+            # width: '300dp'
+            pos_hint: {"center_x": .5, "center_y": .5}
+            
+            # Title
+            MDLabel:
+                id: screen_title
+                text: 'Manage Storage Units'
+                halign: 'center'
+                font_style: 'H4'
+                size_hint_y: None
+                # size_hint_x: None
+                pos_hint: {"center_x": .5, "center_y": .5}
+                # width: '300dp'
+
+        # horizontal line
+        MDSeparator:
+            height: "1dp"  # Thickness of the line
+            color: "#B0BEC5"  # Color of the line
+
+        # Main Section
+        MDBoxLayout:
+            orientation: "horizontal"
+            id: main_section
+            name: "main_section"
+            size_hint_y: .9
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                padding: 10
+                spacing: 20
+                # size_hint_y: .97
+                size_hint_x: .2
+                pos_hint: {"center_x": .5, "center_y": .5}
+
+                MDCard:
+                    id: storage_controls
+                    orientation: 'vertical'
+                    md_bg_color: app.theme_cls.bg_normal
+                    # padding: [10, 10, 10, 10]
+                    radius: [10]
+                    # size_hint_y: .97
+                    size_hint_x: 1
+                    elevation: 1
+
+                    MDLabel:
+                        text: "Controls"
+                        font_style: "H5"
+                        bold: True
+                        size_hint_y: .145
+                        halign: "center"
+                        valign: 'middle'
+
+                    # horizontal line
+                    MDSeparator:
+                        height: "1dp"  # Thickness of the line
+                        color: "#B0BEC5"  # Color of the line
+
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        padding: 10
+                        spacing: 20
+                        # size_hint_y: .
+                        # size_hint_x: .8
+                        pos_hint: {"center_x": .5, "center_y": .5}
+
+                        MDLabel:
+                            text: 'Unit capacity:'
+                            size_hint_y: .145
+
+                        MDRaisedButton:
+                            # size_hint_y: .4
+                            text: "Add"
+                            color: app.theme_cls.bg_light
+                            pos_hint: {"center_x": .5, "center_y": .5}
+
+                        MDRaisedButton:
+                            # size_hint_y: .4
+                            text: "Delete Selected"
+                            color: app.theme_cls.bg_light
+                            pos_hint: {"center_x": .5, "center_y": .5}
+
+
+            # Storage Units
+            MDBoxLayout:
+                orientation: 'vertical'
+                padding: 10
+                spacing: 20
+                # size_hint_y: .97
+                size_hint_x: .8
+                pos_hint: {"center_x": .5, "center_y": .5}
+
+                MDCard:
+                    id: storage_list
+                    orientation: 'vertical'
+                    md_bg_color: app.theme_cls.bg_normal
+                    # padding: [10, 10, 10, 10]
+                    radius: [10]
+                    # size_hint_y: .97
+                    size_hint_x: 1
+                    elevation: 1
+
+                    MDLabel:
+                        text: "Storage Units"
+                        font_style: "H5"
+                        bold: True
+                        size_hint_y: .145
+                        halign: "center"
+                        valign: 'middle'
+
+                    # horizontal line
+                    MDSeparator:
+                        height: "1dp"  # Thickness of the line
+                        color: "#B0BEC5"  # Color of the line
+
+                    # MDLabel:
+                    #     size_hint_y: .05
+
+                    MDScrollView:
+                        # size_hint_y: .9
+                        size_hint_x: 1  # Ensure scroll view takes up full width
+
+                        GridLayout:
+                            id: storage_unit_grid
+                            cols: 4
+                            spacing: dp(12)
+                            padding: dp(18)
+                            on_size: root.update_grid_cols(storage_list)
+                            size_hint_y: None
+                            adaptive_width: True
+                            height: self.minimum_height  # Set height dynamically based on content
+                            pos_hint: {"center_x": .5}

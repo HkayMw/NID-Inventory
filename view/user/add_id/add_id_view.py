@@ -1,4 +1,5 @@
 from kivymd.app import MDApp
+from kivy.metrics import dp
 from kivy.clock import Clock
 from kivy.uix.screenmanager import Screen
 from controller.id_controller import IdController
@@ -28,7 +29,7 @@ class AddIDScreen(Screen):
         self.app = MDApp.get_running_app()
         # Clear notice
         self.notice = self.app.root.ids.notice
-        self.progress = self.app.root.ids.progress
+        # self.progress = self.app.root.ids.progress
         
         
         
@@ -79,7 +80,9 @@ class AddIDScreen(Screen):
             self.reset_dialog = MDDialog(
                 title="Confirm Reset",
                 text="Are you sure you want to reset?, all IDs scanned this session will not be added to database",
-                size_hint=(0.4, 0.25),
+                # size_hint=(0.4, 0.25),
+                size_hint=(None, None),
+                size = (dp(480), dp(180)),
                 buttons=[
                     MDRaisedButton(
                         text="Cancel",

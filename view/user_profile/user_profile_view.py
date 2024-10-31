@@ -18,6 +18,19 @@ class ProfileScreen(Screen):
         
         
     def on_enter(self, *args):
+        self.ids.current_password.text = ''
+        self.ids.new_password.text = ''
+        self.ids.new_password1.text = ''
+        
+        items = self.app.root.ids.side_nav.get_screen('admin_nav').ids.navigation_rail.children[0].children[0].children
+        for item in items:
+            item.active = False
+            
+        items = self.app.root.ids.side_nav.get_screen('clerk_nav').ids.navigation_rail.children[0].children[0].children
+        for item in items:
+            item.active = False
+        
+        
         if self.app.user_details['othernames']:
             self.ids.full_name.text = self.app.user_details['firstname'] + " " + self.app.user_details['othernames'] + " " + self.app.user_details['lastname']
         else:
@@ -31,10 +44,6 @@ class ProfileScreen(Screen):
         new_password = self.ids.new_password.text
         new_password1 = self.ids.new_password1.text
         
-        # print(current_password)
-        # print(new_password)
-        # print(new_password1)
-        
         if (not current_password) or (not new_password) or (not new_password1):
             self.notice.text = 'All fields are required to change password'
             return
@@ -44,18 +53,9 @@ class ProfileScreen(Screen):
             self.notice.text = 'New Passwords dont match, please check'
             return
         
-        # if not new_password:
-        #     return
-        # if not new_password1:
-        #     return
-        
-        
-        
         id_number = self.app.user_details['id_number']
         
         success, message, user = self.user_controller.validate_user(id_number, current_password)
-        
-        # print(success, " ", message, " ", user)
         
         if success:
             # clear password fields

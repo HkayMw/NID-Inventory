@@ -53,61 +53,73 @@
             id: main_section
             name: "main_section"
             size_hint_y: .9
+            size_hint_x: .8
+            pos_hint: {"center_x": .5, "center_y": .5}
 
-            MDBoxLayout:
-                orientation: 'vertical'
-                padding: 10
-                spacing: 20
-                # size_hint_y: .97
-                size_hint_x: .2
-                pos_hint: {"center_x": .5, "center_y": .5}
+            # MDBoxLayout:
+            #     orientation: 'vertical'
+            #     padding: 10
+            #     spacing: 20
+            #     # size_hint_y: .97
+            #     size_hint_x: .2
+            #     pos_hint: {"center_x": .5, "center_y": .5}
 
-                MDCard:
-                    id: storage_controls
-                    orientation: 'vertical'
-                    md_bg_color: app.theme_cls.bg_normal
-                    # padding: [10, 10, 10, 10]
-                    radius: [10]
-                    # size_hint_y: .97
-                    size_hint_x: 1
-                    elevation: 1
+                # MDCard:
+                #     id: storage_controls
+                #     orientation: 'vertical'
+                #     md_bg_color: app.theme_cls.bg_normal
+                #     # padding: [10, 10, 10, 10]
+                #     radius: [10]
+                #     # size_hint_y: .97
+                #     size_hint_x: 1
+                #     elevation: 1
 
-                    MDLabel:
-                        text: "Controls"
-                        font_style: "H5"
-                        bold: True
-                        size_hint_y: .145
-                        halign: "center"
-                        valign: 'middle'
+                #     MDLabel:
+                #         text: "Controls"
+                #         font_style: "H5"
+                #         bold: True
+                #         size_hint_y: .145
+                #         halign: "center"
+                #         valign: 'middle'
 
-                    # horizontal line
-                    MDSeparator:
-                        height: "1dp"  # Thickness of the line
-                        color: "#B0BEC5"  # Color of the line
+                #     # horizontal line
+                #     MDSeparator:
+                #         height: "1dp"  # Thickness of the line
+                #         color: "#B0BEC5"  # Color of the line
 
-                    MDBoxLayout:
-                        orientation: 'vertical'
-                        padding: 10
-                        spacing: 20
-                        # size_hint_y: .
-                        # size_hint_x: .8
-                        pos_hint: {"center_x": .5, "center_y": .5}
+                #     MDBoxLayout:
+                #         orientation: 'vertical'
+                #         padding: 10
+                #         spacing: 20
+                #         # size_hint_y: .
+                #         # size_hint_x: .8
+                #         pos_hint: {"center_x": .5, "center_y": .5}
 
-                        MDLabel:
-                            text: 'Unit capacity:'
-                            size_hint_y: .145
+                #         # MDLabel:
+                #         #     text: 'Unit capacity:'
+                #         #     size_hint_y: .145
 
-                        MDRaisedButton:
-                            # size_hint_y: .4
-                            text: "Add"
-                            color: app.theme_cls.bg_light
-                            pos_hint: {"center_x": .5, "center_y": .5}
+                #         # Input field for number of storage units
+                #         MDTextField:
+                #             id: storage_units_input
+                #             hint_text: "Number of Storage Units"
+                #             helper_text: "Enter a number"
+                #             helper_text_mode: "on_focus"  # Show helper text when focused
+                #             input_filter: 'int'  # Only accept integer values
+                #             size_hint_y: None
+                #             height: "48dp"  # Set a specific height
 
-                        MDRaisedButton:
-                            # size_hint_y: .4
-                            text: "Delete Selected"
-                            color: app.theme_cls.bg_light
-                            pos_hint: {"center_x": .5, "center_y": .5}
+                #         MDRaisedButton:
+                #             # size_hint_y: .4
+                #             text: "Add"
+                #             color: app.theme_cls.bg_light
+                #             pos_hint: {"center_x": .5, "center_y": .5}
+
+                #         MDRaisedButton:
+                #             # size_hint_y: .4
+                #             text: "Delete Selected"
+                #             color: app.theme_cls.bg_light
+                #             pos_hint: {"center_x": .5, "center_y": .5}
 
 
             # Storage Units
@@ -116,7 +128,7 @@
                 padding: 10
                 spacing: 20
                 # size_hint_y: .97
-                size_hint_x: .8
+                # size_hint_x: .8
                 pos_hint: {"center_x": .5, "center_y": .5}
 
                 MDCard:
@@ -129,13 +141,31 @@
                     size_hint_x: 1
                     elevation: 1
 
-                    MDLabel:
-                        text: "Storage Units"
-                        font_style: "H5"
-                        bold: True
-                        size_hint_y: .145
-                        halign: "center"
-                        valign: 'middle'
+                    MDBoxLayout:
+                        orientation: 'horizontal'
+                        size_hint_y: None
+                        height: "48dp"  # Set a specific height for the header
+
+                        MDLabel:
+                            text: "Storage Units"
+                            font_style: "H5"
+                            bold: True
+                            # size_hint_x: 0.8  # Use 80% of the width for the label
+                            halign: "center"  # Align text to the left
+
+                        MDIconButton:
+                            icon: "plus"  # Icon for adding
+                            on_release: root.open_add_dialog()  # Call the method to add storage units
+                            size_hint_x: None
+                            width: dp(48)  # Fixed width for the icon button
+                            pos_hint: {"center_y": .5}  # Center vertically
+
+                        MDIconButton:
+                            icon: "delete"  # Icon for deleting
+                            on_release: root.open_delete_dialog()  # Call the method to delete selected units
+                            size_hint_x: None
+                            width: dp(48)  # Fixed width for the icon button
+                            pos_hint: {"center_y": .5}  # Center vertically
 
                     # horizontal line
                     MDSeparator:

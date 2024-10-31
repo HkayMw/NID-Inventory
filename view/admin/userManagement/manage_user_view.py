@@ -39,6 +39,10 @@ class ManageUser(Screen):
         
         self.clicked_user_row = None
         
+    def on_leave(self, *args):
+        self.clear_fields()
+        return super().on_leave(*args)
+        
     def clear_notice(self, *args):
         self.notice.text = ''
     

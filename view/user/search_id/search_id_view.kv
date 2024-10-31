@@ -59,7 +59,7 @@
                 name: "controls_section"
                 orientation: "horizontal"
                 size_hint_y: .15
-                size_hint_x: .8
+                size_hint_x: .9
                 padding: [10]
                 pos_hint: {"center_x": .5, "center_y": .5}
                 spacing: 80
@@ -67,24 +67,26 @@
                 #Search with ID number controls
                 MDBoxLayout:
                     adaptive_height: True
-                    size_hint_x: .2
+                    size_hint_x: .3
+                    spacing: 20
                     # radius: [15, 15, 15, 15]
                     # pos_hint: {"center_x": 0.5, "center_y": 0.5}
 
                     MDTextField:
                         id: id_no_field
+                        name: 'id'
                         mode: "rectangle"
                         hint_text: "ID Number"
                         max_text_length: 8
-                        icon_right: "information"
-                        # pos_hint: {"center_x": .5, "center_y": .5}
-
-                    MDIconButton:
-                        icon: "magnify"
-                        size_hint_x: .3
+                        icon_left: "identifier"
                         pos_hint: {"center_x": .5, "center_y": .5}
-                        icon_size: "30sp"
-                        on_press: root.search_id('id')
+
+                    MDRaisedButton:
+                        text: "Search"
+                        padding: [23]
+                        pos_hint: {"center_x": .5, "center_y": .42}
+                        size_hint_x: .3
+                        on_release: root.search_id('id')
 
                 #Search with name controls
                 MDBoxLayout:
@@ -95,27 +97,30 @@
                     MDTextField:
                         id: firstname_field
                         mode: "rectangle"
+                        icon_left: "account"
                         hint_text: "Firstname"
                     
                     MDTextField:
                         id: lastname_field
                         mode: "rectangle"
+                        icon_left: "account"
                         hint_text: "Surname"
 
-                    MDIconButton:
-                        icon: "magnify"
-                        pos_hint: {"center_x": .5, "center_y": .5}
+                    MDRaisedButton:
+                        text: "Search"
+                        pos_hint: {"center_x": .5, "center_y": .42}
+                        padding: [23]
                         size_hint_x: .3
-                        icon_size: "30sp"
-                        on_press: root.search_id('name')
+                        on_release: root.search_id('name')
 
                 MDTextField:
                     id: qr_code
                     mode: "rectangle"
                     hint_text: "QR Code"
-                    size_hint_x: .2
+                    size_hint_x: .3
                     icon_left: "qrcode"
-                    on_text_validate: root.search_id('qr_code')
+                    # on_text_validate: root.search_id('qr_code')
+                    on_text: root.schedule_validation('qr_code')
 
 
                 
@@ -143,14 +148,27 @@
 
                     MDBoxLayout:
                         orientation: "vertical"
+                        id: card_location_header
 
-                        MDLabel:
-                            text: "Card Location"
-                            font_style: "H5"
-                            bold: True
-                            size_hint_y: .135
-                            halign: "center"
-                            valign: 'middle'
+                        MDBoxLayout:
+                            size_hint_y: .15
+                            orientation: 'horizontal'
+
+                            MDLabel:
+                                text: "Card Location"
+                                font_style: "H5"
+                                bold: True
+                                # size_hint_y: .135
+                                halign: "center"
+                                valign: 'middle'
+
+                            MDIconButton:
+                                icon: "printer"  # Icon for adding
+                                on_release: root.print_sticker()  # Call the method to add storage units
+                                size_hint_x: None
+                                width: dp(48)  # Fixed width for the icon button
+                                pos_hint: {"center_y": .5}  # Center vertically
+
                         
 
                         # horizontal line

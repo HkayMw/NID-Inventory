@@ -43,6 +43,7 @@ class AddIDScreen(Screen):
         # print("user_id: ", self.user_id)
          
         # self.ids.count.text = str(len(self.app.current_batch['ids']))    
+        self.validation_event = None
         
         # Update count and progress bar
         self.ids.count.text = str(len(self.app.current_batch['ids']))
@@ -110,8 +111,19 @@ class AddIDScreen(Screen):
     def refocus_qr_code(self, *args):
         # Set focus back to the MDTextField after the delay
         self.ids.qr_code.focus = True    
+      
+    def schedule_validation(self):
+        # Cancel any previously scheduled validation
+        qr_code = self.ids.qr_code.text
+        if not qr_code:
+            return
+        if self.validation_event and self.validation_event.is_triggered:
+            self.validation_event.cancel()
         
-    def add_id(self):
+        # Schedule validation to run after a brief delay
+        self.validation_event = Clock.schedule_once(self.add_id, 0.2)
+          
+    def add_id(self, *args):
         
         current_batch = self.app.current_batch
         

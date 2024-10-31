@@ -130,9 +130,11 @@
                         hint_text: "QR Code"
                         size_hint_x: .5
                         icon_left: "qrcode"
-                        on_text_validate: 
-                            root.add_id()
-                            qr_code.focus = True
+                        # on_text_validate: 
+                        #     root.add_id()
+                        on_text: root.schedule_validation()
+
+                            # qr_code.focus = True
                         # font_size: dp(Window.width // 90)
 
                 MDRaisedButton:

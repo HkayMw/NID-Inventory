@@ -151,7 +151,7 @@
                                 mode: "rectangle"
                                 hint_text: "ID Number"
                                 max_text_length: 8
-                                icon_right: "information"
+                                icon_left: "identifier"
                                 pos_hint: {"center_x": 0.5, "center_y": 0.5}
                                     
                             # Phone Number and submit button row
@@ -167,7 +167,7 @@
                                     mode: "rectangle"
                                     hint_text: "Phone Number"
                                     max_text_length: 10
-                                    icon_right: "phone"
+                                    icon_left: "phone"
                                     pos_hint: {"center_x": 0.5, "center_y": 0.5}
 
                                 #Add/Update submit button
@@ -216,7 +216,8 @@
                                 hint_text: "QR Code"
                                 # size_hint_x: .2
                                 icon_left: "qrcode"
-                                on_text_validate: root.search_contact(qr_code=qr_code.text) 
+                                # on_text_validate: root.search_contact(qr_code=qr_code.text) 
+                                on_text: root.schedule_validation() 
                                     
                             # ID Number and submit button row
                             MDBoxLayout:
@@ -230,7 +231,7 @@
                                     mode: "rectangle"
                                     hint_text: "ID Number"
                                     max_text_length: 8
-                                    icon_right: "information"
+                                    icon_left: "identifier"
                                     pos_hint: {"center_x": 0.5, "center_y": 0.5}
 
                                 #Search with ID submit button

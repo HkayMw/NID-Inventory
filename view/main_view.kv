@@ -54,7 +54,7 @@
                 MDCard:
                     id: user
                     md_bg_color: app.theme_cls.primary_color
-                    size_hint_x: .8
+                    size_hint_x: .85
                 
                 MDIconButton:
                     icon: 'weather-night'
@@ -62,7 +62,7 @@
                     user_font_size: "64sp"
                     pos_hint: {"center_x": .5, "center_y": .5}
                     theme_text_color: "Primary"
-                    size_hint_x: .2
+                    size_hint_x: .15
                     on_release:
                         app.theme_cls.theme_style = 'Dark' if app.theme_cls.theme_style == 'Light' else 'Light'
                         theme_icon.icon = 'weather-night' if self.icon == 'weather-sunny' else 'weather-sunny'

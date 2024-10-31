@@ -31,7 +31,7 @@
             selected_color_background: app.theme_cls.primary_color
             ripple_color_item: app.theme_cls.primary_color
             size_hint_x: 1
-            # current_selected_item: 4
+            # current_selected_item: 1
             # anchor: "center"
 
             # MDNavigationRailMenuButton:
@@ -70,78 +70,78 @@
                 on_release: app.change_screen('report_view')
                 # on_release: app.change_screen('user_profile_view')
 
-            MDNavigationRailItem:
-                icon: "logout"
-                text: "Logout"
-                active: False
-                on_release: 
-                    app.show_logout_dialog()  # Call the logout method in your app
-
-    MDNavigationDrawer:
-        id: nav_drawer
-        md_bg_color: app.theme_cls.bg_dark
-        elevation: 1
-        radius: (0, dp(16), dp(16), 0)
-        on_status: app.on_navigation_state(self.status)  # Call method on state change
-
-        MDNavigationDrawerMenu:
-
-            # DrawerClickableItem:
-            #     icon: "menu"
-            #     text_right_color: app.theme_cls.bg_light
-            #     text: "Menu"
+            # MDNavigationRailItem:
+            #     icon: "logout"
+            #     text: "Logout"
+            #     active: False
             #     on_release: 
-            #         nav_drawer.set_state("toggle")
+            #         app.show_logout_dialog()  # Call the logout method in your app
 
-            MDNavigationDrawerHeader:
-                title: "Admin"
-                title_color: "#4a4939"
-                text: "admin nav"
-                spacing: "4dp"
-                padding: "12dp", 0, 0, "56dp"
+    # MDNavigationDrawer:
+    #     id: nav_drawer
+    #     md_bg_color: app.theme_cls.bg_dark
+    #     elevation: 1
+    #     radius: (0, dp(16), dp(16), 0)
+    #     on_status: app.on_navigation_state(self.status)  # Call method on state change
+
+    #     MDNavigationDrawerMenu:
+
+    #         # DrawerClickableItem:
+    #         #     icon: "menu"
+    #         #     text_right_color: app.theme_cls.bg_light
+    #         #     text: "Menu"
+    #         #     on_release: 
+    #         #         nav_drawer.set_state("toggle")
+
+    #         MDNavigationDrawerHeader:
+    #             title: "Admin"
+    #             title_color: "#4a4939"
+    #             text: "admin nav"
+    #             spacing: "4dp"
+    #             padding: "12dp", 0, 0, "56dp"
             
-            MDNavigationDrawerDivider:
+    #         MDNavigationDrawerDivider:
 
-            DrawerClickableItem:
-                icon: "view-dashboard"
-                text: "Dashboard"
-                on_release: 
-                    nav_drawer.set_state("toggle")
-                    app.change_screen('adminDashboard_view')
+    #         DrawerClickableItem:
+    #             icon: "view-dashboard"
+    #             text: "Dashboard"
+    #             on_release: 
+    #                 nav_drawer.set_state("toggle")
+    #                 app.change_screen('adminDashboard_view')
 
-            DrawerClickableItem:
-                icon: "account-cog"
-                text: "Manage Users"
-                on_release: 
-                    nav_drawer.set_state("toggle")
-                    app.change_screen('manage_user_view')
+    #         DrawerClickableItem:
+    #             icon: "account-cog"
+    #             text: "Manage Users"
+    #             on_release: 
+    #                 nav_drawer.set_state("toggle")
+    #                 app.change_screen('manage_user_view')
 
-            DrawerClickableItem:
-                icon: "cog"
-                text: "Configurations"
-                on_release: 
-                    nav_drawer.set_state("toggle")
-                    app.change_screen('config_view')
+    #         DrawerClickableItem:
+    #             icon: "cog"
+    #             text: "Configurations"
+    #             on_release: 
+    #                 nav_drawer.set_state("toggle")
+    #                 app.change_screen('config_view')
 
-            DrawerClickableItem:
-                icon: "bell"
-                text: "Notifications"
-                on_release: 
-                    nav_drawer.set_state("toggle")
-                    app.change_screen('notify_view')
+    #         DrawerClickableItem:
+    #             icon: "bell"
+    #             text: "Notifications"
+    #             on_release: 
+    #                 nav_drawer.set_state("toggle")
+    #                 app.change_screen('notify_view')
 
-            DrawerClickableItem:
-                icon: "chart-box-outline"
-                text: "Reports"
-                on_release: 
-                    nav_drawer.set_state("toggle")
-                    app.change_screen('report_view')
+    #         DrawerClickableItem:
+    #             icon: "chart-box-outline"
+    #             text: "Reports"
+    #             on_release: 
+    #                 nav_drawer.set_state("toggle")
+    #                 app.change_screen('report_view')
 
-            MDNavigationDrawerDivider:
+    #         MDNavigationDrawerDivider:
 
-            DrawerClickableItem:
-                icon: "logout"
-                text: "Logout"
-                on_release: 
-                    app.show_logout_dialog()  # Call the logout method in your app
-                    nav_drawer.set_state("toggle")
+    #         DrawerClickableItem:
+    #             icon: "logout"
+    #             text: "Logout"
+    #             on_release: 
+    #                 app.show_logout_dialog()  # Call the logout method in your app
+    #                 nav_drawer.set_state("toggle")

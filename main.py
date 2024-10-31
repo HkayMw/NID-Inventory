@@ -1,7 +1,7 @@
 from kivy.config import Config
 
 # Set the default window size
-default_width = 1024
+default_width = 1200
 default_height = 600
 
 # Config.set('graphics', 'width', str(default_width))
@@ -12,23 +12,23 @@ from kivy.metrics import dp
 from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivy.core.window import Window
-from kivy.clock import Clock
+# from kivy.clock import Clock
 from kivy.modules import inspector
 from kivy.uix.screenmanager import ScreenManager, NoTransition
 from kivy.uix.boxlayout import BoxLayout
 from kivy.animation import Animation
-from datetime import datetime
+# from datetime import datetime
 
 # KivyMD
-from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.list import OneLineIconListItem, IconLeftWidget
-from kivymd.uix.navigationdrawer import MDNavigationDrawer
-from kivymd.uix.navigationrail import MDNavigationRailItem
-from kivymd.uix.snackbar import MDSnackbar
+# from kivymd.uix.boxlayout import MDBoxLayout
+# from kivymd.uix.list import OneLineIconListItem, IconLeftWidget
+# from kivymd.uix.navigationdrawer import MDNavigationDrawer
+# from kivymd.uix.navigationrail import MDNavigationRailItem
+# from kivymd.uix.snackbar import MDSnackbar
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.label import MDLabel
-from kivymd.uix.button import MDFlatButton, MDRaisedButton, MDIconButton, MDTextButton, MDFillRoundFlatIconButton
-from kivymd.uix.pickers import MDDatePicker
+from kivymd.uix.button import MDRaisedButton, MDIconButton
+# from kivymd.uix.pickers import MDDatePicker
 
 # from model.current_user import CurrentUser
 
@@ -54,10 +54,19 @@ from view.admin.configuration.config_view import ConfigScreen
 from view.admin.notifyClient.notify_view import NotifyScreen
 from view.admin.report.report_view import ReportScreen
 
+
+# Maximize the window size on startup
+# Window.size = (Window.width, Window.height)  # Start with the full size of the window
+
+# Alternatively, for a fullscreen experience
+# Window.fullscreen = True
+
+# Maximize the window on start
+Window.maximize()
+        
 # Set the minimum size to be the same as the default size
 Window.minimum_width = default_width
 Window.minimum_height = default_height
-
 
 # Function to force layout refresh
 def refresh_layout(*args):
@@ -230,8 +239,8 @@ class MainApp(MDApp):
         nav_options = {
 
             # Navigation Screens
-            'admin_nav': AdminNav(name='admin_nav'),
             'clerk_nav': ClerkNav(name='clerk_nav'),
+            'admin_nav': AdminNav(name='admin_nav'),
         }
         for nav_option in nav_options.values():
             nav.add_widget(nav_option)
@@ -239,7 +248,7 @@ class MainApp(MDApp):
     def change_screen(self, screen_name):
         self.root.ids.screen_manager.current = screen_name
 
-    def show_logout_dialog(self):
+    def show_logout_dialog(self, *args):
         if not hasattr(self, 'logout_dialog'):
             self.logout_dialog = MDDialog(
                 title="Confirm Logout",
@@ -280,48 +289,6 @@ class MainApp(MDApp):
         # Redirect to login screen
         self.root.ids.screen_manager.current = 'login_view'
 
-    # def show_date_picker(self, text_field):
-    #     # Create the date picker
-    #     date_dialog = MDDatePicker(
-    #         primary_color=self.theme_cls.primary_color,
-    #         selector_color=self.theme_cls.accent_color,
-    #         text_button_color=self.theme_cls.primary_dark,
-    #     )
-
-    #     # Set the selected date callback with text_field
-    #     date_dialog.bind(on_save=lambda instance, value, date_range: self.on_save_date(text_field, value))
-
-    #     # Open the date picker
-    #     date_dialog.open()
-
-    # def on_save_date(self, text_field, value):
-    #     # Format the selected date
-    #     formatted_date = value.strftime('%Y-%m-%d')
-    #     text_field.text = formatted_date
-
-    #     # If the text field is 'end_date', check if it is less than 'start_date'
-    #     if text_field.id == 'end_date':
-    #         start_date_str = self.ids.start_date.text
-    #         if start_date_str:
-    #             start_date = datetime.strptime(start_date_str, '%Y-%m-%d')  # Parse start date
-    #             end_date = datetime.strptime(formatted_date, '%Y-%m-%d')  # Parse end date
-                
-    #             # Check if end date is less than start date
-    #             if end_date < start_date:
-    #                 # Set start date to end date
-    #                 self.ids.start_date.text = formatted_date
-                    
-    #     # If the text field is 'start_date', check if it is greater than 'end_date'
-    #     elif text_field.id == 'start_date':
-    #         start_date_str = self.ids.start_date.text
-    #         if start_date_str:
-    #             start_date = datetime.strptime(start_date_str, '%Y-%m-%d')  # Parse start date
-    #             end_date = datetime.strptime(formatted_date, '%Y-%m-%d')  # Parse end date
-                
-    #             # Check if end date is less than start date
-    #             if end_date < start_date:
-    #                 # Set start date to end date
-    #                 self.ids.end_date.text = formatted_date
 
     def animate_notice(self):
         label = self.root.ids.notice
@@ -345,8 +312,11 @@ class MainApp(MDApp):
             icon='account-circle',  # Or use a path to the avatar image
             user_font_size="82sp",
             pos_hint={'center_y': 0.5},
-            
-
+        )
+        avatar1 = MDIconButton(
+            icon='logout',  # Or use a path to the avatar image
+            user_font_size="82sp",
+            pos_hint={'center_y': 0.5},
         )
 
         # Add user name and role label
@@ -360,8 +330,10 @@ class MainApp(MDApp):
             font_style='Subtitle1'  # Adjust font size as needed
         )
         avatar.bind(on_release = self.open_user_profile)
+        avatar1.bind(on_release = self.show_logout_dialog)
         user_box.add_widget(name_role_label)
         user_box.add_widget(avatar)
+        user_box.add_widget(avatar1)
 
     def clear_user_info(self):
         user_box = self.root.ids.user

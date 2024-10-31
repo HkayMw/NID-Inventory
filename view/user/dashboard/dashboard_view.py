@@ -4,6 +4,7 @@ from kivy.lang import Builder
 from kivymd.app import MDApp
 from controller.id_controller import IdController
 from controller.dashboard_controller import DashboardController
+from kivymd.color_definitions import colors
 
 Builder.load_file('view/user/dashboard/dashboard_view.kv')
 
@@ -15,6 +16,7 @@ class DashboardScreen(Screen):
         self.id_controller = IdController()
         
         self.notice = self.app.root.ids.notice
+        self.colors = colors
         
     def on_enter(self, *args):
         self.current_user = self.app.user_details

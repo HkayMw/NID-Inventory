@@ -18,6 +18,11 @@ class ProfileScreen(Screen):
         
         
     def on_enter(self, *args):
+        self.ids.current_password.text = ''
+        self.ids.new_password.text = ''
+        self.ids.new_password1.text = ''
+        
+        
         if self.app.user_details['othernames']:
             self.ids.full_name.text = self.app.user_details['firstname'] + " " + self.app.user_details['othernames'] + " " + self.app.user_details['lastname']
         else:

@@ -96,10 +96,11 @@ class StorageUnitController(Controller):
         
         success, message, old_storage_units = self.read()
         # print(old_storage_units)
+        existing_units = len(old_storage_units)
         
         # If you want to check for existing units, handle that logic here if needed
         
-        for i in range(1, number_of_units + 1):
+        for i in range(1 + existing_units, number_of_units + existing_units + 1):
             unit = {
                 'label': str(i),
                 'created_on': created_on,
@@ -115,7 +116,18 @@ class StorageUnitController(Controller):
 
         return True, "All records added successfully", storage_units  # Return after loop completes
 
-            
+    def delete_storage_units(self, ids):
+        # print(ids)
+        placeholders = ', '.join(['?'] * len(ids))  # `?` for each item in id_list
+        where_clause = f"id IN ({placeholders})"  # Adjust `id_column` to match your actual column name
+        params = ids  # Params list, same as id_list here
+        
+        success, message, data = self.delete(where_clause, params)
+        
+        if success:
+            return success, message, data
+        else:
+            return False, message, None
     
           
           

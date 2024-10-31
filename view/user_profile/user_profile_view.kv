@@ -170,30 +170,91 @@
                             MDBoxLayout:
                                 orientation: "horizontal"
                                 spacing: "20dp"
+
+                                FloatLayout:
+                                    size_hint_y: None
+                                    height: dp(60)
                                 
-                                MDTextField:
-                                    id: current_password
-                                    hint_text: "Current Password"
-                                    password: True
-                                    icon_right: "eye"
-                                    icon_right_color: app.theme_cls.primary_color
-                                    mode: "rectangle"
+                                    MDTextField:
+                                        id: current_password
+                                        hint_text: "Current Password"
+                                        mode: "rectangle"
+                                        pos_hint: {"center_y": .5, "right": 1}
+                                        height: dp(60)
+                                        icon_left: "key-variant"
+                                        multiline: False
+                                        font_size: '16sp'
+                                        password: True
 
-                                MDTextField:
-                                    id: new_password
-                                    hint_text: "New Password"
-                                    password: True
-                                    icon_right: "eye"
-                                    icon_right_color: app.theme_cls.primary_color
-                                    mode: "rectangle"
+                                    MDIconButton:
+                                        icon: "eye-off"
+                                        pos_hint: {"center_y": .5, "right": 1}
+                                        on_release:
+                                            self.icon = "eye" if self.icon == "eye-off" else "eye-off"
+                                            current_password.password = not current_password.password
+                                            current_password.focus = True
 
-                                MDTextField:
-                                    id: new_password1
-                                    hint_text: "Confirm New Password"
-                                    password: True
-                                    icon_right: "eye"
-                                    icon_right_color: app.theme_cls.primary_color
-                                    mode: "rectangle"
+                                FloatLayout:
+                                    size_hint_y: None
+                                    height: dp(60)
+                                
+                                    MDTextField:
+                                        id: new_password
+                                        hint_text: "Current Password"
+                                        mode: "rectangle"
+                                        pos_hint: {"center_y": .5, "right": 1}
+                                        height: dp(60)
+                                        icon_left: "key-variant"
+                                        multiline: False
+                                        font_size: '16sp'
+                                        password: True
+
+                                    MDIconButton:
+                                        icon: "eye-off"
+                                        pos_hint: {"center_y": .5, "right": 1}
+                                        on_release:
+                                            self.icon = "eye" if self.icon == "eye-off" else "eye-off"
+                                            new_password.password = not new_password.password
+                                            new_password.focus = True
+
+                                FloatLayout:
+                                    size_hint_y: None
+                                    height: dp(60)
+                                
+                                    MDTextField:
+                                        id: new_password1
+                                        hint_text: "Current Password"
+                                        mode: "rectangle"
+                                        pos_hint: {"center_y": .5, "right": 1}
+                                        height: dp(60)
+                                        icon_left: "key-variant"
+                                        multiline: False
+                                        font_size: '16sp'
+                                        password: True
+
+                                    MDIconButton:
+                                        icon: "eye-off"
+                                        pos_hint: {"center_y": .5, "right": 1}
+                                        on_release:
+                                            self.icon = "eye" if self.icon == "eye-off" else "eye-off"
+                                            new_password1.password = not new_password1.password
+                                            new_password1.focus = True
+
+                                # MDTextField:
+                                #     id: new_password
+                                #     hint_text: "New Password"
+                                #     password: True
+                                #     icon_right: "eye"
+                                #     icon_right_color: app.theme_cls.primary_color
+                                #     mode: "rectangle"
+
+                                # MDTextField:
+                                #     id: new_password1
+                                #     hint_text: "Confirm New Password"
+                                #     password: True
+                                #     icon_right: "eye"
+                                #     icon_right_color: app.theme_cls.primary_color
+                                #     mode: "rectangle"
 
                             MDRaisedButton:
                                 text: "Update Password"

@@ -106,13 +106,6 @@
             # md_bg_color: app.theme_cls.bg_dark
 
 
-            MDLabel:
-                id: notice
-                text: ''
-                halign: "center"
-                theme_text_color: "Custom"
-                text_color: 0, 1, 0, 1
-                font_style: 'H4'
                 # font_size: min(self.width * .6, self.height * .6)
 
             # MDSpinner:
@@ -124,8 +117,8 @@
             #     active: False
             MDBoxLayout:
                 orientation: 'vertical'
-                size_hint_x: None
-                width: '150dp'
+                size_hint_x: .2
+                # width: '150dp'
                 padding: [12]
 
                 MDLabel:
@@ -134,7 +127,7 @@
                     markup: True  # Enable markup for styling
                     halign: 'left'
                     color: app.theme_cls.primary_color
-                    padding: [20, 5]
+                    padding: [15, 5]
                     valign: 'middle'
                     
 
@@ -144,8 +137,15 @@
                     markup: True  # Enable markup for styling
                     halign: 'left'
                     color: app.theme_cls.primary_color
-                    padding: [20, 5]
+                    padding: [15, 5]
                     valign: 'middle'
 
+            MDLabel:
+                id: notice
+                text: ''
+                halign: "center"
+                theme_text_color: "Custom"
+                text_color: 0, 1, 0, 1
+                font_style: 'H4'
             # MDLabel:
             #     size_hint_x: .005

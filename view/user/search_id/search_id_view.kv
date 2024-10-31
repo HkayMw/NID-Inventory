@@ -83,7 +83,8 @@
 
                     MDRaisedButton:
                         text: "Search"
-                        padding: [23]
+                        padding: [(id_no_field.height)/3.5]
+                        # padding: [23]
                         pos_hint: {"center_x": .5, "center_y": .42}
                         size_hint_x: .3
                         on_release: root.search_id('id')
@@ -109,7 +110,7 @@
                     MDRaisedButton:
                         text: "Search"
                         pos_hint: {"center_x": .5, "center_y": .42}
-                        padding: [23]
+                        padding: [(lastname_field.height)/3.5]
                         size_hint_x: .3
                         on_release: root.search_id('name')
 

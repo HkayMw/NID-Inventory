@@ -108,6 +108,7 @@
                                 #     font_style: "H5"
 
                                 MDCard:
+                                    id: file_upload_card
                                     orientation: 'horizontal'
                                     padding: dp(5)
                                     size_hint: (0.9, None)
@@ -138,6 +139,7 @@
                                 MDRaisedButton:
                                     id: add_csv
                                     size_hint_x: .3
+                                    padding: [(file_upload_card.height)/3.5]
                                     # size_hint_y: .4
                                     text: "Add"
                                     pos_hint: {"center_x": 0.5}
@@ -176,9 +178,10 @@
                                     size_hint_x: .3
                                     # size_hint_y: .6
                                     text: "Add"
-                                    pos_hint: {"center_x": 0.5}
+                                    padding: [(phone_number_field.height)/3.5]
+                                    # pos_hint: {"center_x": 0.5}
                                     on_release: root.add_contact(id_number_field.text, phone_number_field.text) 
-                                    # pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                                    pos_hint: {"center_x": 0.5, "center_y": .42}
 
                             Label:
                                 size_hint_y: .1
@@ -239,8 +242,9 @@
                                     size_hint_x: .3
                                     # size_hint_y: .45
                                     text: "Search"
-                                    # pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                                    pos_hint: {"center_x": 0.5}
+                                    pos_hint: {"center_x": 0.5, "center_y": .42}
+                                    padding: [(id_number_field1.height)/3.5]
+                                    # pos_hint: {"center_x": 0.5}
                                     on_release: root.search_contact(id_number=id_number_field1.text) 
                                 
                                     # on_release: root.search_contact(id_number='wt3e6mqf')

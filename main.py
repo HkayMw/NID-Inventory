@@ -63,6 +63,7 @@ from view.admin.report.report_view import ReportScreen
 
 # Maximize the window on start
 Window.maximize()
+Window.set_icon("Assets/icon.png")
         
 # Set the minimum size to be the same as the default size
 Window.minimum_width = default_width
@@ -126,6 +127,15 @@ class MainApp(MDApp):
         super().__init__(**kwargs)
         # self.logout_dialog = None
         # self.logout_dialog = None
+        # Set the app icon
+        
+
+    # Method to center the window on the screen
+    def center_window(self, *args):
+        # Set window's top-left corner to the screen's top-left corner
+        Window.left = 0
+        Window.top = 30
+        # print
         
     def set_user_details(self, id_number, firstname, lastname,othernames, user_type):
         self.user_details['id_number'] = id_number
@@ -150,8 +160,12 @@ class MainApp(MDApp):
         return MainScreen()
 
     def on_start(self):
+        
+        
 
         # refresh_layout()
+        # Bind the window size change event to the center_window method
+        Window.bind(size=self.center_window)
 
         self.initialize_screens()
         # self.initialize_navigation_rail()

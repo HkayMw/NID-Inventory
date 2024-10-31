@@ -11,6 +11,7 @@ from kivy.core.image import Image as CoreImage
 import qrcode
 from io import BytesIO
 # from PIL import Image as PILImage, ImageDraw, ImageFont
+from Assets.label_printer import LabelPrinter
 
 
 from kivymd.app import MDApp
@@ -38,8 +39,9 @@ class SearchIDScreen(Screen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.data_tables = None
-        self.controller = IdController()
+        self.label_controller= LabelPrinter()
         self.batch_controller = BatchController()
+        self.controller = IdController()
         self.storage_controller = StorageUnitController()
         self.app = MDApp.get_running_app()
         # self.progress = self.app.root.ids.progress
@@ -57,8 +59,13 @@ class SearchIDScreen(Screen):
     def on_enter(self, *args):
         # self.initialize_table()
         self.clicked_id_signature = None
+        self.validation_scheduled = None
+        self.validation_event = None
         self.clicked_id_batch = None
-        self.clicked_id_data = None
+        self.clicked_id_data = None        
+        self.printing_img = None
+        self.printing_data = None
+
         
         self.ids.batch_name.text = ''
         self.ids.count.text = ''
@@ -67,6 +74,23 @@ class SearchIDScreen(Screen):
         
         self.current_user = self.app.user_details
         self.user_id = self.current_user['id_number']
+        
+        Clock.schedule_once(self.refocus_qr_code, 0.1)
+        
+        # print(dir(self.ids.qr_code))
+        
+        
+        
+        
+    def on_leave(self, *args):
+        self.ids.id_no_field.text = ''
+        self.ids.firstname_field.text = ''
+        self.ids.lastname_field.text = ''
+        self.ids.qr_code.text = ''
+        self.printing_img = None
+        self.printing_data = None
+
+        return super().on_leave(*args)
 
     def initialize_table(self, *args):
         # Initialize the table with default headers and an empty state
@@ -110,7 +134,24 @@ class SearchIDScreen(Screen):
         new_page = self.current_page + change
         self.current_page = new_page
 
-    def search_id(self, search_type):
+    def refocus_qr_code(self, *args):
+        # Set focus back to the MDTextField after the delay
+        self.ids.qr_code.focus = True
+        
+    def schedule_validation(self, search_type):
+        # Cancel any previously scheduled validation
+        qr_code = self.ids.qr_code.text
+        if not qr_code:
+            return
+        if self.validation_event and self.validation_event.is_triggered:
+            self.validation_event.cancel()
+        
+        # Schedule validation to run after a brief delay
+        self.validation_event = Clock.schedule_once(lambda dt: self.search_id(search_type), 0.2)
+        
+    def search_id(self, search_type, *args):
+        # print(1)
+        
         
         # Clear notice
         notice = self.notice
@@ -127,6 +168,7 @@ class SearchIDScreen(Screen):
             if not success:
                 # notice.theme_text_color = "Error"
                 notice.text = message
+                
             else:
                 notice.text = message
             
@@ -151,20 +193,26 @@ class SearchIDScreen(Screen):
 
         elif search_type == 'qr_code':
             qr_code = self.ids.qr_code.text
+            if not qr_code:
+                return
             success, message, search_results = self.controller.search_id(search_type='qr_code', qr_code=qr_code)
             if not success:
                 # notice.theme_text_color = "Error"
                 notice.text = message
+                Clock.schedule_once(self.refocus_qr_code, 0.1)
             self.ids.qr_code.text = ''
         
         # Update table with search results
         if search_results:
             # print(len(search_results))
             self.update_row_data(self.data_tables, search_results)
+            notice.text = message
+            Clock.schedule_once(self.refocus_qr_code, 0.1)
         else:
             # Clear the current row data
             self.data_tables.row_data =[]
             
+            Clock.schedule_once(self.refocus_qr_code, 0.1)
             # Also clear the signature map
             self.id_map.clear()
             
@@ -250,6 +298,9 @@ class SearchIDScreen(Screen):
         self.clicked_id_signature = None
         self.clicked_id_batch = None
         self.clicked_id_data = None
+        self.printing_img = None
+        self.printing_data = None
+
 
         try:
             # Get the index of the pressed row
@@ -266,12 +317,6 @@ class SearchIDScreen(Screen):
 
             # Calculate the global row index
             global_row_index = (current_page - 1) * rows_per_page + local_row_index
-
-            # print(f"Local cell index: {cell_index}")
-            # print(f"Local row index: {local_row_index}")
-            # print(f"Rows per page: {rows_per_page}")
-            # print(f"Current page: {current_page}")
-            # print(f"Global row index: {global_row_index}")
 
             # Get the global row data
             self.clicked_id_data = row_data = instance_table.row_data[global_row_index]
@@ -342,10 +387,16 @@ class SearchIDScreen(Screen):
 
                 # Create an Image widget to display the QR code
                 qr_image_widget = Image(texture=kivy_image.texture)
+                # print(dir(qr_image_widget))
 
                 # Add the image to the layout
                 self.ids.qr_card.clear_widgets()
+                # qr_image_widget.bind(on_release = lambda x, y: self.print_sticker(img, data))
                 self.ids.qr_card.add_widget(qr_image_widget)
+                
+                self.printing_img = img
+                self.printing_data = data
+                
                 
                 
                 
@@ -435,6 +486,21 @@ class SearchIDScreen(Screen):
         self.close_issue_id_dialog(instance)   
 
 
+    def print_sticker(self):
+        print('printing')
+        img = self.printing_img
+        data = self.printing_data
+        if not img:
+            return
+        if not data:
+            return
+        
+        success, message, label_data = self.label_controller.make_label(img, data)
+        if success:
+            print(message)
+            print(label_data)
+            
+            success, message, result = self.label_controller.print_label(label_data['file_path'], label_data['label_width'], label_data['label_height'])
 
 
 

@@ -239,8 +239,8 @@ class MainApp(MDApp):
         nav_options = {
 
             # Navigation Screens
-            'admin_nav': AdminNav(name='admin_nav'),
             'clerk_nav': ClerkNav(name='clerk_nav'),
+            'admin_nav': AdminNav(name='admin_nav'),
         }
         for nav_option in nav_options.values():
             nav.add_widget(nav_option)
@@ -248,7 +248,7 @@ class MainApp(MDApp):
     def change_screen(self, screen_name):
         self.root.ids.screen_manager.current = screen_name
 
-    def show_logout_dialog(self):
+    def show_logout_dialog(self, *args):
         if not hasattr(self, 'logout_dialog'):
             self.logout_dialog = MDDialog(
                 title="Confirm Logout",
@@ -312,8 +312,11 @@ class MainApp(MDApp):
             icon='account-circle',  # Or use a path to the avatar image
             user_font_size="82sp",
             pos_hint={'center_y': 0.5},
-            
-
+        )
+        avatar1 = MDIconButton(
+            icon='logout',  # Or use a path to the avatar image
+            user_font_size="82sp",
+            pos_hint={'center_y': 0.5},
         )
 
         # Add user name and role label
@@ -327,8 +330,10 @@ class MainApp(MDApp):
             font_style='Subtitle1'  # Adjust font size as needed
         )
         avatar.bind(on_release = self.open_user_profile)
+        avatar1.bind(on_release = self.show_logout_dialog)
         user_box.add_widget(name_role_label)
         user_box.add_widget(avatar)
+        user_box.add_widget(avatar1)
 
     def clear_user_info(self):
         user_box = self.root.ids.user

@@ -31,7 +31,7 @@
             selected_color_background: app.theme_cls.primary_color
             ripple_color_item: app.theme_cls.primary_color
             size_hint_x: 1
-            # current_selected_item: 3
+            # current_selected_item: 2
             # anchor: "center"
 
 
@@ -73,13 +73,13 @@
                 text: "Contacts"
                 on_release: app.change_screen('contact_view')
 
-            MDNavigationRailItem:
-                icon: "logout"
-                text: "Logout"
-                active: False
-                on_release: 
-                    app.show_logout_dialog()  # Call the logout method in your app
-                    # nav_drawer.set_state("toggle")
+            # MDNavigationRailItem:
+            #     icon: "logout"
+            #     text: "Logout"
+            #     active: False
+            #     on_release: 
+            #         app.show_logout_dialog()  # Call the logout method in your app
+            #         # nav_drawer.set_state("toggle")
 
             # # Custom switch component for light/dark mode
             # CustomSwitch:
@@ -87,73 +87,73 @@
 
                 
 
-    MDNavigationDrawer:
-        id: nav_drawer
+    # MDNavigationDrawer:
+    #     id: nav_drawer
         
-        md_bg_color: app.theme_cls.bg_dark
-        elevation: 1
-        # md_bg_color: "#b0f0d6"
-        radius: (0, dp(16), dp(16), 0)
-        on_status: app.on_navigation_state(self.status)  # Call method on state change
+    #     md_bg_color: app.theme_cls.bg_dark
+    #     elevation: 1
+    #     # md_bg_color: "#b0f0d6"
+    #     radius: (0, dp(16), dp(16), 0)
+    #     on_status: app.on_navigation_state(self.status)  # Call method on state change
 
-        MDNavigationDrawerMenu:
+    #     MDNavigationDrawerMenu:
+
+    #         # DrawerClickableItem:
+    #         #     icon: "menu"
+    #         #     # right_text: "+99"
+    #         #     text_right_color: "#4a4939"
+    #         #     text: "Menu"
+    #         #     on_release: 
+    #         #         nav_drawer.set_state("toggle")
+
+    #         MDNavigationDrawerHeader:
+    #             title: "Clerk"
+    #             title_color: "#4a4939"
+    #             text: "clerk nav"
+    #             spacing: "4dp"
+    #             padding: "12dp", 0, 0, "56dp"
+            
+    #         MDNavigationDrawerDivider:
+
+    #         DrawerClickableItem:
+    #             icon: "card-plus"
+    #             text: "Add ID"
+    #             on_release: 
+    #                 # add_id.active = True
+    #                 app.change_screen('add_id_view')
+    #                 nav_drawer.set_state("toggle")
+
+    #         DrawerClickableItem:
+    #             icon: "magnify"
+    #             text: "Search ID"
+    #             on_release: 
+    #                 # search_id.active = True
+    #                 nav_drawer.set_state("toggle")
+    #                 app.change_screen('search_id_view')
+
+
+    #         DrawerClickableItem:
+    #             icon: "sort-variant"
+    #             text: "Sort Cards"
+    #             on_release: 
+    #                 # sort_id.active = True
+    #                 app.change_screen('sort_id_view')
+    #                 nav_drawer.set_state("toggle")
+
+
+    #         DrawerClickableItem:
+    #             icon: "account-box"
+    #             text: "Contacts"
+    #             on_release: 
+    #                 # contacts.active = True
+    #                 app.change_screen('contact_view')
+    #                 nav_drawer.set_state("toggle")
+
+    #         MDNavigationDrawerDivider:  # Divider before logout button
 
             # DrawerClickableItem:
-            #     icon: "menu"
-            #     # right_text: "+99"
-            #     text_right_color: "#4a4939"
-            #     text: "Menu"
+            #     icon: "logout"
+            #     text: "Logout"
             #     on_release: 
+            #         app.show_logout_dialog()  # Call the logout method in your app
             #         nav_drawer.set_state("toggle")
-
-            MDNavigationDrawerHeader:
-                title: "Clerk"
-                title_color: "#4a4939"
-                text: "clerk nav"
-                spacing: "4dp"
-                padding: "12dp", 0, 0, "56dp"
-            
-            MDNavigationDrawerDivider:
-
-            DrawerClickableItem:
-                icon: "card-plus"
-                text: "Add ID"
-                on_release: 
-                    # add_id.active = True
-                    app.change_screen('add_id_view')
-                    nav_drawer.set_state("toggle")
-
-            DrawerClickableItem:
-                icon: "magnify"
-                text: "Search ID"
-                on_release: 
-                    # search_id.active = True
-                    nav_drawer.set_state("toggle")
-                    app.change_screen('search_id_view')
-
-
-            DrawerClickableItem:
-                icon: "sort-variant"
-                text: "Sort Cards"
-                on_release: 
-                    # sort_id.active = True
-                    app.change_screen('sort_id_view')
-                    nav_drawer.set_state("toggle")
-
-
-            DrawerClickableItem:
-                icon: "account-box"
-                text: "Contacts"
-                on_release: 
-                    # contacts.active = True
-                    app.change_screen('contact_view')
-                    nav_drawer.set_state("toggle")
-
-            MDNavigationDrawerDivider:  # Divider before logout button
-
-            DrawerClickableItem:
-                icon: "logout"
-                text: "Logout"
-                on_release: 
-                    app.show_logout_dialog()  # Call the logout method in your app
-                    nav_drawer.set_state("toggle")

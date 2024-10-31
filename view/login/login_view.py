@@ -4,13 +4,10 @@ from kivymd.app import MDApp
 from kivy.uix.screenmanager import Screen
 from controller.user_controller import UserController
 from kivy.lang import Builder
-# from model.current_user import CurrentUser
-from kivy.core.window import Window
 from Assets.qr_code import QRCode
-from kivy.uix.boxlayout import BoxLayout
 
 
-# # Builder.load_file('view/UI.kv')
+# Builder.load_file('view/UI.kv')
 Builder.load_file('view/login/login_view.kv')
 
 class LoginScreen(Screen):
@@ -26,8 +23,6 @@ class LoginScreen(Screen):
         # Clear notice
         notice = self.app.root.ids.notice
         notice.text = ''
-
-        # print(id_no + " " + password)
 
         if id_number.text == "" or password.text == "":
             notice.text = f"id_no and/ or password required"
@@ -52,11 +47,6 @@ class LoginScreen(Screen):
             
             valid, message, user = self.controller.validate_user(id_number.upper(), password.text)
             if valid:
-                # user = message
-                # notice.text = f"[color=#00ff00]{message}, {user}[/color]"
-                # print(user)
-                # current_user = CurrentUser()
-                # print(user)
                 self.app.set_user_details(
                     id_number=user[0],
                     firstname=user[1],
@@ -65,39 +55,50 @@ class LoginScreen(Screen):
                     user_type=user[5]
                 )
                 
-                # print(current_user.get_user_details())
                 user_data = self.app.user_details
-                # app.update_navigation(current_user.get_user_details())
                 
-                # self.parent.parent.current = 'add_id_view'
-                # self.manager.current = "search_id_view"
-                # print(current_user.user_details)
                 if user_data['user_type'].lower() == 'admin':
                     
                     self.app.root.ids.side_nav.current = 'admin_nav'
-                    # self.app.root.ids.side_nav.get_screen('admin_nav').ids.navigation_rail.current_selected_item = 0
+                    items = self.app.root.ids.side_nav.get_screen('admin_nav').ids.navigation_rail.children[0].children[0].children
+                    for item in items:
+                        item.active = False
+                        
+                    self.app.root.ids.side_nav.get_screen('admin_nav').ids.dashboard.trigger_action(0)
                     self.app.change_screen('adminDashboard_view')
                     
-                    # print(f"logged in as {current_user.user_details['user_type']}")
-                
                 else:
                     
                     self.app.root.ids.side_nav.current = 'clerk_nav'
-                    # self.app.root.ids.side_nav.get_screen('clerk_nav').ids.navigation_rail.current_selected_item = 1
+                    items = self.app.root.ids.side_nav.get_screen('clerk_nav').ids.navigation_rail.children[0].children[0].children
+                    for item in items:
+                        item.active = False
+                        
+                    self.app.root.ids.side_nav.get_screen('clerk_nav').ids.dashboard.trigger_action(0)
                     self.app.change_screen('dashboard_view')
                     
-                    
-                    # print(f"logged in as {current_user.user_details['user_type']}")
-                
                 self.app.load_user_info(user_data)
                     
+                
+                # Unbind only if the event is bound
+                try:
+                    self.app.root.ids.side_nav.get_screen('clerk_nav').ids.dashboard.unbind(on_release=self.app.change_screen)
+                except Exception as e:
+                    print(f"Error unbinding clerk nav: {e}")
+                
+                try:
+                    self.app.root.ids.side_nav.get_screen('admin_nav').ids.dashboard.unbind(on_release=self.app.change_screen)
+                except Exception as e:
+                    print(f"Error unbinding clerk nav: {e}")
+
+                # Bind the events after unbinding
                 self.app.root.ids.side_nav.get_screen('clerk_nav').ids.dashboard.bind(on_release=lambda x: self.app.change_screen('dashboard_view'))
                 self.app.root.ids.side_nav.get_screen('admin_nav').ids.dashboard.bind(on_release=lambda x: self.app.change_screen('adminDashboard_view'))
+
                 
                 # Clear credentials
                 self.ids.id_no_field.text = ""
                 self.ids.password_field.text = ""
-                # print(app.root.ids.side_nav.get_screen('admin_nav').ids.navigation_rail.current_selected_item)
                 
             else:
                 

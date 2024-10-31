@@ -74,6 +74,7 @@
 
                     MDTextField:
                         id: id_no_field
+                        name: 'id'
                         mode: "rectangle"
                         hint_text: "ID Number"
                         max_text_length: 8
@@ -85,7 +86,7 @@
                         padding: [23]
                         pos_hint: {"center_x": .5, "center_y": .42}
                         size_hint_x: .3
-                        on_release: root.search_id('name')
+                        on_release: root.search_id('id')
 
                 #Search with name controls
                 MDBoxLayout:
@@ -118,7 +119,8 @@
                     hint_text: "QR Code"
                     size_hint_x: .3
                     icon_left: "qrcode"
-                    on_text_validate: root.search_id('qr_code')
+                    # on_text_validate: root.search_id('qr_code')
+                    on_text: root.schedule_validation('qr_code')
 
 
                 
@@ -146,14 +148,27 @@
 
                     MDBoxLayout:
                         orientation: "vertical"
+                        id: card_location_header
 
-                        MDLabel:
-                            text: "Card Location"
-                            font_style: "H5"
-                            bold: True
-                            size_hint_y: .135
-                            halign: "center"
-                            valign: 'middle'
+                        MDBoxLayout:
+                            size_hint_y: .15
+                            orientation: 'horizontal'
+
+                            MDLabel:
+                                text: "Card Location"
+                                font_style: "H5"
+                                bold: True
+                                # size_hint_y: .135
+                                halign: "center"
+                                valign: 'middle'
+
+                            MDIconButton:
+                                icon: "printer"  # Icon for adding
+                                on_release: root.print_sticker()  # Call the method to add storage units
+                                size_hint_x: None
+                                width: dp(48)  # Fixed width for the icon button
+                                pos_hint: {"center_y": .5}  # Center vertically
+
                         
 
                         # horizontal line

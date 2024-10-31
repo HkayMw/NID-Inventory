@@ -48,6 +48,14 @@ class ContactScreen(Screen):
         # print(self.parent.current)
         self.current_user = self.app.user_details
         self.user_id = self.current_user['id_number']
+        self.validation_event = None
+        
+    def on_leave(self, *args):
+        self.ids.id_number_field.text = ''
+        self.ids.phone_number_field.text = ''
+        self.ids.qr_code.text = ''
+        self.ids.id_number_field1.text = ''
+        return super().on_leave(*args)
         
     def initialize_table(self, *args):
         # Initialize the table with default headers and an empty state
@@ -223,6 +231,23 @@ class ContactScreen(Screen):
             self.notice.text = message
             # print(success, message, last_row_id)
 
+    def refocus_qr_code(self, *args):
+        # Set focus back to the MDTextField after the delay
+        self.ids.qr_code.focus = True
+        
+    def schedule_validation(self):
+        # Cancel any previously scheduled validation
+        qr_code = self.ids.qr_code.text
+        if not qr_code:
+            Clock.schedule_once(self.refocus_qr_code, 0.1)
+            return
+            
+        if self.validation_event and self.validation_event.is_triggered:
+            self.validation_event.cancel()
+        
+        # Schedule validation to run after a brief delay
+        self.validation_event = Clock.schedule_once(self.search_contact, 0.2)
+
     def search_contact(self, qr_code=None, id_number=None, id_numbers=None):
         self.notice.text = ''
         
@@ -242,9 +267,10 @@ class ContactScreen(Screen):
                     self.notice.text = "No Results found"
                 self.ids.id_number_field1.text = ''
             else:
-                self.notice.text = 'Something went wrong while searching for contacts, Contact Administrator'
+                # self.notice.text = 'Something went wrong while searching for contacts, Contact Administrator'
+                self.notice.text = message
                     
-        if id_numbers:
+        elif id_numbers:
             success, message, contacts = self.contact_controller.search_contact(id_numbers=id_numbers)
             
             # print(success, ' ', message, ' ', contact)
@@ -258,7 +284,10 @@ class ContactScreen(Screen):
             else:
                 self.notice.text = message    
                 
-        if qr_code:
+        else: 
+            qr_code = self.ids.qr_code.text
+            if not qr_code:
+                return
             code = QRCode(qr_code)
             success, message, id = code.process()
             if success:
@@ -267,6 +296,7 @@ class ContactScreen(Screen):
             else:
                 self.notice.text = message
                 
+            Clock.schedule_once(self.refocus_qr_code, 0.1)
             self.ids.qr_code.text = ''
         
     def update_row_data(self, instance_data_table, search_results):

@@ -216,7 +216,8 @@
                                 hint_text: "QR Code"
                                 # size_hint_x: .2
                                 icon_left: "qrcode"
-                                on_text_validate: root.search_contact(qr_code=qr_code.text) 
+                                # on_text_validate: root.search_contact(qr_code=qr_code.text) 
+                                on_text: root.schedule_validation() 
                                     
                             # ID Number and submit button row
                             MDBoxLayout:

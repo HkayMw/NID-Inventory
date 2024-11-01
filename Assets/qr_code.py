@@ -126,6 +126,9 @@ class QRCode:
 # print(result)
 
 
-# qr_processor = QRCode("03~I<MWI0WT3E6MQF1<<<<<<<<<<<<<<<~9901052M2501051MWI<<<<<<<<<<<2~KANYUMBU<<HARRY<BANDA<<<<<<<<<~KANYUMBU~WT3E6MQF~HARRY~Male~05 Jan 1999~26 Jun 2017~")
+# qr_processor = QRCode("03~I<MWIVZ0PFQ9D<0<<<<<<<<<<<<<<<~9610220M2210229MWI<<<<<<<<<<<4~NYIRENDA<<WESTON<<<<<<<<<<<<<<~NYIRENDA~VZ0PFQ9D~WESTON~~Male~22 Oct 1996~21 Jul 2017~")
 # result = qr_processor.process()
 # print(result)
+
+
+# 03~I<MWIVZ0PFQ9D<0<<<<<<<<<<<4~NYIRENDA<<WESTON<<<<<<<<<<<<<<~NYIRENDA~VZ0PFQ9D~WESTON~~Male~22 Oct 1996~21 Jul 2017~fq9D~WESTON~~Male~22 Oct 1996~21 Jul 2017~

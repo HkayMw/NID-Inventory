@@ -12,25 +12,14 @@ from kivy.metrics import dp
 from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivy.core.window import Window
-# from kivy.clock import Clock
 from kivy.modules import inspector
-from kivy.uix.screenmanager import ScreenManager, NoTransition
+from kivy.uix.screenmanager import NoTransition
 from kivy.uix.boxlayout import BoxLayout
 from kivy.animation import Animation
-# from datetime import datetime
 
-# KivyMD
-# from kivymd.uix.boxlayout import MDBoxLayout
-# from kivymd.uix.list import OneLineIconListItem, IconLeftWidget
-# from kivymd.uix.navigationdrawer import MDNavigationDrawer
-# from kivymd.uix.navigationrail import MDNavigationRailItem
-# from kivymd.uix.snackbar import MDSnackbar
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.label import MDLabel
 from kivymd.uix.button import MDRaisedButton, MDIconButton
-# from kivymd.uix.pickers import MDDatePicker
-
-# from model.current_user import CurrentUser
 
 # Importing navigation views
 from view.navigation.clerk_nav import ClerkNav

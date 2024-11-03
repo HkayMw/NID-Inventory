@@ -13,13 +13,17 @@ from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.modules import inspector
-from kivy.uix.screenmanager import NoTransition
+from kivy.uix.screenmanager import NoTransition, Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.animation import Animation
+from kivy.properties import StringProperty
 
 from kivymd.uix.dialog import MDDialog
 from kivymd.uix.label import MDLabel
 from kivymd.uix.button import MDRaisedButton, MDIconButton
+from kivymd.uix.segmentedcontrol import MDSegmentedControl
+from kivymd.uix.scrollview import MDScrollView
+import kivymd
 
 # Importing navigation views
 from view.navigation.clerk_nav import ClerkNav
@@ -42,8 +46,16 @@ from view.admin.userManagement.manage_user_view import ManageUser
 from view.admin.configuration.config_view import ConfigScreen
 from view.admin.notifyClient.notify_view import NotifyScreen
 from view.admin.report.report_view import ReportScreen
+from view.sync.sync_view import SyncScreen
 
+import subprocess
 
+import psutil
+import threading
+import time
+import socket
+import os
+import sys
 # Maximize the window size on startup
 # Window.size = (Window.width, Window.height)  # Start with the full size of the window
 
@@ -67,14 +79,46 @@ def refresh_layout(*args):
 # # Schedule a layout refresh on the next frame
 # Clock.schedule_once(refresh_layout, 0.1)
 
+
+
 # Define MainScreen as a ScreenManager
 class MainScreen(BoxLayout):
+    
+    network_status = StringProperty('disconnected')  # Use StringProperty for live updates
+    internet_status = StringProperty('disconnected')
+    
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+        
         # Set the transition
         self.ids.screen_manager.transition = NoTransition()
         # Bind the on_key_down event
         Window.bind(on_key_down=self.on_key_down)
+        self.check_network_status()  # Initial check
+        threading.Thread(target=self.monitor_network, daemon=True).start()  # Start monitoring
+        
+    def check_network_status(self):
+        # Check if connected to any network
+        is_connected = any(psutil.net_if_stats()[iface].isup for iface in psutil.net_if_stats())
+
+        # Update network_status
+        self.network_status = 'connected' if is_connected else 'disconnected'
+        
+        # Check internet connectivity
+        self.check_internet_connectivity()
+
+    def check_internet_connectivity(self):
+        # Attempt to connect to Google's DNS server to check for internet connectivity
+        try:
+            socket.create_connection(("8.8.8.8", 53), timeout=3)
+            self.internet_status = 'connected'
+        except (socket.timeout, OSError):
+            self.internet_status = 'disconnected'
+
+    def monitor_network(self):
+        while True:
+            self.check_network_status()
+            time.sleep(5)  # Check every 5 seconds
 
     # Focus management function
     def on_key_down(self, instance, keyboard, keycode, text, modifiers):
@@ -101,6 +145,8 @@ class MainScreen(BoxLayout):
 
 
 class MainApp(MDApp):
+    network_status = StringProperty('disconnected')  # Use StringProperty for live updates
+    internet_status = StringProperty('disconnected')
     
     # App variables
     current_batch = {"batch_name": '', "ids": []}
@@ -117,7 +163,15 @@ class MainApp(MDApp):
         # self.logout_dialog = None
         # self.logout_dialog = None
         # Set the app icon
+        # self.network_status = 'disconnected'
+        # self.internet_status = 'disconnected'
         
+    def resource_path(self, relative_path):
+        """ Get the absolute path to the resource, works for dev and for PyInstaller """
+        base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+        return os.path.join(base_path, relative_path)
+        
+
 
     # Method to center the window on the screen
     def center_window(self, *args):
@@ -143,7 +197,7 @@ class MainApp(MDApp):
         self.theme_cls.theme_style_switch_animation_duration = 0.2
 
         # Load the KV file containing the main layout
-        Builder.load_file('view/main_view.kv')
+        Builder.load_file(self.resource_path('view/main_view.kv'))
 
         # Return the MainScreen instance, but don't add screens yet
         return MainScreen()
@@ -217,6 +271,7 @@ class MainApp(MDApp):
             # common Screens
             'login_view': LoginScreen(name='login_view'),
             'user_profile_view': ProfileScreen(name='user_profile_view'),
+            'sync_view': SyncScreen(name='sync_view'),
 
             # User Screens
             'dashboard_view': DashboardScreen(name='dashboard_view'),
@@ -321,6 +376,11 @@ class MainApp(MDApp):
             user_font_size="82sp",
             pos_hint={'center_y': 0.5},
         )
+        avatar2 = MDIconButton(
+            icon='sync',  # Or use a path to the avatar image
+            user_font_size="92sp",
+            pos_hint={'center_y': 0.5},
+        )
 
         # Add user name and role label
         name_role_label = MDLabel(
@@ -334,6 +394,8 @@ class MainApp(MDApp):
         )
         avatar.bind(on_release = self.open_user_profile)
         avatar1.bind(on_release = self.show_logout_dialog)
+        avatar2.bind(on_release = lambda x: self.change_screen('sync_view'))
+        user_box.add_widget(avatar2)
         user_box.add_widget(name_role_label)
         user_box.add_widget(avatar)
         user_box.add_widget(avatar1)

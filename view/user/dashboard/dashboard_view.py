@@ -6,7 +6,18 @@ from controller.id_controller import IdController
 from controller.dashboard_controller import DashboardController
 from kivymd.color_definitions import colors
 
-Builder.load_file('view/user/dashboard/dashboard_view.kv')
+import os
+import sys
+
+def resource_path(relative_path):
+    """ Get the absolute path to the resource, works for dev and for PyInstaller """
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+
+Builder.load_file(resource_path('dashboard_view.kv'))
+# Builder.load_file('view/user/dashboard/dashboard_view.kv')
+# Builder.load_file('C:\\Users\\HKay\\PycharmProjects\\NID_Inventory\\view/user/dashboard/dashboard_view.kv')
+
 
 class DashboardScreen(Screen):
     def __init__(self, **kwargs):

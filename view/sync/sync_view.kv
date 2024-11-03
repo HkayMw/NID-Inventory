@@ -1,0 +1,174 @@
+#:kivy 2.3.0
+# view/sync/sync_view.kv
+
+<SyncScreen>:
+    id: sync_view
+    name: 'sync_view'
+    orientation: "vertical"
+        
+    # Window Section
+    MDBoxLayout:
+        md_bg_color: app.theme_cls.bg_light
+        id: window_section
+        name: "window_section"
+        orientation: "vertical"
+        padding: 0, 10
+        height: self.minimum_height
+        spacing: 20
+
+        # Screen Title
+        MDBoxLayout:
+            orientation: 'horizontal'
+            padding: '10dp'
+            spacing: '10dp'
+            size_hint_y: .1
+            size_hint_x: .3
+            pos_hint: {"center_x": .5, "center_y": .5}
+            
+            # Title
+            MDLabel:
+                id: screen_title
+                text: 'Sync Records'
+                halign: 'center'
+                font_style: 'H4'
+                size_hint_y: None
+                pos_hint: {"center_x": .5, "center_y": .5}
+
+        # horizontal line
+        MDSeparator:
+            height: "1dp"
+            color: "#B0BEC5"
+
+        # Main Section
+        MDBoxLayout:
+            orientation: "horizontal"
+            id: main_section
+            name: "main_section"
+            size_hint_y: .9
+
+            FloatLayout:
+                MDBoxLayout:
+                    orientation: "vertical"
+                    spacing: "10dp"
+                    pos_hint: {"top": 1}
+                    size_hint_y: None
+                    height: "400dp"
+                    
+                    MDCard:
+                        md_bg_color: app.theme_cls.bg_normal
+                        orientation: "vertical"
+                        size_hint: None, None
+                        size: "600dp", "390dp"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        padding: "20dp"
+                        elevation: 1
+
+                        MDBoxLayout:
+                            orientation: "vertical"
+                            spacing: "20dp"
+                            # size_hint_y: None
+                            # height: "250dp"
+                            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                            size_hint_x: .8
+
+                            # Sync to Client Portal with Settings Icon
+                            MDBoxLayout:
+                                orientation: 'horizontal'
+                                size_hint_y: .15
+                                spacing: "10dp"
+                                pos_hint: {"center_x": .5}
+
+                                MDLabel:
+                                    text: "Sync to Client Portal"
+                                    theme_text_color: "Secondary"
+                                    font_style: "H5"
+                                    halign: 'center'
+                                    size_hint_x: 0.8
+
+                                MDIconButton:
+                                    icon: "cog"  # Replace with the relevant icon for settings
+                                    theme_icon_color: "Primary"
+                                    size_hint: None, None
+                                    size: dp(24), dp(24)
+                                    pos_hint: {"center_y": .5}
+                                    on_release: root.open_api_dialog()
+
+                            # horizontal line
+                            MDSeparator:
+                                height: "1dp"
+                                color: "#B0BEC5"
+
+                            # Buttons to Check and Sync
+                            MDRaisedButton:
+                                text: "Check for Pending Records"
+                                size_hint: None, None
+                                width: dp(300)
+                                height: dp(50)
+                                padding: [25]
+                                pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                                on_release: root.check_pending_records()
+
+
+                            MDBoxLayout:
+                                orientation: 'horizontal'
+                                pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                                size_hint_x: None
+                                width: dp(230)
+                                
+
+                                # Pending Records Display
+                                MDLabel:
+                                    text: "Pending Records: "
+                                    theme_text_color: "Secondary"
+                                    font_style: "H6"
+                                    halign: 'right'
+                                    size_hint_x: .7
+                                
+                                MDLabel:
+                                    id: pending_records_count
+                                    text: "0"  # Default value, will be updated dynamically
+                                    theme_text_color: "Primary"
+                                    font_style: "H5"
+                                    halign: 'center'
+                                    size_hint_x: .3
+
+
+                            MDRaisedButton:
+                                text: "Initialize Sync"
+                                size_hint: None, None
+                                width: dp(300)
+                                padding: [25]
+                                height: dp(50)
+                                pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                                on_release: root.start_sync()
+
+                            # MDBoxLayout:
+                            #     orientation: 'horizontal'
+                            #     pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+
+                            # Progress Bar for Syncing
+                            MDLabel:
+                                text: "Syncing Progress:"
+                                theme_text_color: "Secondary"
+                                font_style: "H6"
+                                pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                                halign: 'center'
+                                # size_hint_x: None
+                                # width: self.minimum_width
+
+
+                            MDProgressBar:
+                                id: syncing_progress_bar
+                                value: 0  # Initial value; will be updated during syncing
+                                size_hint_y: None
+                                # size_hint_x: .
+                                height: dp(15)
+                                radius: [5]
+                                pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                                max: 100  # Max value for progress
+
+                        # # horizontal line
+                        # MDSeparator:
+                        #     height: "1dp"
+                        #     color: "#B0BEC5"

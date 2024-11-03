@@ -1,14 +1,23 @@
 
 from kivy.uix.screenmanager import Screen
 from kivy.lang import Builder
-
 from kivymd.app import MDApp
 
 from controller.id_controller import IdController
 from controller.dashboard_controller import DashboardController
 
+import os
+import sys
 
-Builder.load_file('view/admin/adminDashboard/adminDashboard_view.kv')
+def resource_path(relative_path):
+    """ Get the absolute path to the resource, works for dev and for PyInstaller """
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+
+# Builder.load_file('view/admin/adminDashboard/adminDashboard_view.kv')
+# Builder.load_file('C:\\Users\\HKay\\PycharmProjects\\NID_Inventory\\view/admin/adminDashboard/adminDashboard_view.kv')
+
+Builder.load_file(resource_path('adminDashboard_view.kv'))
 
 class AdminDashboardScreen(Screen):
     def __init__(self, **kwargs):

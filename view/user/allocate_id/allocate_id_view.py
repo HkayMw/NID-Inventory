@@ -1,15 +1,15 @@
 from kivy.uix.screenmanager import Screen
-from kivy.uix.anchorlayout import AnchorLayout
+# from kivy.uix.anchorlayout import AnchorLayout
 from kivy.clock import Clock
 from kivy.metrics import dp
 from kivy.uix.image import Image
 from kivy.core.image import Image as CoreImage
 from kivy.lang import Builder
-from kivy.core.window import Window
+# from kivy.core.window import Window
 from kivy.uix.boxlayout import BoxLayout
 
 from kivymd.app import MDApp
-from kivymd.uix.datatables import MDDataTable
+# from kivymd.uix.datatables import MDDataTable
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.tab import MDTabsBase
 from kivymd.uix.card import MDCard
@@ -17,16 +17,27 @@ from kivymd.uix.label import MDLabel
 
 import qrcode
 from io import BytesIO
-from PIL import Image as PILImage, ImageDraw, ImageFont
+# from PIL import Image as PILImage, ImageDraw, ImageFont
 from Assets.label_printer import LabelPrinter
 
-from controller.user_controller import UserController
+# from controller.user_controller import UserController
 from controller.batch_controller import BatchController
 from controller.storage_unit_controller import StorageUnitController
 from controller.id_controller import IdController
 
 # Builder.load_file('view/UI.kv')
-Builder.load_file('view/user/allocate_id/allocate_id_view.kv')
+import os
+import sys
+
+def resource_path(relative_path):
+    """ Get the absolute path to the resource, works for dev and for PyInstaller """
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+
+Builder.load_file(resource_path('allocate_id_view.kv'))
+# Builder.load_file('view/user/allocate_id/allocate_id_view.kv')
+# Builder.load_file('C:\\Users\\HKay\\PycharmProjects\\NID_Inventory\\view/user/allocate_id/allocate_id_view.kv')
+
 
 
 class AllocateIDScreen(Screen):

@@ -6,8 +6,8 @@ from kivy.uix.screenmanager import Screen
 # from controller.user_controller import UserController
 from kivy.lang import Builder
 from kivy.clock import Clock
-from kivy.core.window import Window
-from kivy.uix.boxlayout import BoxLayout
+# from kivy.core.window import Window
+# from kivy.uix.boxlayout import BoxLayout
 
 from kivymd.uix.filemanager import MDFileManager
 from kivymd.toast import toast
@@ -19,7 +19,18 @@ from Assets.qr_code import QRCode
 from controller.contact_controller import ContactController
 
 # Builder.load_file('view/UI.kv')
-Builder.load_file('view/user/contact/contact_view.kv')
+import os
+import sys
+
+def resource_path(relative_path):
+    """ Get the absolute path to the resource, works for dev and for PyInstaller """
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+
+Builder.load_file(resource_path('contact_view.kv'))
+# Builder.load_file('view/user/contact/contact_view.kv')
+# Builder.load_file('C:\\Users\\HKay\\PycharmProjects\\NID_Inventory\\view/user/contact/contact_view.kv')
+
 
 
 class ContactScreen(Screen):
@@ -82,6 +93,7 @@ class ContactScreen(Screen):
         
         
     def open_file_manager(self):
+        self.notice.text = ''
         # Get the Documents folder path
         if platform == 'win':
             documents_folder = os.path.join(os.environ['USERPROFILE'], 'Documents')
@@ -154,9 +166,9 @@ class ContactScreen(Screen):
                     # Write the invalid rows, possibly including error messages
                     csv_writer.writerow(["ID Number", "Phone Number", "Error Details"])  # Header
                     csv_writer.writerows(invalid_rows)
-                toast(f"Invalid contacts saved to {invalid_file_path}")
+                # toast(f"Invalid contacts saved to {invalid_file_path}")
 
-            toast(f"Processed CSV. Valid: {len(valid_rows)}, Invalid: {len(invalid_rows)}")
+            # toast(f"Processed CSV. Valid: {len(valid_rows)}, Invalid: {len(invalid_rows)}")
             
             self.add_contacts(valid_rows)  
             
@@ -325,7 +337,7 @@ class ContactScreen(Screen):
             self.search_results = search_results
             
             # Start adding rows one by one using Clock.schedule_interval
-            Clock.schedule_interval(self.add_row_one_by_one, 1)  # Adjust time for speed
+            Clock.schedule_interval(self.add_row_one_by_one, .5)  # Adjust time for speed
         
         except ValueError as e:
             self.notice.text = f"Error: {e}. from {__name__}"

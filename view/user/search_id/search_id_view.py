@@ -33,7 +33,16 @@ from controller.storage_unit_controller import StorageUnitController
 
 
 # Builder.load_file('view/UI.kv')
-Builder.load_file('view/user/search_id/search_id_view.kv')
+import os
+import sys
+
+def resource_path(relative_path):
+    """ Get the absolute path to the resource, works for dev and for PyInstaller """
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+
+Builder.load_file(resource_path('search_id_view.kv'))
+# Builder.load_file('view/user/search_id/search_id_view.kv')
 
 class SearchIDScreen(Screen):
     def __init__(self, **kwargs):
@@ -242,7 +251,7 @@ class SearchIDScreen(Screen):
             self.search_results = search_results
             
             # Start adding rows one by one using Clock.schedule_interval
-            Clock.schedule_interval(self.add_row_one_by_one, 1)  # Adjust time for speed
+            Clock.schedule_interval(self.add_row_one_by_one, .5)  # Adjust time for speed
         
         except ValueError as e:
             self.notice.text = f"Error: {e}. from {__name__}"

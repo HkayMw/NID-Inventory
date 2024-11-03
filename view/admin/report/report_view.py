@@ -2,8 +2,8 @@ from kivy.uix.screenmanager import Screen
 # from controller.user_controller import UserController
 from kivy.clock import Clock
 from kivy.lang import Builder
-from kivy.core.window import Window
-from kivy.uix.boxlayout import BoxLayout
+# from kivy.core.window import Window
+# from kivy.uix.boxlayout import BoxLayout
 from kivymd.app import MDApp
 from kivy.metrics import dp
 from kivymd.uix.datatables import MDDataTable
@@ -18,7 +18,18 @@ from kivymd.uix.pickers import MDDatePicker
 from controller.report_controller import ReportController
 
 # Builder.load_file('view/UI.kv')
-Builder.load_file('view/admin/report/report_view.kv')
+import os
+import sys
+
+def resource_path(relative_path):
+    """ Get the absolute path to the resource, works for dev and for PyInstaller """
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+
+Builder.load_file(resource_path('report_view.kv'))
+# Builder.load_file('view/admin/report/report_view.kv')
+# Builder.load_file('C:\\Users\\HKay\\PycharmProjects\\NID_Inventory\\view/admin/report/report_view.kv')
+
 
 
 class ReportScreen(Screen):

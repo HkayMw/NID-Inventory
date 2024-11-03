@@ -20,6 +20,10 @@ build/
 *.egg-info/
 *.egg
 
+# Buildozer-related files
+.buildozer/
+dist/
+
 # PyInstaller
 # One-dir and one-file builds
 dist/

@@ -92,59 +92,67 @@ class LabelPrinter():
 
     # Print the image using the specified printer
     def print_label(self, file_path ="temp_batch_qrcode.bmp", label_width_px = 590, label_height_px = 157):
-        # Get printer details
-        vendor_id, product_id, out_endpoint = self.find_printer()
-        
-        if vendor_id:
-        
-            # media_width = label_width_px  # Ensure this matches your media width
-            # media_height=label_height_px
-            p = Usb(vendor_id, product_id, timeout=0, out_ep=out_endpoint, media_width = label_width_px, media_height=label_height_px)
+        try:
+            
+            # Get printer details
+            vendor_id, product_id, out_endpoint = self.find_printer()
+            
+            if vendor_id:
+            
+                # media_width = label_width_px  # Ensure this matches your media width
+                # media_height=label_height_px
+                p = Usb(vendor_id, product_id, timeout=0, out_ep=out_endpoint, media_width = label_width_px, media_height=label_height_px)
 
-            # Reset the printer, set alignment, and set margins to 0
-            p._raw(b'\x1B\x40')  # ESC @ (reset the printer)
-
-
-            # # Set left margin to 0
-            p._raw(b'\x1D\x4C\x00\x00')  # GS L nL nH (left margin to 0)
+                # Reset the printer, set alignment, and set margins to 0
+                p._raw(b'\x1B\x40')  # ESC @ (reset the printer)
 
 
-            # Set line spacing to 0 (may help reduce top margin)
-            p._raw(b'\x1B\x33\x13')  # ESC 3 n (line spacing to 0)
+                # # Set left margin to 0
+                p._raw(b'\x1D\x4C\x00\x00')  # GS L nL nH (left margin to 0)
 
-            image = PILImage.open(file_path)
 
-            # Print the image
-            p.image(image)
-            p.cut()
-            return True, "Sticker Printed", None
-        else:
-            return False, "Please connect Printer and try again", None
+                # Set line spacing to 0 (may help reduce top margin)
+                p._raw(b'\x1B\x33\x13')  # ESC 3 n (line spacing to 0)
+
+                image = PILImage.open(file_path)
+
+                # Print the image
+                p.image(image)
+                p.cut()
+                return True, "Sticker Printed", None
+            else:
+                return False, "Please connect Printer and try again", None
+        except Exception as e:
+            return False, f"Error: {e}", None
 
         
     def find_printer(self):
-        # Find all connected USB devices
-        devices = usb.core.find(find_all=True)
         
-        for device in devices:
-            # Check if the device has the attributes matching your printer 
-            if device.idVendor == 0x0483 and device.idProduct == 0x5720:  
-                
-                # Set the active configuration
-                device.set_configuration()
-                
-                # Find the OUT endpoint in the interfaces
-                for cfg in device:
-                    for intf in cfg:
-                        for ep in intf:
-                            # Check if this is an OUT endpoint (bit 7 is 0 for OUT)
-                            if usb.util.endpoint_direction(ep.bEndpointAddress) == usb.util.ENDPOINT_OUT:
-                                # Ensure that the endpoint address is formatted as 0x02 (two-digit hex)
-                                out_endpoint = ep.bEndpointAddress
-                                return device.idVendor, device.idProduct, out_endpoint
+        try:
+            # Find all connected USB devices
+            devices = usb.core.find(find_all=True)
+            
+            for device in devices:
+                # Check if the device has the attributes matching your printer 
+                if device.idVendor == 0x0483 and device.idProduct == 0x5720:  
+                    
+                    # Set the active configuration
+                    device.set_configuration()
+                    
+                    # Find the OUT endpoint in the interfaces
+                    for cfg in device:
+                        for intf in cfg:
+                            for ep in intf:
+                                # Check if this is an OUT endpoint (bit 7 is 0 for OUT)
+                                if usb.util.endpoint_direction(ep.bEndpointAddress) == usb.util.ENDPOINT_OUT:
+                                    # Ensure that the endpoint address is formatted as 0x02 (two-digit hex)
+                                    out_endpoint = ep.bEndpointAddress
+                                    return device.idVendor, device.idProduct, out_endpoint
 
-        print("Printer not found.")
-        return None, None, None
+            print("Printer not found.")
+            return None, None, None
+        except Exception as e:
+            return False, f"Error: {e}", None
 
 
 # Call the print function to print the label

@@ -365,7 +365,7 @@ class ManageUser(Screen):
             self.search_results = search_results
             
             # Start adding rows one by one using Clock.schedule_interval
-            Clock.schedule_interval(self.add_row_one_by_one, .5)  # Adjust time for speed
+            Clock.schedule_interval(self.add_row_one_by_one, 1)  # Adjust time for speed
         
         except ValueError as e:
             self.notice.text = f"Error: {e}. from {__name__}"

@@ -24,6 +24,7 @@ from kivymd.uix.button import MDRaisedButton, MDIconButton
 from kivymd.uix.segmentedcontrol import MDSegmentedControl
 from kivymd.uix.scrollview import MDScrollView
 import kivymd
+from kivymd.uix.progressbar import MDProgressBar
 
 # Importing navigation views
 from view.navigation.clerk_nav import ClerkNav
@@ -43,7 +44,7 @@ from view.admin.storage.storage_view import StorageScreen
 
 from view.admin.adminDashboard.adminDashboard_view import AdminDashboardScreen
 from view.admin.userManagement.manage_user_view import ManageUser
-from view.admin.configuration.config_view import ConfigScreen
+# from view.admin.configuration.config_view import ConfigScreen
 from view.admin.notifyClient.notify_view import NotifyScreen
 from view.admin.report.report_view import ReportScreen
 from view.sync.sync_view import SyncScreen
@@ -285,7 +286,7 @@ class MainApp(MDApp):
             # Admin Screens
             'adminDashboard_view': AdminDashboardScreen(name='adminDashboard_view'),
             'manage_user_view': ManageUser(name='manage_user_view'),
-            'config_view': ConfigScreen(name='config_view'),
+            # 'config_view': ConfigScreen(name='config_view'),
             'notify_view': NotifyScreen(name='notify_view'),
             'report_view': ReportScreen(name='report_view')
 

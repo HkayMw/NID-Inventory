@@ -22,7 +22,7 @@ data_files = [
     ("view/sync/sync_view.kv", "./"),
     ("view/main_view.kv", "./view"),
     ("C:\\Users\\HKay\\kivy_venv\\Lib\\site-packages\\escpos\\capabilities.json", "escpos"),
-    ("database/id_inventory1.db", "./database"),
+    ("model/database/id_inventory1.db", "./database"),
     ("Assets/Coat_of_arms_of_Malawi.svg", "./Assets"),
     ("favicon.ico", "./")
 ]

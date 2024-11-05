@@ -468,16 +468,16 @@ class SearchIDScreen(Screen):
         
     def issue_id(self, instance):
         signature = self.clicked_id_signature
-        # print(f"Attempting to issue ID with signature: {signature}")  # Debug statement
+        print(f"Attempting to issue ID with signature: {signature}")  # Debug statement
 
         if signature is None:
-            # print("No signature found. Cannot issue ID.")
+            print("No signature found. Cannot issue ID.")
             return  # Exit if there's no signature
 
         success, message, row = self.controller.issue_id(signature)
 
         if success:
-            # print(f"ID issued successfully: {message}")
+            print(f"ID issued successfully: {message}")
             
             success, message, id = self.controller.search_id(search_type='signature', signature=signature)
             # Update table with search results
@@ -489,14 +489,14 @@ class SearchIDScreen(Screen):
             self.ids.qr_card.clear_widgets()
             
         else:
-            # print(f"Failed to issue ID: {message}")
+            print(f"Failed to issue ID: {message}")
             self.notice.text = "Something went wrong trying to issue an ID"
 
         self.close_issue_id_dialog(instance)   
 
 
     def print_sticker(self):
-        # print('printing')
+        print('printing')
         img = self.printing_img
         data = self.printing_data
         if not img:
@@ -510,10 +510,6 @@ class SearchIDScreen(Screen):
             print(label_data)
             
             success, message, result = self.label_controller.print_label(label_data['file_path'], label_data['label_width'], label_data['label_height'])
-            # if success:
-            #     self.notice.text = 'Lable printed'
-            # else:
-            #     self.notice.text = f"{message}"
 
 
 

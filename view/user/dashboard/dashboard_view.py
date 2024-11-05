@@ -49,10 +49,10 @@ class DashboardScreen(Screen):
         # print(f'success: {success} message: {message}\ndata: {data}')
         
         if success:
-            self.ids.ids_added.text = f'{data['added_ids']}'
-            self.ids.ids_issued.text = f'{data['issued_ids']}'
-            self.ids.ids_in_inventory.text = f'{data['total_ids']}'
-            self.ids.ids_batches.text = f'{data['batches']}'
+            self.ids.ids_added.text = f"{data['added_ids']}"
+            self.ids.ids_issued.text = f"{data['issued_ids']}"
+            self.ids.ids_in_inventory.text = f"{data['total_ids']}"
+            self.ids.ids_batches.text = f"{data['batches']}"
             # self.ids.sms.text = f'{data['sent_sms']}'
         else:
             self.notice.text = "Something went wrong while loading dashboard data"

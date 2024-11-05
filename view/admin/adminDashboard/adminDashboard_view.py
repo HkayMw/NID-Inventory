@@ -49,12 +49,12 @@ class AdminDashboardScreen(Screen):
         # print(f'success: {success} message: {message}\ndata: {data}')
         
         if success:
-            self.ids.ids_added.text = f'{data['added_ids']}'
-            self.ids.ids_issued.text = f'{data['issued_ids']}'
-            self.ids.ids_in_inventory.text = f'{data['total_ids']}'
-            self.ids.storage_units.text = f'{data['storage_units']}'
-            self.ids.users.text = f'{data['users']}'
-            self.ids.sms.text = f'{data['sent_sms']}'
+            self.ids.ids_added.text = f"{data['added_ids']}"
+            self.ids.ids_issued.text = f"{data['issued_ids']}"
+            self.ids.ids_in_inventory.text = f"{data['total_ids']}"
+            self.ids.storage_units.text = f"{data['storage_units']}"
+            self.ids.users.text = f"{data['users']}"
+            self.ids.sms.text = f"{data['sent_sms']}"
         else:
             self.notice.text = "Something went wrong while loading dashboard data"
         

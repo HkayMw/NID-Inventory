@@ -57,6 +57,7 @@ import time
 import socket
 import os
 import sys
+
 # Maximize the window size on startup
 # Window.size = (Window.width, Window.height)  # Start with the full size of the window
 
@@ -66,10 +67,11 @@ import sys
 # Maximize the window on start
 Window.maximize()
 Window.set_icon("Assets/icon.png")
-        
+
 # Set the minimum size to be the same as the default size
 Window.minimum_width = default_width
 Window.minimum_height = default_height
+
 
 # Function to force layout refresh
 def refresh_layout(*args):
@@ -81,30 +83,28 @@ def refresh_layout(*args):
 # Clock.schedule_once(refresh_layout, 0.1)
 
 
-
 # Define MainScreen as a ScreenManager
 class MainScreen(BoxLayout):
-    
     network_status = StringProperty('disconnected')  # Use StringProperty for live updates
     internet_status = StringProperty('disconnected')
-    
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        
+
         # Set the transition
         self.ids.screen_manager.transition = NoTransition()
         # Bind the on_key_down event
         Window.bind(on_key_down=self.on_key_down)
         self.check_network_status()  # Initial check
         threading.Thread(target=self.monitor_network, daemon=True).start()  # Start monitoring
-        
+
     def check_network_status(self):
         # Check if connected to any network
         is_connected = any(psutil.net_if_stats()[iface].isup for iface in psutil.net_if_stats())
 
         # Update network_status
         self.network_status = 'connected' if is_connected else 'disconnected'
-        
+
         # Check internet connectivity
         self.check_internet_connectivity()
 
@@ -148,17 +148,17 @@ class MainScreen(BoxLayout):
 class MainApp(MDApp):
     network_status = StringProperty('disconnected')  # Use StringProperty for live updates
     internet_status = StringProperty('disconnected')
-    
+
     # App variables
     current_batch = {"batch_name": '', "ids": []}
     user_details = {
-            'id_number': '',
-            'firstname': '',
-            'lastname': '',
-            'othernames': '',
-            'user_type': ''
-        }
-    
+        'id_number': '',
+        'firstname': '',
+        'lastname': '',
+        'othernames': '',
+        'user_type': ''
+    }
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         # self.logout_dialog = None
@@ -166,13 +166,11 @@ class MainApp(MDApp):
         # Set the app icon
         # self.network_status = 'disconnected'
         # self.internet_status = 'disconnected'
-        
+
     def resource_path(self, relative_path):
         """ Get the absolute path to the resource, works for dev and for PyInstaller """
         base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
         return os.path.join(base_path, relative_path)
-        
-
 
     # Method to center the window on the screen
     def center_window(self, *args):
@@ -180,8 +178,8 @@ class MainApp(MDApp):
         Window.left = 0
         Window.top = 30
         # print
-        
-    def set_user_details(self, id_number, firstname, lastname,othernames, user_type):
+
+    def set_user_details(self, id_number, firstname, lastname, othernames, user_type):
         self.user_details['id_number'] = id_number
         self.user_details['firstname'] = firstname
         self.user_details['lastname'] = lastname
@@ -204,8 +202,6 @@ class MainApp(MDApp):
         return MainScreen()
 
     def on_start(self):
-        
-        
 
         # refresh_layout()
         # Bind the window size change event to the center_window method
@@ -314,7 +310,7 @@ class MainApp(MDApp):
                 text="Are you sure you want to logout?",
                 # size_hint=(0.25, 0.25),
                 size_hint=(None, None),
-                size = (dp(480), dp(180)),
+                size=(dp(480), dp(180)),
                 buttons=[
                     MDRaisedButton(
                         text="Cancel",
@@ -347,7 +343,6 @@ class MainApp(MDApp):
 
         # Redirect to login screen
         self.root.ids.screen_manager.current = 'login_view'
-
 
     def animate_notice(self):
         label = self.root.ids.notice
@@ -393,9 +388,9 @@ class MainApp(MDApp):
             # width=200,
             font_style='Subtitle1'  # Adjust font size as needed
         )
-        avatar.bind(on_release = self.open_user_profile)
-        avatar1.bind(on_release = self.show_logout_dialog)
-        avatar2.bind(on_release = lambda x: self.change_screen('sync_view'))
+        avatar.bind(on_release=self.open_user_profile)
+        avatar1.bind(on_release=self.show_logout_dialog)
+        avatar2.bind(on_release=lambda x: self.change_screen('sync_view'))
         user_box.add_widget(avatar2)
         user_box.add_widget(name_role_label)
         user_box.add_widget(avatar)
@@ -407,6 +402,7 @@ class MainApp(MDApp):
 
     def open_user_profile(self, *args):
         self.change_screen('user_profile_view')
+
 
 if __name__ == "__main__":
     MainApp().run()

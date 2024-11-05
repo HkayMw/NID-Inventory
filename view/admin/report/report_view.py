@@ -126,8 +126,8 @@ class ReportScreen(Screen):
             ["IDs Collected", report_data['ids_issued']],
             ["Notifications Sent", report_data['sent_sms']],
             ["Number of IDs Collected After Notification",  report_data['notified_ids_issued']],
-            ["Collection % for Notified Clients", f'{(report_data['notified_ids_issued'] / report_data['ids_issued'] * 100) if report_data['ids_issued'] > 0 else 0:.2f}%'],
-            ["Collection % for Non-Notified Clients", f'{((report_data['ids_issued'] - report_data['notified_ids_issued']) / report_data['ids_issued'] * 100) if report_data['ids_issued'] > 0 else 0:.2f}%'],
+            ["Collection % for Notified Clients", f"{(report_data['notified_ids_issued'] / report_data['ids_issued'] * 100) if report_data['ids_issued'] > 0 else 0:.2f}%"],
+            ["Collection % for Non-Notified Clients", f"{((report_data['ids_issued'] - report_data['notified_ids_issued']) / report_data['ids_issued'] * 100) if report_data['ids_issued'] > 0 else 0:.2f}%"],
         ]
 
         # Set the new row data to the MDDataTable

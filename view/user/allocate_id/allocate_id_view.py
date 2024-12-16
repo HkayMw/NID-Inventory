@@ -54,83 +54,62 @@ class AllocateIDScreen(Screen):
         # self.notice.text = ''
         
         # self.progress = self.app.root.ids.progress
-        self.selected_card = None  # To track the currently selected card
+        self.selected_card = None  # Variable To track the currently selected card
         self.storage_id = None  # Variable to store selected storage_id
         
     def on_enter(self, *args):
-        # self.initialize_allocate_storage_table()
         self.current_user = self.app.user_details
         self.user_id = self.current_user['id_number']
         
-        
         self.ids.count.text = str(len(self.app.current_batch['ids']))
         self.ids.batch_name.text = self.app.current_batch['batch_name']
-        # self.ids.allocated_storage.text = '[b][color=#ff6688]Please select storage unit[/color][/b]'
         self.ids.allocated_storage.text = ''
         
-        # print(f"storage_id: {self.storage_id} selected card: {self.selected_card}")
-        # Load Storage units
-        # self.storage_unit_controller.get_storage_units()
-        # self.populate_storage_units()
         Clock.schedule_once(self.populate_storage_units, 0.1)
     
-        
     def on_leave(self, *args):
         self.ids.qr_card.clear_widgets()
         self.ids.storage_unit_grid.clear_widgets()
-        # self.app.current_batch = {"batch_name": '', "ids": []}
         return super().on_leave(*args)
     
     def populate_storage_units(self, *args):
-        # self.progress.active = True
-        # Clear existing widgets
         self.ids.storage_unit_grid.clear_widgets()
         
-        # Fetch storage units and counts
         success, message, storage_units = self.storage_unit_controller.get_storage_units()
-        # print(storage_units)
-        # return
+        
+        # Find the storage unit with the minimum ID count
+        min_count_unit = min(storage_units, key=lambda unit: unit['count'] or 0)
+        self.storage_id = min_count_unit['id']
+        self.ids.allocated_storage.text = min_count_unit['label']
+        
         for unit in storage_units:
             storage_id = unit['id']
             storage_label = unit['label']
-            total_count = unit['count']
-            if not total_count:
-                total_count = 0
+            total_count = unit['count'] or 0
             
-            # print(unit)
-            
-            # Create MDCards for each storage unit
             card = MDCard(size_hint=(None, None), size=(dp(120), dp(100)), elevation=1, radius=[10])
             card_box = MDBoxLayout(orientation='vertical', padding=dp(10), spacing=dp(5))
 
-            # Add label and total count to the card
             card_box.add_widget(MDLabel(text=f"Unit: {storage_label}", halign='center', theme_text_color="Primary"))
             card_box.add_widget(MDLabel(text=f"ID Count: {total_count}", halign='center', theme_text_color="Secondary"))
 
             card.add_widget(card_box)
-            
-            # Add click behavior to the card
             card.bind(on_release=lambda card_instance, s_id=storage_id, s_label=storage_label: self.on_card_click(card_instance, s_id, s_label))
-            
+
+            # Set initial color for the auto-selected card
+            if storage_id == self.storage_id:
+                card.md_bg_color = self.app.theme_cls.primary_color
+                self.selected_card = card
+
             self.ids.storage_unit_grid.add_widget(card)
-        # self.progress.active = False
-            
- 
+    
     def on_card_click(self, card_instance, storage_id, storage_label):
-        # Reset the background color of the previously selected card, if any
         if self.selected_card:
             self.selected_card.md_bg_color = self.app.theme_cls.bg_light
         
-        # Change background color of the clicked card to primary color
-        card_instance.md_bg_color = self.app.theme_cls.primary_color 
-
-        # Store the clicked card as selected card
+        card_instance.md_bg_color = self.app.theme_cls.primary_color
         self.selected_card = card_instance
-        
-        # Assign storage_label to allocated storage input field
         self.ids.allocated_storage.text = storage_label
-        
-        # Assign storage_id to a variable
         self.storage_id = storage_id    
     
     def update_grid_cols(self, layout, *args):
@@ -150,7 +129,7 @@ class AllocateIDScreen(Screen):
         current_batch = self.app.current_batch
         
         if not current_batch['ids']:
-            # self.label_controller.print_label()
+            self.notice.color = self.app.theme_cls.error_color
             self.notice.text = "There are no new IDs to add"
             return
         
@@ -165,7 +144,7 @@ class AllocateIDScreen(Screen):
         user_id = self.user_id
         
         if not storage:
-            # todo: make notice alert color
+            self.notice.color = self.app.theme_cls.error_color 
             self.notice.text = F"Please select storage unit first"
             # self.progress.active = False
             return
@@ -175,12 +154,14 @@ class AllocateIDScreen(Screen):
         success, message, batch = self.batch_controller.add_batch(batch_name, count, storage, qr_text, user_id)
         if success:
             batch = batch
+            self.notice.color = [0, 1, 0, 1]
             self.notice.text = message
             self.app.current_batch = {"batch_name": '', "ids": []}
             # self.progress.active = False
             # print(batch)
             
         else:
+            self.notice.color = self.app.theme_cls.error_color 
             self.notice.text = message
             self.label_controller.print_label()
             # self.progress.active = False
@@ -188,33 +169,38 @@ class AllocateIDScreen(Screen):
         
         added = 0
         for id in current_batch["ids"]:
-            
+            self.notice.color = [0, 1, 0, 1]
             id = {**id, "batch": batch}
             #Add id
             try:
                 success, message, record_id = self.id_controller.add_id(id)
                 # print(self.controller.add_id(id))
                 if success:
+                    self.notice.color = [0, 1, 0, 1]
                     self.notice.text = F"{message} {id['id_number']}"
                     added = added + 1
                     
                 elif message == "An error occurred: UNIQUE constraint failed: id.id_number, id.issue_date":
+                    self.notice.color = self.app.theme_cls.error_color 
                     self.notice.text = f"This record with ID Number: {id['id_number']} already exists in the database."
                     # self.progress.active = False
                     return
                     
                 else:
+                    self.notice.color = self.app.theme_cls.error_color
                     self.notice.text = message
                     # self.progress.active = False
                     return
                     
             except Exception as e:
-            # print(f"An unexpected error occurred: {e}")    
+            # print(f"An unexpected error occurred: {e}")  
+                self.notice.color = self.app.theme_cls.error_color  
                 self.notice.text = f"An unexpected error occurred: {e}"
                 # self.progress.active = False
                 #
         if added == len(current_batch['ids']):
             # todo: make notice success color
+            self.notice.color = [0, 1, 0, 1]
             self.notice.text = "Batch added successfully"
             Clock.schedule_once(self.populate_storage_units, 0.1)
             # Data to encode

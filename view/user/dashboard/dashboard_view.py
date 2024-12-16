@@ -55,4 +55,5 @@ class DashboardScreen(Screen):
             self.ids.ids_batches.text = f"{data['batches']}"
             # self.ids.sms.text = f'{data['sent_sms']}'
         else:
+            self.notice.color = self.app.theme_cls.error_color
             self.notice.text = "Something went wrong while loading dashboard data"

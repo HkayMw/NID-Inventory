@@ -56,11 +56,13 @@ class ProfileScreen(Screen):
         new_password1 = self.ids.new_password1.text
         
         if (not current_password) or (not new_password) or (not new_password1):
+            self.notice.color = self.app.theme_cls.error_color
             self.notice.text = 'All fields are required to change password'
             return
         if new_password == new_password1:
             password = new_password
         else:
+            self.notice.color = self.app.theme_cls.error_color
             self.notice.text = 'New Passwords dont match, please check'
             return
         
@@ -79,10 +81,16 @@ class ProfileScreen(Screen):
             
             # print(success, " ", message, " ", user)
             if success:
+                
+                self.notice.color = [0, 1, 0, 1]
                 self.notice.text = 'Password Updated Successfully'
             else:
+
+                self.notice.color = self.app.theme_cls.error_color
                 self.notice.text = 'Something went wrong updating password'
                 return 
         else:
+
+            self.notice.color = self.app.theme_cls.error_color
             self.notice.text = 'Wrong current password provided'
             return 

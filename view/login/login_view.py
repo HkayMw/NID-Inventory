@@ -34,6 +34,7 @@ class LoginScreen(Screen):
         notice.text = ''
 
         if id_number.text == "":
+            notice.color = self.app.theme_cls.error_color
             notice.text = f"ID Number required"
             return
         
@@ -53,16 +54,22 @@ class LoginScreen(Screen):
                 except Exception as e:
                     print(f"Error: {e}")
             else:
+                notice.color = self.app.theme_cls.error_color
+                
                 notice.text = f"QR Code error: {message}"
                 return  # Exit the method to avoid further processing
         else:
             id_number = id_number.text
             
         if len(id_number) != 8:
+            notice.color = self.app.theme_cls.error_color
+            
             notice.text = f"ID Number is invalid, please double check."
             return
         
         if password.text == "":
+            notice.color = self.app.theme_cls.error_color
+            
             notice.text = f"Password required"
             return
         

@@ -73,7 +73,7 @@ class AddIDScreen(Screen):
             # print("Count: ", count_value)
         except ValueError:
             count_value = 0  # Default to 0 if the text is not a valid integer
-        progress_percentage = (count_value / 50) * 100
+        progress_percentage = (count_value / 25) * 100
         self.ids.progress_bar.value = progress_percentage + .1
         # print("Progress: ", self.ids.progress_bar.value)
         
@@ -114,7 +114,7 @@ class AddIDScreen(Screen):
     def reset(self, instance):
         self.app.current_batch = {"batch_name": '', "ids": []}
         self.ids.count.text = str(len(self.app.current_batch['ids']))
-        self.ids.progress_bar.value = (int(self.ids.count.text)/50)*100
+        self.ids.progress_bar.value = (int(self.ids.count.text)/25)*100
         self.update_progress_bar()  # Update progress bar on reset
         self.close_reset_dialog(instance)
         
@@ -128,7 +128,7 @@ class AddIDScreen(Screen):
         qr_code = self.ids.qr_code.text
         if not qr_code:
             return
-        if self.validation_event and self.validation_event.is_triggered:
+        if self.validation_event:
             self.validation_event.cancel()
         
         # Schedule validation to run after a brief delay
@@ -139,8 +139,7 @@ class AddIDScreen(Screen):
         current_batch = self.app.current_batch
         
         # Clear notice
-        notice = self.notice.text
-        notice = ''
+        self.notice.text = ''
         # self.progress.active = True
         
         # Process ID QR Code
@@ -151,7 +150,7 @@ class AddIDScreen(Screen):
         if success:
             # Go on ONLY if count is not maxed out (count < 50)
             count = int(self.ids.count.text)
-            if count < 50:
+            if count < 25:
             
                 # Go on ONLY if it is a valid ID QR Code
                 if id['type'] == "03":
@@ -168,7 +167,8 @@ class AddIDScreen(Screen):
                     if not all_clear:
                         
                         # todo: make notice error color
-                        notice ="ID already added in the current batch"
+                        self.notice.color = self.app.theme_cls.error_color
+                        self.notice.text = "ID already added in the current batch"
                         self.ids.qr_code.text = ''
                         Clock.schedule_once(self.refocus_qr_code, 0.1)
                     else:
@@ -179,7 +179,8 @@ class AddIDScreen(Screen):
                             # ID exists in db
                             
                             # todo: make notice error color
-                            notice = "ID already exists in database"
+                            self.notice.color = self.app.theme_cls.error_color
+                            self.notice.text = "ID already exists in database"
                             self.ids.qr_code.text = ''
                             Clock.schedule_once(self.refocus_qr_code, 0.1)
                         else:
@@ -199,20 +200,26 @@ class AddIDScreen(Screen):
                             self.ids.count.text = str(len(current_batch['ids']))
                             
                             self.ids.qr_code.text = ''
+                            self.notice.color = [0, 1, 0, 1]
+                            self.notice.text = "ID Successfully added in current batch"
+                            
                             Clock.schedule_once(self.refocus_qr_code, 0.1)
                           
                 else:
-                    notice = 'Only National ID QR code allowed here'
+                    self.notice.color = self.app.theme_cls.error_color
+                    self.notice.text = 'Only National ID QR code allowed here'
                     # Clear Qr Code field
                     self.ids.qr_code.text = ''
                     Clock.schedule_once(self.refocus_qr_code, 0.1)
                     
             else:
-                notice = 'Batch size has reached acceptable maximum'
+                self.notice.color = self.app.theme_cls.error_color
+                self.notice.text = 'Batch size has reached acceptable maximum'
                 self.ids.qr_code.text = ''
                 
         else:
-            notice = message
+            self.notice.color = self.app.theme_cls.error_color
+            self.notice.text = message
             # print(message)
             # Clear Qr Code field
             self.ids.qr_code.text = ''
@@ -220,7 +227,7 @@ class AddIDScreen(Screen):
             
             
                 
-        self.notice.text = notice
+        # self.notice.text = notice
         
         
     def set_batch_name(self):

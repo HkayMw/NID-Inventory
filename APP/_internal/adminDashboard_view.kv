@@ -1,0 +1,259 @@
+#:kivy 2.3.0
+#view/admin/adminDashboard/adminDashboard_view.kv
+
+<AdminDashboardScreen>:
+    id: adminDashboard_view
+    name: 'adminDashboard_view'
+    orientation: "vertical"
+    
+        
+   # Window Section
+    MDBoxLayout:
+        # adaptive_height: True
+        md_bg_color: app.theme_cls.bg_light
+        id: window_section
+        name: "window_section"
+        orientation: "vertical"
+        padding: 0, 10
+        # size_hint_y: .75
+        height: self.minimum_height
+        spacing: 20
+
+        # Screen Title
+        MDBoxLayout:
+            orientation: 'horizontal'
+            padding: '10dp'
+            spacing: '10dp'
+            size_hint_y: .1
+            size_hint_x: .3
+            # width: '300dp'
+            pos_hint: {"center_x": .5, "center_y": .5}
+            
+            # Title
+            MDLabel:
+                id: screen_title
+                text: 'Admin Dashboard'
+                halign: 'center'
+                font_style: 'H4'
+                size_hint_y: None
+                # size_hint_x: None
+                pos_hint: {"center_x": .5, "center_y": .5}
+                # width: '300dp'
+
+        # horizontal line
+        MDSeparator:
+            height: "1dp"  # Thickness of the line
+            color: "#B0BEC5"  # Color of the line
+
+        # Main Section
+        MDBoxLayout:
+            orientation: "vertical"
+            id: main_section
+            name: "main_section"
+            size_hint_y: .9
+
+
+            MDSegmentedControl:
+                id: time_toggle
+                # siz_hint_x: None
+                # width: '600dp'
+                pos_hint: {"center_x": .5}
+                theme_text_color: app.theme_cls.opposite_bg_light
+                theme_text_color_disabled: "Secondary"
+                # selector_color: app.theme_cls.opposite_bg_light
+                md_bg_color: app.theme_cls.bg_darkest
+                segment_color: app.theme_cls.primary_color
+                separator_color: app.theme_cls.opposite_bg_light
+                on_active: root.load_dashboard(self.current_active_segment.text)
+
+                MDSegmentedControlItem:
+                    text: "Day"
+                    name: 'day'
+                MDSegmentedControlItem:
+                    text: "Week"
+                    name: 'week'
+                MDSegmentedControlItem:
+                    text: "Month"
+                    name: 'month'
+                MDSegmentedControlItem:
+                    text: "Year"
+                    name: 'year'
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                size_hint: (1, 1)
+                spacing: dp(15)
+                padding: dp(20)
+
+                MDScrollView:
+                    size_hint_x: 1
+
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        size_hint_y: None
+                        height: self.minimum_height
+
+
+                        GridLayout:
+                            id: dashboard_grid
+                            cols: 4
+                            spacing: dp(30)
+                            padding: dp(20)
+                            size_hint_y: None
+                            # size_hint_x: None
+                            # width: self.minimum_width
+                            height: self.minimum_height
+                            pos_hint: {"center_y": .5, "center_x": .5}
+
+                            MDCard:
+                                orientation: 'vertical'
+                                elevation: .5
+                                size_hint: (.15, None)
+                                height: self.width * .5
+                                radius: [10]
+                                md_bg_color: app.theme_cls.bg_normal
+
+
+                                MDBoxLayout:
+                                    orientation: 'vertical'
+                                    padding: [10]
+
+                                    MDLabel:
+                                        text: 'Added:'
+                                        valign: 'middle'
+                                        halign: 'center'
+                                        font_style: 'H5'
+                                        
+                                    MDLabel:
+                                        # text: 'IDs Added'
+                                        id: ids_added
+                                        valign: 'middle'
+                                        halign: 'center'
+                                        font_style: 'H5'
+
+                            MDCard:
+                                elevation: .5
+                                size_hint: (.15, None)
+                                height: self.width * .5
+                                radius: [10]
+                                md_bg_color: app.theme_cls.bg_normal
+                    
+
+                                MDBoxLayout:
+                                    orientation: 'vertical'
+                                    padding: [10]
+
+                                    MDLabel:
+                                        text: 'Issued:'
+                                        valign: 'middle'
+                                        halign: 'center'
+                                        font_style: 'H5'
+                                        
+                                    MDLabel:
+                                        # text: 'IDs Added'
+                                        id: ids_issued
+                                        valign: 'middle'
+                                        halign: 'center'
+                                        font_style: 'H5'
+
+                            MDCard:
+                                elevation: .5
+                                size_hint: (.15, None)
+                                height: self.width * .5
+                                radius: [10]
+                                md_bg_color: app.theme_cls.bg_normal
+                    
+
+                                MDBoxLayout:
+                                    orientation: 'vertical'
+                                    padding: [10]
+
+                                    MDLabel:
+                                        text: 'Storage Units:'
+                                        valign: 'middle'
+                                        halign: 'center'
+                                        font_style: 'H5'
+                                        
+                                    MDLabel:
+                                        # text: 'IDs Added'
+                                        id: storage_units
+                                        valign: 'middle'
+                                        halign: 'center'
+                                        font_style: 'H5'
+
+                            MDCard:
+                                elevation: .5
+                                size_hint: (.15, None)
+                                height: self.width * .5
+                                radius: [10]
+                                md_bg_color: app.theme_cls.bg_normal
+
+                                MDBoxLayout:
+                                    orientation: 'vertical'
+                                    padding: [10]
+
+                                    MDLabel:
+                                        text: 'IDs in Inventory'
+                                        valign: 'middle'
+                                        halign: 'center'
+                                        font_style: 'H5'
+                                        
+                                    MDLabel:
+                                        # text: 'IDs Added'
+                                        id: ids_in_inventory
+                                        valign: 'middle'
+                                        halign: 'center'
+                                        font_style: 'H5'
+
+                            MDCard:
+                                elevation: .5
+                                size_hint: (.15, None)
+                                height: self.width * .5
+                                radius: [10]
+                                md_bg_color: app.theme_cls.bg_normal
+
+                                MDBoxLayout:
+                                    orientation: 'vertical'
+                                    padding: [10]
+
+                                    MDLabel:
+                                        text: 'Users'
+                                        valign: 'middle'
+                                        halign: 'center'
+                                        font_style: 'H5'
+                                        
+                                    MDLabel:
+                                        # text: 'IDs Added'
+                                        id: users
+                                        valign: 'middle'
+                                        halign: 'center'
+                                        font_style: 'H5'
+
+                            MDCard:
+                                elevation: .5
+                                size_hint: (.15, None)
+                                height: self.width * .5
+                                radius: [10]
+                                md_bg_color: app.theme_cls.bg_normal
+
+                                MDBoxLayout:
+                                    orientation: 'vertical'
+                                    padding: [10]
+
+                                    MDLabel:
+                                        text: 'SMSs Sent'
+                                        valign: 'middle'
+                                        halign: 'center'
+                                        font_style: 'H5'
+                                        
+                                    MDLabel:
+                                        # text: 'IDs Added'
+                                        id: sms
+                                        valign: 'middle'
+                                        halign: 'center'
+                                        font_style: 'H5'
+
+                        
+                        MDBoxLayout:
+                            id: graph_layout
+                            orientation: "vertical"

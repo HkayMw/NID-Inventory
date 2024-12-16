@@ -1,0 +1,248 @@
+#:kivy 2.3.0
+# view/user/sort_id/sort_id_view.kv
+
+
+
+<AllocateIDScreen>:
+    id: allocate_id_view
+    name: 'allocate_id_view'
+    orientation: "vertical"
+
+    MDBoxLayout:
+        orientation: "vertical"
+        height: self.minimum_height
+
+        # Window Section
+        MDBoxLayout:
+            # adaptive_height: True
+            md_bg_color: app.theme_cls.bg_light
+            id: window_section
+            name: "window_section"
+            orientation: "vertical"
+            padding: 0, 10
+            # size_hint_y: .75
+            height: self.minimum_height
+            spacing: 20
+
+            # Screen Title
+            MDBoxLayout:
+                orientation: 'horizontal'
+                padding: '10dp'
+                spacing: '10dp'
+                size_hint_y: .1
+                size_hint_x: .3
+                # width: '300dp'
+                pos_hint: {"center_x": .5, "center_y": .5}
+                
+                # Title
+                MDLabel:
+                    id: screen_title
+                    text: 'Allocate IDs'
+                    halign: 'center'
+                    font_style: 'H4'
+                    size_hint_y: None
+                    # size_hint_x: None
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    # width: '300dp'
+
+            # horizontal line
+            MDSeparator:
+                height: "1dp"  # Thickness of the line
+                color: "#B0BEC5"  # Color of the line
+
+           # Main Section
+            MDBoxLayout:
+                orientation: "vertical"
+                id: main_section
+                name: "main_section"
+                size_hint_y: .9
+
+
+                MDBoxLayout:
+                    orientation: "horizontal"
+                    id: main_section
+                    name: "main_section"
+                    size_hint_y: .9
+
+                    #Controls Section
+                    MDBoxLayout:
+                        id: controls_section
+                        name: "controls_section"
+                        orientation: "vertical"
+                        # size_hint_y: .97
+                        size_hint_x: .4
+                        padding: [10]
+                        pos_hint: {"center_x": .5, "center_y": .5}
+
+                        MDCard:
+                            orientation: "vertical"
+                            elevation: 1
+                            md_bg_color: app.theme_cls.bg_normal
+                            radius: [10]
+                            spacing: 20
+
+                            MDLabel:
+                                size_hint_y: .1
+                                text: 'Batch Details'
+                                halign: 'center'
+                                valign: 'middle'
+                                font_style: 'H5'
+                                bold: True
+
+                            # horizontal line
+                            MDSeparator:
+                                height: "1dp"  # Thickness of the line
+                                color: "#B0BEC5"  # Color of the line
+
+                            MDLabel:
+                                size_hint_y: .05
+
+                            MDBoxLayout:
+                                id: batch_details
+                                size_hint_y: .8
+                                spacing: 40
+                                orientation: 'vertical'
+                                # size_hint_x: .7
+                                pos_hint: {'center_x': .5, 'center_y': .5}
+
+                                MDBoxLayout:
+                                    size_hint_y: .1
+                                    # size_hint_x: .5
+                                    # pos_hint: {'center_x': .5, 'center_y': .5}
+
+                                    MDLabel:
+                                        text: 'Batch Name: '
+                                        font_style: 'H6'
+                                        halign: 'right'
+
+                                    MDLabel:
+                                        id: batch_name
+                                        # text: app.current_batch['batch_name']
+                                        halign: 'left'
+
+                                MDBoxLayout:
+                                    size_hint_y: .1
+                                    # size_hint_x: .5
+                                    # pos_hint: {'center_x': .5, 'center_y': .5}
+
+                                    MDLabel:
+                                        text: 'Batch Count: '
+                                        font_style: 'H6'
+                                        halign: 'right'
+
+                                    MDLabel:
+                                        id: count
+                                        # text: str(len(app.current_batch['ids']))
+                                        halign: 'left'
+                                
+                                MDBoxLayout:
+                                    size_hint_y: .1
+                                    # size_hint_x: .5
+                                    # pos_hint: {'center_x': .5, 'center_y': .5}
+
+                                    MDLabel:
+                                        text: 'Allocated Storage: '
+                                        font_style: 'H6'
+                                        halign: 'right'
+
+                                    MDLabel:
+                                        id: allocated_storage
+                                        # text: '15'
+                                        halign: 'left'
+                                        markup: True
+
+                                MDCard:
+                                    id: qr_card
+                                    md_bg_color: app.theme_cls.bg_normal
+                                    size_hint_y: .4
+                                    size_hint_x: .4
+                                    # elevation: 1
+                                    style: "outlined"
+                                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                                
+                                MDBoxLayout:
+                                    size_hint_y: .1
+                                    spacing: 50
+                                    size_hint_x: .5
+                                    pos_hint: {"center_x": .5, "center_y": .5}
+
+                                    MDIconButton:
+                                        icon: "arrow-left"
+                                        icon_size: "50sp"
+                                        color: app.theme_cls.bg_light
+                                        pos_hint: {"center_x": .5, "center_y": .5}
+                                        on_release: app.change_screen('add_id_view')
+
+                                    MDRaisedButton:
+                                        # size_hint_y: .4
+                                        text: "Submit Batch"
+                                        color: app.theme_cls.bg_light
+                                        pos_hint: {"center_x": .5, "center_y": .5}
+                                        on_release: root.add_batch()
+
+                                MDLabel:
+                                    size_hint_y: .05
+
+
+                    Label:
+                        size_hint_x: .01   
+                    
+                    # Allocate storage results Section
+                    MDBoxLayout:
+                        orientation: 'vertical'
+                        padding: 10
+                        spacing: 20
+                        # size_hint_y: .97
+                        size_hint_x: .58
+                        pos_hint: {"center_x": .5, "center_y": .5}
+
+                        # BoxLayout:
+                        #     id: allocate_storage_table_container
+                        #     orientation: 'vertical'
+                        #     padding: [10, 10, 10, 10]
+                        #     size_hint_y: 1
+                        #     size_hint_x: 1
+
+                        MDCard:
+                            id: storage_list
+                            orientation: 'vertical'
+                            md_bg_color: app.theme_cls.bg_normal
+                            # padding: [10, 10, 10, 10]
+                            radius: [10]
+                            # size_hint_y: .97
+                            size_hint_x: 1
+                            elevation: 1
+
+                            MDLabel:
+                                text: "Storage Units"
+                                font_style: "H5"
+                                bold: True
+                                size_hint_y: .145
+                                halign: "center"
+                                valign: 'middle'
+
+                            # horizontal line
+                            MDSeparator:
+                                height: "1dp"  # Thickness of the line
+                                color: "#B0BEC5"  # Color of the line
+
+                            # MDLabel:
+                            #     size_hint_y: .05
+
+                            MDScrollView:
+                                # size_hint_y: .9
+                                size_hint_x: 1  # Ensure scroll view takes up full width
+
+                                GridLayout:
+                                    id: storage_unit_grid
+                                    cols: 4
+                                    spacing: dp(12)
+                                    padding: dp(20)
+                                    on_size: root.update_grid_cols(storage_list)
+                                    size_hint_y: None
+                                    size_hint_x: None  # Set this to None to allow width control via width property
+                                    width: self.minimum_width  # Set width dynamically based on content
+                                    height: self.minimum_height  # Set height dynamically based on content
+                                    # pos_hint: {"center_x": 0.5}  # Center the grid horizontally
+                                    pos_hint: {"center_x": .5, "center_y": .5}
+

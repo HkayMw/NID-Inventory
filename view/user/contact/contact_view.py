@@ -121,7 +121,11 @@ class ContactScreen(Screen):
     def process_csv(self):
         '''Handle the selected CSV file, validate rows, and separate valid/invalid rows.'''
         
+        
+        
         if not self.path:
+            self.notice.color = self.app.theme_cls.error_color
+            self.notice.text = f"Select a contacts CSV first"
             return
         path = self.path
         self.contacts = []
@@ -209,12 +213,15 @@ class ContactScreen(Screen):
                 # self.ids.add_contact_button.text = 'Add'
                 
                 # show notice
+                self.notice.color = [0, 1, 0, 1]
                 self.notice.text = message
             else:
+                self.notice.color = self.app.theme_cls.error_color
                 self.notice.text = message
                 # print(success, message, last_row_id)
         if len(id_numbers):
             self.search_contact(id_numbers=id_numbers)
+            self.notice.color = [0, 1, 0, 1]
             self.notice.text = f'{len(valid_contacts)} Contacts Uploaded Successfully'
             
     
@@ -238,8 +245,10 @@ class ContactScreen(Screen):
             self.ids.add_contact_button.text = 'Add'
             
             # show notice
+            self.notice.color = [0, 1, 0, 1]
             self.notice.text = message
         else:
+            self.notice.color = self.app.theme_cls.error_color
             self.notice.text = message
             # print(success, message, last_row_id)
 
@@ -274,12 +283,17 @@ class ContactScreen(Screen):
             if success:
                 if contacts:
                     self.update_row_data(self.data_tables, contacts)
+                    
+                    self.notice.color = [0, 1, 0, 1]
                     self.notice.text = "Search Results found"
                 else:
+                    
+                    self.notice.color = self.app.theme_cls.primary_color  
                     self.notice.text = "No Results found"
                 self.ids.id_number_field1.text = ''
             else:
                 # self.notice.text = 'Something went wrong while searching for contacts, Contact Administrator'
+                self.notice.color = self.app.theme_cls.error_color
                 self.notice.text = message
                     
         elif id_numbers:
@@ -289,14 +303,17 @@ class ContactScreen(Screen):
             if success:
                 if contacts:
                     self.update_row_data(self.data_tables, contacts)
+                    self.notice.color = [0, 1, 0, 1]
                     self.notice.text = "Search Results found"
                 else:
+                    self.notice.color = self.app.theme_cls.primary_color  
                     self.notice.text = "No Results found"
                 self.ids.id_number_field1.text = ''
             else:
+                self.notice.color = self.app.theme_cls.error_color
                 self.notice.text = message    
                 
-        else: 
+        elif qr_code: 
             qr_code = self.ids.qr_code.text
             if not qr_code:
                 return
@@ -306,10 +323,15 @@ class ContactScreen(Screen):
                 # print(id['id_number'])
                 self.search_contact(id_number=id['id_number'])
             else:
+                self.notice.color = self.app.theme_cls.error_color
                 self.notice.text = message
                 
             Clock.schedule_once(self.refocus_qr_code, 0.1)
             self.ids.qr_code.text = ''
+            
+        else:
+            self.notice.color = self.app.theme_cls.error_color
+            self.notice.text = f"Scan ID or Enter ID Number to search contacts"
         
     def update_row_data(self, instance_data_table, search_results):
         """
@@ -340,6 +362,7 @@ class ContactScreen(Screen):
             Clock.schedule_interval(self.add_row_one_by_one, .5)  # Adjust time for speed
         
         except ValueError as e:
+            self.notice.color = self.app.theme_cls.error_color
             self.notice.text = f"Error: {e}. from {__name__}"
             
         # self.progress.active = False

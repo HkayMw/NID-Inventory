@@ -12,7 +12,7 @@ from kivy.metrics import dp
 from kivymd.app import MDApp
 from kivy.lang import Builder
 from kivy.core.window import Window
-from kivy.modules import inspector
+# from kivy.modules import inspector
 from kivy.uix.screenmanager import NoTransition, Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.animation import Animation
@@ -23,6 +23,7 @@ from kivymd.uix.label import MDLabel
 from kivymd.uix.button import MDRaisedButton, MDIconButton
 from kivymd.uix.segmentedcontrol import MDSegmentedControl
 from kivymd.uix.scrollview import MDScrollView
+from kivy.uix.image import Image
 import kivymd
 from kivymd.uix.progressbar import MDProgressBar
 
@@ -57,6 +58,8 @@ import time
 import socket
 import os
 import sys
+import numpy as np
+np.set_printoptions(formatter={'all': lambda x: str(x)})
 
 # Maximize the window size on startup
 # Window.size = (Window.width, Window.height)  # Start with the full size of the window
@@ -67,6 +70,10 @@ import sys
 # Maximize the window on start
 Window.maximize()
 Window.set_icon("Assets/icon.png")
+Config.set('graphics', 'maxfps', '30')
+Config.set('graphics', 'gl_backend', 'angle_sdl2')
+Config.set('graphics', 'multisamples', '0')  # Disable multisampling
+
 
 # Set the minimum size to be the same as the default size
 Window.minimum_width = default_width
@@ -86,13 +93,17 @@ def refresh_layout(*args):
 # Define MainScreen as a ScreenManager
 class MainScreen(BoxLayout):
     network_status = StringProperty('disconnected')  # Use StringProperty for live updates
-    internet_status = StringProperty('disconnected')
+    # internet_status = StringProperty('disconnected')
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
         # Set the transition
         self.ids.screen_manager.transition = NoTransition()
+        
+        # logo = Image(source=os.path.join(os.path.dirname(__file__), 'Assets', 'img', 'malawi_emblem.png'))
+        # self.ids.logo.add_widget(logo)
+        
         # Bind the on_key_down event
         Window.bind(on_key_down=self.on_key_down)
         self.check_network_status()  # Initial check
@@ -100,11 +111,28 @@ class MainScreen(BoxLayout):
 
     def check_network_status(self):
         # Check if connected to any network
-        is_connected = any(psutil.net_if_stats()[iface].isup for iface in psutil.net_if_stats())
+        # is_connected = any(psutil.net_if_stats()[iface].isup for iface in psutil.net_if_stats())
+        # Iterate over all network interfaces
+        # is_connected = False
+
+        # for iface, addrs in psutil.net_if_addrs().items():
+        #     # Ignore the loopback interface
+        #     if iface == "lo":
+        #         continue
+
+        #     # Check if the interface has a valid IP address assigned
+        #     for addr in addrs:
+        #         if addr.family == socket.AF_INET and addr.address != "127.0.0.1":
+        #             # Check if the interface is up
+        #             if psutil.net_if_stats()[iface].isup:
+        #                 is_connected = True
+        #                 break  # Exit inner loop if a connected interface is found
+        #     if is_connected:
+        #         break  # Exit outer loop as soon as a connected interface is found
 
         # Update network_status
-        self.network_status = 'connected' if is_connected else 'disconnected'
-
+        # self.network_status = 'connected' if is_connected else 'disconnected'
+        # return network_status
         # Check internet connectivity
         self.check_internet_connectivity()
 
@@ -112,9 +140,9 @@ class MainScreen(BoxLayout):
         # Attempt to connect to Google's DNS server to check for internet connectivity
         try:
             socket.create_connection(("8.8.8.8", 53), timeout=3)
-            self.internet_status = 'connected'
+            self.network_status = 'connected'
         except (socket.timeout, OSError):
-            self.internet_status = 'disconnected'
+            self.network_status = 'disconnected'
 
     def monitor_network(self):
         while True:
@@ -124,6 +152,15 @@ class MainScreen(BoxLayout):
     # Focus management function
     def on_key_down(self, instance, keyboard, keycode, text, modifiers):
         # print(f"Keycode: {keycode}, Text: {text}, Modifiers: {modifiers}")
+        
+        function_keys = {
+    282: "F1",  41: "F2",  284: "F3",  285: "F4",  286: "F5",
+    287: "F6",  288: "F7",  289: "F8",  290: "F9",  291: "F10",
+    292: "F11", 293: "F12"
+}
+        if keycode in function_keys:
+            # print(f"{function_keys[keycode]} pressed")  # Output which function key was pressed
+            return True  # Override any default behavior
         if keycode == 43:  # Assuming 43 is the keycode you want to handle
             # Collect all focusable widgets
             focusable_widgets = [w for w in self.walk(restrict=True) if hasattr(w, 'focus') and w.is_focusable]
@@ -141,6 +178,7 @@ class MainScreen(BoxLayout):
             if focusable_widgets:
                 focusable_widgets[next_index].focus = True
             return True  # Indicate that the event was handled
+        
 
         return False  # Indicate that the event was not handled
 
@@ -220,7 +258,14 @@ class MainApp(MDApp):
         sm.bind(current=self.on_screen_change)
 
         # Create inspector for debugging
-        inspector.create_inspector(Window, sm)
+        # inspector.create_inspector(Window, sm)
+        return sm
+
+    # def on_kv_post(self, base_widget):
+    #     emblem_path = os.path.join(os.path.dirname(sys.executable), '..', '..', 'malawi_emblem.png')
+    #     logo = Image(source=emblem_path)
+    #     self.root.ids.logo.add_widget(logo)
+    #     print(self.root.ids)
 
     def on_screen_change(self, instance, value):
 
@@ -390,8 +435,8 @@ class MainApp(MDApp):
         )
         avatar.bind(on_release=self.open_user_profile)
         avatar1.bind(on_release=self.show_logout_dialog)
-        avatar2.bind(on_release=lambda x: self.change_screen('sync_view'))
-        user_box.add_widget(avatar2)
+        # avatar2.bind(on_release=lambda x: self.change_screen('sync_view'))
+        # user_box.add_widget(avatar2)
         user_box.add_widget(name_role_label)
         user_box.add_widget(avatar)
         user_box.add_widget(avatar1)
@@ -406,3 +451,4 @@ class MainApp(MDApp):
 
 if __name__ == "__main__":
     MainApp().run()
+    # MainApp().run_with_profile()  # Run app with profiler

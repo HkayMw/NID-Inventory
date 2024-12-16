@@ -138,7 +138,7 @@ class IdController(Controller):
         else:
             return False, f"Search error: {message}", None
         
-    def issue_id(self, signature):
+    def issue_id(self, signature, batch):
         # self.current_user = self.app.user_details
         # self.user_id = self.current_user['id_number']
         print(signature)
@@ -151,14 +151,21 @@ class IdController(Controller):
         
         success, message, row = self.update(data, where_clause, params)
         if success:
-            query = f"insert into collection (signature, issued_out_on, issued_out_by) values('{signature}', '{updated_on}', '{updated_by}')"
+            query = f"insert into collection (signature, issued_out_on, issued_out_by) values('{signature}', '{updated_on}', '{updated_by}');"
+            
             
             success1, message, row = self.custom_query(query)
-            
+
             print(success1, message, row)
             
             if success1:
-                return success, message, row
+                query = f"UPDATE batch SET count = (count - 1) WHERE id = '{batch}';"
+                success2, message, row = self.custom_query(query)
+                if success2:
+                    return success2, message, row
+            else:
+                return False, message, row
+                
         else:
             return False, message, row
         

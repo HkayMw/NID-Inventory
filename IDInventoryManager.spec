@@ -1,6 +1,9 @@
 # -*- mode: python ; coding: utf-8 -*-
 from pathlib import Path
 from PyInstaller.utils.hooks import collect_submodules, collect_data_files
+import os
+
+assets_dir = os.path.join('Assets', 'img', 'malawi_emblem.png')
 
 # List of .kv file paths and their corresponding target directories
 data_files = [
@@ -24,8 +27,9 @@ data_files = [
 #    ("C:\\Users\\HKay\\kivy_venv\\Lib\\site-packages\\escpos\\capabilities.json", "escpos"),
     ("C:\\Users\\HKay\\kivy_venv\\Lib\\site-packages\\escpos\\", "escpos"),
     ("model/database/id_inventory1.db", "./database"),
-    ("Assets/Coat_of_arms_of_Malawi.svg", "./Assets"),
-    ("favicon.ico", "./")
+    ('malawi_emblem.png', '.'),
+    ("favicon.ico", "./"),
+    (assets_dir, "Assets/img")
 ]
 
 hiddenimports = [
@@ -49,7 +53,8 @@ hiddenimports += collect_submodules('numpy')
 data_files += collect_data_files('numpy')
 
 # Convert kv_files list into datas format required by PyInstaller
-datas = [(Path(src), dst) for src, dst in data_files]
+datas = [(str(Path(src)), dst) for src, dst in data_files]
+
 
 a = Analysis(
     ['main.py'],
@@ -85,4 +90,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon='favicon.ico'
 )

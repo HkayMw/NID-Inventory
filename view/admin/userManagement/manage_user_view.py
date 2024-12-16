@@ -97,32 +97,39 @@ class ManageUser(Screen):
         password2 = self.ids.password_field1.text
         
         if not id_number:
+            self.notice.color = self.app.theme_cls.error_color
             self.notice.text = 'ID Number is Required'
             return
         
         if not (len(id_number) == 8):
+            self.notice.color = self.app.theme_cls.error_color
             self.notice.text = 'Invalid ID Number'
             return
             
         if not firstname:
+            self.notice.color = self.app.theme_cls.error_color
             self.notice.text = 'Firstname is Required'
             return
             
         if not surname:
+            self.notice.color = self.app.theme_cls.error_color
             self.notice.text = 'Surname is Required'
             return
             
         if not password1:
+            self.notice.color = self.app.theme_cls.error_color
             self.notice.text = 'Password is Required'
             return
             
         if not password2:
+            self.notice.color = self.app.theme_cls.error_color
             self.notice.text = 'Please comfirm the password'
             return
             
         if password1 == password2:
             password = password1
         else:
+            self.notice.color = self.app.theme_cls.error_color
             self.notice.text = 'Passwords dont match, please check'
             return
         
@@ -138,6 +145,7 @@ class ManageUser(Screen):
             # print(f"Selected role: {role}")
             pass
         else:
+            self.notice.color = self.app.theme_cls.error_color
             self.notice.text = 'Role is Required'
             return
             
@@ -149,9 +157,10 @@ class ManageUser(Screen):
         if success:
             self.clear_fields()
             self.search_user()
+            self.notice.color = [0, 1, 0, 1] 
             self.notice.text = 'User Added Successfully'
         else:
-            self.notice.text = 'Something went wrong trying to add user, contact Administrator'
+            self.notice.text = 'Error while adding user, contact System Administrator'
             print(message)
             return
     
@@ -206,14 +215,17 @@ class ManageUser(Screen):
         password2 = self.ids.password_field1.text
         
         if not id_number:
+            self.notice.color = self.app.theme_cls.error_color
             self.notice.text = 'ID Number is Required'
             return
             
         if not firstname:
+            self.notice.color = self.app.theme_cls.error_color
             self.notice.text = 'Firstname is Required'
             return
             
         if not surname:
+            self.notice.color = self.app.theme_cls.error_color
             self.notice.text = 'Surname is Required'
             return
             
@@ -223,6 +235,7 @@ class ManageUser(Screen):
                 
                 # user_data = {**user_data, "password": password}
             else:
+                self.notice.color = self.app.theme_cls.error_color
                 self.notice.text = 'Passwords dont match, please check'
                 return
         else:
@@ -240,6 +253,7 @@ class ManageUser(Screen):
             # print(f"Selected role: {role}")
             pass
         else:
+            self.notice.color = self.app.theme_cls.error_color
             self.notice.text = 'Role is Required'
             return
         
@@ -253,9 +267,11 @@ class ManageUser(Screen):
             # Enable the ID number field
             self.ids.id_number_field.disabled = False
             self.search_user()
+            self.notice.color = [0, 1, 0, 1] 
             self.notice.text = 'User Updated successfully'
         else:
-            self.notice.text = 'Something went wrong trying to update user, contact Administrator'
+            self.notice.color = self.app.theme_cls.error_color
+            self.notice.text = 'Error while updating user, contact System Administrator'
             print(message)
             return
         
@@ -274,8 +290,10 @@ class ManageUser(Screen):
         success, message, user = self.user_controller.remove_user(id_number)
         if success:
             self.search_user()
+            self.notice.color = [0, 1, 0, 1] 
             self.notice.text = f'User: {user} Removed Successfully'
         else:
+            self.notice.color = self.app.theme_cls.error_color
             self.notice.text = 'Something went wrong trying to remove user, contact Administrator'
             
         # clear selcted row data
@@ -296,12 +314,16 @@ class ManageUser(Screen):
                 if users:
                     self.clear_fields()
                     self.update_row_data(self.data_tables, users)
+                    self.notice.color = [0, 1, 0, 1] 
                     self.notice.text = "Search Results found"
+                    self.notice.color = [0, 1, 0, 1] 
                 else:
                     self.data_tables.row_data = []
+                    self.notice.color = self.app.theme_cls.primary_color  
                     self.notice.text = 'No Users found'
             else:
-                self.notice.text = 'Something went wrong while searching for users, Contact Administrator'
+                self.notice.color = self.app.theme_cls.error_color
+                self.notice.text = 'Error while searching for users, Contact Administrator'
             
             # print(users)
         else:
@@ -318,6 +340,7 @@ class ManageUser(Screen):
                 user_data['id_number'] = id_number
                 
                 if not (len(id_number) == 8):
+                    self.notice.color = self.app.theme_cls.error_color
                     self.notice.text = 'Invalid ID Number'
                     return
             else:
@@ -330,12 +353,15 @@ class ManageUser(Screen):
                 if users:
                     self.clear_fields()
                     self.update_row_data(self.data_tables, users)
+                    self.notice.color = [0, 1, 0, 1] 
                     self.notice.text = "Search Results found"
                 else:
                     self.data_tables.row_data = []
+                    self.notice.color = self.app.theme_cls.primary_color  
                     self.notice.text = 'No Users found'
             else:
-                self.notice.text = 'Something went wrong while searching for users, Contact Administrator'
+                self.notice.color = self.app.theme_cls.error_color
+                self.notice.text = 'Error while searching for users, Contact Administrator'
             
         pass
     
@@ -368,6 +394,7 @@ class ManageUser(Screen):
             Clock.schedule_interval(self.add_row_one_by_one, 1)  # Adjust time for speed
         
         except ValueError as e:
+            self.notice.color = self.app.theme_cls.error_color
             self.notice.text = f"Error: {e}. from {__name__}"
             
         # self.progress.active = False

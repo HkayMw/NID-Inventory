@@ -1,0 +1,305 @@
+#:kivy 2.3.0
+# view/admin/userManagement/manage_user_view.kv
+
+<ManageUser>:
+    id: manage_user_view
+    name: 'manage_user_view'
+    orientation: "vertical"
+        
+
+    # Window Section
+    MDBoxLayout:
+        # adaptive_height: True
+        md_bg_color: app.theme_cls.bg_light
+        id: window_section
+        name: "window_section"
+        orientation: "vertical"
+        padding: 0, 10
+        # size_hint_y: .75
+        height: self.minimum_height
+        spacing: 20
+
+        # Screen Title
+        MDBoxLayout:
+            orientation: 'horizontal'
+            padding: '10dp'
+            spacing: '10dp'
+            size_hint_y: .1
+            size_hint_x: .3
+            # width: '300dp'
+            pos_hint: {"center_x": .5, "center_y": .5}
+            
+            # Title
+            MDLabel:
+                id: screen_title
+                text: 'Manage Users'
+                halign: 'center'
+                font_style: 'H4'
+                size_hint_y: None
+                # size_hint_x: None
+                pos_hint: {"center_x": .5, "center_y": .5}
+                # width: '300dp'
+
+        # horizontal line
+        MDSeparator:
+            height: "1dp"  # Thickness of the line
+            color: "#B0BEC5"  # Color of the line
+            
+
+        # Main Section
+        MDBoxLayout:
+            orientation: "horizontal"
+            id: main_section
+            name: "main_section"
+            size_hint_y: .95
+            pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+            #Controls Section
+            MDBoxLayout:
+                orientation: "vertical"
+                id: controls_section
+                name: "controls_section"
+                size_hint_x: .35
+                # size_hint_y: .95
+                padding: [10]
+                spacing: 30
+
+                MDCard:
+                    elevation: 1
+                    md_bg_color: app.theme_cls.bg_normal
+                    orientation: "vertical"
+
+
+                    MDBoxLayout:
+                        orientation: "vertical"
+                        adaptive_height: True
+                        # size_hint_x: .8
+                        size_hint_y: .8
+                        # radius: [15, 15, 15, 15]
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+                        MDLabel:
+                            text: 'New User'
+                            halign: 'center'
+                            font_style: 'H5'
+                            size_hint_y: .1
+                            bold: True
+                            pos_hint: {"center_x": .5, "center_y": .5}
+
+                        # horizontal line
+                        MDSeparator:
+                            height: "1dp"  # Thickness of the line
+                            color: "#B0BEC5"  # Color of the line
+
+                        MDScrollView:
+                            # size_hint_y: None
+                            # height: self.parent.height
+
+                            MDBoxLayout:
+                                orientation: "vertical"
+                                adaptive_height: True
+                                padding: dp(20)
+                                spacing: dp(10)
+
+                                MDTextField:
+                                    id: id_number_field
+                                    mode: "rectangle"
+                                    hint_text: "ID Number"
+                                    max_text_length: 8
+                                    # icon_right: "information"
+                                    icon_left: "identifier"
+
+                                MDTextField:
+                                    id: firstname_field
+                                    mode: "rectangle"
+                                    icon_left: "account"
+                                    hint_text: "Firstname"
+
+                                MDTextField:
+                                    id: lastname_field
+                                    mode: "rectangle"
+                                    icon_left: "account"
+                                    hint_text: "Surname"
+
+                                MDTextField:
+                                    id: othernames_field
+                                    mode: "rectangle"
+                                    icon_left: "account-outline"
+                                    hint_text: "Other Names"
+
+                                FloatLayout:
+                                    size_hint_y: None
+                                    height: dp(60)
+
+                                    MDTextField:
+                                        id: password_field
+                                        hint_text: "Enter password"
+                                        mode: "rectangle"
+                                        pos_hint: {"center_y": .5, "right": 1}
+                                        height: dp(60)
+                                        icon_left: "key-variant"
+                                        multiline: False
+                                        font_size: '16sp'
+                                        password: True
+
+                                    MDIconButton:
+                                        icon: "eye-off"
+                                        pos_hint: {"center_y": .5, "right": 1}
+                                        on_release:
+                                            self.icon = "eye" if self.icon == "eye-off" else "eye-off"
+                                            password_field.password = not password_field.password
+                                            password_field.focus = True
+
+                                FloatLayout:
+                                    size_hint_y: None
+                                    height: dp(60)
+
+                                    MDTextField:
+                                        id: password_field1
+                                        hint_text: "Confirm password"
+                                        mode: "rectangle"
+                                        pos_hint: {"center_y": .5, "right": 1}
+                                        height: dp(60)
+                                        icon_left: "key-variant"
+                                        multiline: False
+                                        font_size: '16sp'
+                                        password: True
+
+                                    MDIconButton:
+                                        icon: "eye-off"
+                                        pos_hint: {"center_y": .5, "right": 1}
+                                        on_release:
+                                            self.icon = "eye" if self.icon == "eye-off" else "eye-off"
+                                            password_field1.password = not password_field1.password
+                                            password_field1.focus = True
+
+                                Label:
+                                    size_hint_y: .2
+
+                                MDBoxLayout:
+                                    orientation: "horizontal"
+                                    size_hint_y: None
+                                    height: dp(40)
+                                    spacing: dp(20)
+                                    padding: [dp(10), 0]
+
+                                    MDLabel:
+                                        text: "Role:"
+                                        halign: "left"
+                                        bold: True
+                                        font_style: "H6"
+                                        size_hint_y: None
+                                        height: dp(40)
+
+                                    # Radio button for Clerk role
+                                    MDBoxLayout:
+                                        orientation: "horizontal"
+                                        size_hint: None, None
+                                        size: dp(80), dp(40)
+                                        MDLabel:
+                                            text: "Clerk"
+                                            size_hint_x: None
+                                            halign: 'right'
+                                            width: dp(50)
+                                        MDCheckbox:
+                                            group: "role"
+                                            id: clerk_radio
+
+                                    # Radio button for Admin role
+                                    MDBoxLayout:
+                                        orientation: "horizontal"
+                                        size_hint: None, None
+                                        size: dp(80), dp(40)
+                                        MDLabel:
+                                            text: "Admin"
+                                            halign: 'right'
+                                            size_hint_x: None
+                                            width: dp(50)
+                                        MDCheckbox:
+                                            group: "role"
+                                            id: admin_radio
+
+                                Label:
+                                    size_hint_y: .2
+
+                                MDRaisedButton:
+                                    id: add_user_button
+                                    size_hint_x: .5
+                                    text: "Add"
+                                    pos_hint: {"center_x": 0.5}
+                                    # on_release: root.add_user()
+
+                                Label:
+                                    size_hint_y: .1
+
+                                MDRectangleFlatButton:
+                                    size_hint_x: .5
+                                    text: "Clear"
+                                    pos_hint: {"center_x": 0.5}
+                                    on_release: root.clear_fields()
+
+                                Label:
+                                    size_hint_y: .1
+
+
+                    
+                
+                
+
+                
+            #Search results Section
+            BoxLayout:
+                orientation: 'vertical'
+                padding: 10
+                size_hint_x: .65
+                # size_hint_y: .95
+
+                MDBoxLayout:
+                    orientation: "horizontal"
+                    size_hint_y: None
+                    height: dp(60)
+                    spacing: dp(10)
+                    padding: [dp(10), dp(10), dp(10), dp(10)]
+
+                    # ID Number Field
+                    MDTextField:
+                        id: id_search_field
+                        hint_text: "ID Number"
+                        icon_left: "identifier"
+                        mode: "rectangle"
+                        size_hint_x: 0.3
+                        max_text_length: 8
+
+                    # First Name Field
+                    MDTextField:
+                        id: firstname_search_field
+                        hint_text: "First Name"
+                        icon_left: "account"
+                        mode: "rectangle"
+                        size_hint_x: 0.3
+                        max_text_length: 20
+
+                    # Surname Field
+                    MDTextField:
+                        id: surname_search_field
+                        hint_text: "Surname"
+                        mode: "rectangle"
+                        icon_left: "account"
+                        size_hint_x: 0.3
+                        max_text_length: 20
+
+                    # Search Button
+                    MDRaisedButton:
+                        text: "Search"
+                        size_hint_x: 0.1
+                        pos_hint: {"center_y": 0.5}
+                        on_release: root.search_user()
+
+
+                BoxLayout:
+                    id: table_container
+                    orientation: 'vertical'
+                    padding: [10, 10, 10, 10]
+                    size_hint_y: 1
+                    
+            

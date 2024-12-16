@@ -290,4 +290,5 @@ class ReportScreen(Screen):
 
         # Save the workbook to the 'Reports' directory in the Documents folder
         workbook.save(file_path)
+        self.notice.color = self.app.theme_cls.primary_color
         self.notice.text =f"Report saved as {file_name}"

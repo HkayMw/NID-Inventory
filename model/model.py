@@ -34,7 +34,7 @@ class Model:
             shutil.copy(self.initial_db, self.db_path)
         
         # Connect to the database (this should be outside of the if statement)
-        self.conn = sqlite3.connect(self.db_path)
+        self.conn = sqlite3.connect(self.db_path, check_same_thread=False)
         self.cursor = self.conn.cursor()
         self.table = ''
     

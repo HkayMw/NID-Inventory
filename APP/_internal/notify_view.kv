@@ -1,0 +1,205 @@
+#:kivy 2.3.0
+# view/admin/notifyClient/notify_view.kv
+
+<NotifyScreen>:
+    id: notify_view
+    name: 'notify_view'
+    orientation: "vertical"
+    
+        
+    MDLabel:
+        text: "SMS Notifications"
+
+    # Window Section
+    MDBoxLayout:
+        # adaptive_height: True
+        md_bg_color: app.theme_cls.bg_light
+        id: window_section
+        name: "window_section"
+        orientation: "vertical"
+        padding: 0, 10
+        # size_hint_y: .75
+        height: self.minimum_height
+        spacing: 20
+
+        # Screen Title
+        MDBoxLayout:
+            orientation: 'horizontal'
+            padding: '10dp'
+            spacing: '10dp'
+            size_hint_y: .1
+            size_hint_x: .3
+            # width: '300dp'
+            pos_hint: {"center_x": .5, "center_y": .5}
+            
+            # Title
+            MDLabel:
+                id: screen_title
+                text: 'Notify Clients'
+                halign: 'center'
+                font_style: 'H4'
+                size_hint_y: None
+                # size_hint_x: None
+                pos_hint: {"center_x": .5, "center_y": .5}
+                # width: '300dp'
+
+        # horizontal line
+        MDSeparator:
+            height: "1dp"  # Thickness of the line
+            color: "#B0BEC5"  # Color of the line
+
+        # Main Section
+        MDBoxLayout:
+            orientation: "vertical"
+            id: main_section
+            name: "main_section"
+            size_hint_y: .9
+
+            Label:
+                size_hint_y: .02
+
+            MDLabel: 
+                text: "[b]Note:[/b] The message will be sent to all pending clients unless otherwise specified below."
+                font_style: 'H6'
+                markup: True
+                theme_text_color: "Hint"
+                # text_color: .46,.46,.46,1
+                halign: "center"
+                size_hint_y: .1
+                pos_hit: {"top": 1}
+            
+            Label:
+                size_hint_y: .1
+
+            
+
+            MDBoxLayout:
+                orientation: "horizontal"
+                size_hint_y: .25
+                size_hint_x: .695
+                pos_hint: {"top": 1}
+                padding: [4]
+                pos_hint: {"center_x": .5}
+
+
+
+                MDLabel:
+                    text: "Pending Notifications: "
+                    font_style: 'H6'
+                    halign: 'right'
+                    size_hint_x: None
+                    width: dp(200)
+                
+                MDLabel:
+                    id: pending_notices
+                    # text: "564"
+                    font_style: 'H6'
+                    halign: 'left'
+                    size_hint_x: None
+                    width: dp(50)
+
+                MDLabel:
+                    id: spacer
+
+
+                MDCard:
+                    orientation: "vertical"
+                    elevation: 1
+                    radius: dp(7)
+                    # size_hint_x: .4                    
+                    size_hint_x: None
+                    width: dp(300)
+                    pos_hint: {'center_x': 1}
+
+
+                    MDBoxLayout:
+                        orientation: "horizontal"
+
+                        MDLabel:
+                            text: "Send to the first: "
+                            # size_hint_y: .45
+                            halign: "center"
+                            valign: "middle"
+                            font_style: "H6"
+                            size_hint_x: None
+                            width: dp(160)
+                            pos_hint: {"center_y": .4}
+
+                        MDLabel:
+                            id: spacer
+
+                        MDTextField:
+                            id: sms_limit
+                            size_hint_x: None
+                            width: dp(100)
+                            mode: "rectangle"
+                            hint_text: "eg. 100"
+                            input_filter: "int"
+                            pos_hint: {"center_y": .5}
+
+                        Label:
+                            size_hint_x: .15
+
+                    Label:
+                        size_hint_y: .15
+
+            Label:
+                size_hint_y: .02
+
+
+            MDBoxLayout:
+                id: text_area
+                size_hint_x: .7
+                # size_hint_y: .6
+                pos_hint: {"center_x": .5, "center_y": .5}
+
+                MDCard:
+                    elevation: 1
+                    orientation: "horizontal"
+                    md_bg_color: app.theme_cls.bg_dark
+                    spacing: 20
+                    radius: dp(10)
+
+                    MDLabel: 
+                        text: "Message: "
+                        font_style: 'H6'
+                        halign: "center"
+                        size_hint_y: .1
+                        # pos_hit: {"top": 1}
+                        size_hint_x: .12
+                        pos_hint: {"center_x": .5, "center_y": .87}
+
+                    MDTextField:
+                        id: sms_body
+                        text: '''Chidziwitso kuchokera ku NRB, chiphaso chanu cha unzika chafika ku ofesi yathu yaku Mzuzu. Muli olandilidwa kukatenga tsiku lililonse la ntchito.'''
+                        hint_text: "Enter your text here"
+                        md_bg_color: app.theme_cls.bg_light
+                        multiline: True
+                        mode: "rectangle"
+                        max_text_length: 160
+                        size_hint_y: .9
+                        size_hint_x: .8
+                        # height: dp(200)  # Set a height for the text area
+                        pos_hint: {"center_x": .5, "center_y": .5}
+                        max_text_length: 160  # Optional: limit the number of characters
+
+                    Label:
+                        size_hint_x: .001
+
+            Label:
+                size_hint_y: .02
+
+
+            MDRaisedButton:
+                text: "Send"
+                size_hint_x: .1
+                size_hint_y: .1
+                # width: dp(600)
+                padding: [10]
+                # pos_hint: {"center_x": .5, "center_y": .5}
+                pos_hint: {"center_x": 0.32}  # Center the button
+                on_release: root.send_sms()
+            
+
+
+            

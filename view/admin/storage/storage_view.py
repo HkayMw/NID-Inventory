@@ -98,6 +98,7 @@ class StorageScreen(Screen):
         self.notice.text = ''
         
         if count > 0:
+            self.notice.color = self.app.theme_cls.error_color
             self.notice.text = 'Only empty storage units can be marked for deletion'
             return
         
@@ -162,6 +163,7 @@ class StorageScreen(Screen):
             storage_units = list(self.selected_storage_ids.keys())
             
             if not storage_units:
+                self.notice.color = self.app.theme_cls.error_color
                 self.notice.text = 'Select at least one unit for deletion'
                 return
             
@@ -210,10 +212,12 @@ class StorageScreen(Screen):
         
         success, message, data = self.storage_unit_controller.create_storage_units(num_units)
         if success:
+            self.notice.color = [0, 1, 0, 1] 
             self.notice.text = f'{num_units} New Storage Units Added'
             Clock.schedule_once(self.populate_storage_units, 0.1)
         else:
-            self.notice.text = f'Something went wrong, contact admin'
+            self.notice.color = self.app.theme_cls.error_color
+            self.notice.text = f'Error while adding storage, contact admin'
             
         
         self.add_dialog.dismiss()
@@ -225,10 +229,12 @@ class StorageScreen(Screen):
         
         success, message, data = self.storage_unit_controller.delete_storage_units(ids)
         if success:
+            self.notice.color = [0, 1, 0, 1] 
             self.notice.text = f'{len(self.selected_storage_ids)} Storage Units Deleted Successfuly'
             Clock.schedule_once(self.populate_storage_units, 0.1)
         else:
-            self.notice.text = f'Something went wrong, contact admin'
+            self.notice.color = self.app.theme_cls.error_color
+            self.notice.text = f'Error while deleting storage units, contact admin'
             print(message)
         
         self.selected_storage_ids = {}

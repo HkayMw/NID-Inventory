@@ -10,6 +10,11 @@ from PIL import Image as PILImage, ImageDraw, ImageFont
 from escpos.printer import Usb
 import usb.core
 import usb.util
+from pathlib import Path
+import os
+
+
+
 
 class LabelPrinter():
     # def __init__(self):
@@ -86,12 +91,26 @@ class LabelPrinter():
         label_img = label_img.convert('1')  # Convert to 1-bit black/white image
 
         # Save the combined image as a temporary BMP file
-        temp_file = "temp_batch_qrcode.bmp"
+        # temp_file = "temp_batch_qrcode.bmp"
+        temp_file = self.get_label_path()
         label_img.save(temp_file, "BMP")  # Save as BMP in 1-bit black/white format
         return True,"Lable Created Successfully",{"label_width":label_width_px,"label_height": label_height_px,"file_path": temp_file}
+    
+    def get_label_path(self):
+        # Get the user's home directory
+        home_directory = Path.home()
+        # Define the path for your application's api
+        label_path = home_directory / "IDInventoryManager" / "temp_batch_qrcode.bmp"
+        
+        # Ensure the directory exists
+        os.makedirs(label_path.parent, exist_ok=True)
+
+        return str(label_path)
 
     # Print the image using the specified printer
-    def print_label(self, file_path ="temp_batch_qrcode.bmp", label_width_px = 590, label_height_px = 157):
+    def print_label(self, file_path =None, label_width_px = 590, label_height_px = 157):
+        file_path = self.get_label_path()
+        
         try:
             
             # Get printer details

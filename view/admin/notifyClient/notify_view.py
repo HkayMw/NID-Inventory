@@ -53,6 +53,8 @@ class NotifyScreen(Screen):
             return
         
         if len(sms) >= 160:
+            self.notice.color = self.app.theme_cls.error_color
+            
             self.notice.text = 'Message is limited to 160 charaters only'
             return
         
@@ -65,9 +67,12 @@ class NotifyScreen(Screen):
             success, not_updated, updated = self.id_controller.update_notified_id(notified)
             if success:
                 self.load_to_be_notified()
+                self.notice.color = [0, 1, 0, 1]
                 self.notice.text = f'{updated} Clients notified successfully'
         
         else:
+            self.notice.color = self.app.theme_cls.error_color
+
             self.notice.text = message   
         # sms_data = {'sms': sms, 'limit': limit}
         

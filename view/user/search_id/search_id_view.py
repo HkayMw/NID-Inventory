@@ -59,11 +59,19 @@ class SearchIDScreen(Screen):
         self.notice = self.app.root.ids.notice
         # self.notice.text = ''
         
-        # Dictionary to store signatures by row index
-        self.id_map = {}  # To store hidden signatures
+        # Dictionary to store IDs mapped by row index
+        self.id_map = {}  
         self.current_page = 1 
+        
+        # Debouncing attributes
+        self.name_search_event = None
         Clock.schedule_once(self.initialize_table, 0.2)
         
+        self.ids.id_no_field.bind(text=self.on_id_text)
+        self.ids.firstname_field.bind(text=self.schedule_name_search)
+        self.ids.lastname_field.bind(text=self.schedule_name_search)
+        self.ids.firstname_field.bind(on_text=self.refocus_firstname_field)
+        self.ids.lastname_field.bind(on_text=self.refocus_lastname_field)
         
     def on_enter(self, *args):
         # self.initialize_table()
@@ -84,6 +92,8 @@ class SearchIDScreen(Screen):
         self.current_user = self.app.user_details
         self.user_id = self.current_user['id_number']
         
+        super().on_enter(*args)
+        
         Clock.schedule_once(self.refocus_qr_code, 0.1)
         
         # print(dir(self.ids.qr_code))
@@ -99,7 +109,9 @@ class SearchIDScreen(Screen):
         self.printing_img = None
         self.printing_data = None
 
-        return super().on_leave(*args)
+        if self.name_search_event:
+            self.name_search_event.cancel()
+        super().on_leave(*args)
 
     def initialize_table(self, *args):
         # Initialize the table with default headers and an empty state
@@ -137,6 +149,22 @@ class SearchIDScreen(Screen):
         # Bind forward button
         self.data_tables.pagination.ids['button_forward'].bind(on_release=lambda x: self.update_page(1))
 
+    def on_id_text(self, instance, value):
+        """Automatically searches when the ID field reaches 8 characters."""
+        if len(value) == 8:
+            self.schedule_search('id')
+
+    def schedule_name_search(self, *args):
+        
+        """Schedules a name-based search with a debounce delay."""
+        if self.name_search_event:
+            self.name_search_event.cancel()
+        self.name_search_event = Clock.schedule_once(lambda dt: self.search_id('name'), 1)
+
+    def schedule_search(self, search_type):
+        """Schedules a search operation to avoid UI blocking."""
+        Clock.schedule_once(lambda dt: self.search_id(search_type), 0)
+    
     def update_page(self, change):
         """Update the current page of the data table."""
         # Ensure that change is either +1 for forward or -1 for back
@@ -146,6 +174,21 @@ class SearchIDScreen(Screen):
     def refocus_qr_code(self, *args):
         # Set focus back to the MDTextField after the delay
         self.ids.qr_code.focus = True
+    
+    def refocus_firstname_field(self, *args):
+        Clock.schedule_once(self.refocus_firstname, 0.1)
+        
+    def refocus_lastname_field(self, *args):
+        Clock.schedule_once(self.refocus_lastname, 0.1)
+        
+    
+    def refocus_firstname(self, *args):
+        # Set focus back to the MDTextField after the delay
+        self.ids.firstname_field.focus = True
+        
+    def refocus_lastname(self, *args):
+        # Set focus back to the MDTextField after the delay
+        self.ids.lastname_field.focus = True
         
     def schedule_validation(self, search_type):
         # Cancel any previously scheduled validation
@@ -191,14 +234,16 @@ class SearchIDScreen(Screen):
             
             success, message, search_results = self.controller.search_id(search_type='name', firstname=firstname, lastname=lastname)
             if not success:
-                # notice.theme_text_color = "Secondary"
+                notice.color = self.app.theme_cls.error_color
+
                 notice.text = message
             else:
                 #todo: change to green
+                self.notice.color = [0, 1, 0, 1]
                 notice.text = message
                 
-            self.ids.firstname_field.text = ''
-            self.ids.lastname_field.text = ''
+            # self.ids.firstname_field.text = ''
+            # self.ids.lastname_field.text = ''
 
         elif search_type == 'qr_code':
             qr_code = self.ids.qr_code.text
@@ -207,21 +252,24 @@ class SearchIDScreen(Screen):
             success, message, search_results = self.controller.search_id(search_type='qr_code', qr_code=qr_code)
             if not success:
                 # notice.theme_text_color = "Error"
+                notice.color = self.app.theme_cls.error_color
+                
                 notice.text = message
-                Clock.schedule_once(self.refocus_qr_code, 0.1)
+            Clock.schedule_once(self.refocus_qr_code, 0.1)
             self.ids.qr_code.text = ''
         
         # Update table with search results
         if search_results:
             # print(len(search_results))
             self.update_row_data(self.data_tables, search_results)
+            self.notice.color = [0, 1, 0, 1]
             notice.text = message
-            Clock.schedule_once(self.refocus_qr_code, 0.1)
+            # Clock.schedule_once(self.refocus_qr_code, 0.1)
         else:
             # Clear the current row data
             self.data_tables.row_data =[]
             
-            Clock.schedule_once(self.refocus_qr_code, 0.1)
+            # Clock.schedule_once(self.refocus_qr_code, 0.1)
             # Also clear the signature map
             self.id_map.clear()
             
@@ -251,9 +299,10 @@ class SearchIDScreen(Screen):
             self.search_results = search_results
             
             # Start adding rows one by one using Clock.schedule_interval
-            Clock.schedule_interval(self.add_row_one_by_one, .5)  # Adjust time for speed
+            Clock.schedule_interval(self.add_row_one_by_one, 1)  # Adjust time for speed
         
         except ValueError as e:
+            self.notice.color = self.app.theme_cls.error_color
             self.notice.text = f"Error: {e}. from {__name__}"
             
         # self.progress.active = False
@@ -329,7 +378,9 @@ class SearchIDScreen(Screen):
 
             # Get the global row data
             self.clicked_id_data = row_data = instance_table.row_data[global_row_index]
-            print(f"Row data: {row_data}")
+            
+            
+                
             
             # Validate the index
             if 0 <= global_row_index < len(instance_table.row_data):
@@ -351,15 +402,22 @@ class SearchIDScreen(Screen):
                     success, message, storage = self.storage_controller.get_storage_unit(id=batch['storage'])
                     
                     if success:
+                        self.notice.color = [0, 1, 0, 1]
+                        
                         allocated_storage = self.ids.allocated_storage.text = str(storage['label'])
                     else:
+                        self.notice.color= self.app.theme_cls.error_color
                         print(message)
+                        self.notice.text = message
                         return
                     
                     
                     
                 else:
-                    print(message)
+                    self.notice.color= self.app.theme_cls.error_color
+                    self.notice.text = message
+                
+                    # print(message)
                     return
                 
                 qr_text = f'Batch Name: {batch_name}, Allocated Storage: {allocated_storage}'
@@ -410,12 +468,27 @@ class SearchIDScreen(Screen):
                 
                 
             else:
-                print("Invalid row index or row data not found.")
+                self.notice.color= self.app.theme_cls.error_color
+                self.notice.text = "Invalid row index or row data not found."
+                # print("Invalid row index or row data not found.")
+                
+            # print(f"Row data: {row_data}")
+            status = row_data[6]
+            # print(status)
+            
+            if status == 'Issued':
+                # self.ids.issue_btn.dissabled = True
+                Clock.schedule_once(lambda dt: setattr(self.ids.issue_btn, 'disabled', True), 0.1)
+            else:
+                # self.ids.issue_btn.dissabled = False
+                Clock.schedule_once(lambda dt: setattr(self.ids.issue_btn, 'disabled', False), 0.1)
         
         except IndexError as e:
-            print(f"IndexError occurred: {e}")
+            self.notice.color= self.app.theme_cls.error_color
+            self.notice.text = f"IndexError occurred: {e}"
         except Exception as e:
-            print(f"An unexpected error occurred: {e}")
+            self.notice.color = self.app.theme_cls.error_color
+            self.notice.text = f"An unexpected error occurred: {e}"
             
     def show_issue_id_dialog(self):
         row_data = self.clicked_id_data
@@ -468,13 +541,14 @@ class SearchIDScreen(Screen):
         
     def issue_id(self, instance):
         signature = self.clicked_id_signature
+        batch = self.clicked_id_batch
         print(f"Attempting to issue ID with signature: {signature}")  # Debug statement
 
         if signature is None:
             print("No signature found. Cannot issue ID.")
             return  # Exit if there's no signature
 
-        success, message, row = self.controller.issue_id(signature)
+        success, message, row = self.controller.issue_id(signature, batch)
 
         if success:
             print(f"ID issued successfully: {message}")
@@ -484,12 +558,14 @@ class SearchIDScreen(Screen):
             if id:
                 # print(len(search_results))
                 self.update_row_data(self.data_tables, id)
-                
+            
+            self.notice.color = [0, 1, 0, 1]
             self.notice.text = "ID issued successfully"
             self.ids.qr_card.clear_widgets()
             
         else:
-            print(f"Failed to issue ID: {message}")
+            # print(f"Failed to issue ID: {message}")
+            self.notice.color = self.app.theme_cls.error_color
             self.notice.text = "Something went wrong trying to issue an ID"
 
         self.close_issue_id_dialog(instance)   

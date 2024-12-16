@@ -1,0 +1,270 @@
+#:kivy 2.3.0
+# view/user_profie/user_profie_view.kv
+
+<ProfileScreen>:
+    id: user_profile_view
+    name: 'user_profile_view'
+    orientation: "vertical"
+        
+    # MDLabel:
+    #     text: "Users Profile"
+
+    # Window Section
+    MDBoxLayout:
+        # adaptive_height: True
+        md_bg_color: app.theme_cls.bg_light
+        id: window_section
+        name: "window_section"
+        orientation: "vertical"
+        padding: 0, 10
+        # size_hint_y: .75
+        height: self.minimum_height
+        spacing: 20
+
+        # Screen Title
+        MDBoxLayout:
+            orientation: 'horizontal'
+            padding: '10dp'
+            spacing: '10dp'
+            size_hint_y: .1
+            size_hint_x: .3
+            # width: '300dp'
+            pos_hint: {"center_x": .5, "center_y": .5}
+            
+            # Title
+            MDLabel:
+                id: screen_title
+                text: 'User Profile'
+                halign: 'center'
+                font_style: 'H4'
+                size_hint_y: None
+                # size_hint_x: None
+                pos_hint: {"center_x": .5, "center_y": .5}
+                # width: '300dp'
+
+        # horizontal line
+        MDSeparator:
+            height: "1dp"  # Thickness of the line
+            color: "#B0BEC5"  # Color of the line
+
+        # Main Section
+        MDBoxLayout:
+            orientation: "horizontal"
+            id: main_section
+            name: "main_section"
+            size_hint_y: .9
+
+            # MDLabel
+            #     text: 'User Profile Feature Coming soon.'
+            #     valign: 'middle'
+            #     halign: 'center'
+
+            # FloatLayout:
+            #     MDCard:
+            #         id: user_card
+            #         orientation: 'vertical'
+            #         md_bg_color: app.theme_cls.bg_normal
+            #         radius: [10]
+            #         padding: 10                
+            #         size_hint_x: None
+            #         width: dp(600)
+            #         elevation: .8
+            #         pos: 450, 10
+
+            FloatLayout:
+                MDBoxLayout:
+                    orientation: "vertical"
+                    # padding: "20dp"
+                    spacing: "10dp"
+                    pos_hint: {"top": 1}
+                    size_hint_y: None
+                    height: "400dp"
+                    
+                    MDCard:
+                        md_bg_color: app.theme_cls.bg_normal
+                        orientation: "vertical"
+                        size_hint: None, None
+                        size: "800dp", "390dp"
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                        # pos_hint: {"top": 1}
+                        padding: "20dp"
+                        elevation: 1
+
+                        MDBoxLayout:
+                            orientation: "horizontal"
+                            spacing: "20dp"
+                            size_hint_y: .5
+
+                            MDBoxLayout:
+                                orientation: "vertical"
+                                spacing: "10dp"
+                                size_hint_x: .4
+
+                                MDIcon:
+                                    icon: "account-circle"
+                                    font_size: "130dp"
+                                    theme_text_color: "Primary"
+                                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+                                MDLabel:
+                                    id: full_name
+                                    # text: app.user_details['firstname'] + " " + app.user_details['othernames'] + " " + app.user_details['lastname']
+                                    theme_text_color: "Secondary"
+                                    font_style: "Subtitle1"
+                                    halign: 'center'
+                                    valign: 'middle'
+
+                            MDBoxLayout:
+                                orientation: "vertical"
+                                spacing: "10dp"
+
+                                # ID Number
+                                MDBoxLayout:
+                                    orientation: "vertical"
+                                    # spacing: "20dp"
+
+                                    MDLabel:
+                                        text: "ID Number"
+                                        theme_text_color: "Secondary"
+                                        font_style: "H6"
+
+                                    MDTextField:
+                                        id: id_number
+                                        mode: "line"
+                                        disabled: True
+                                        # text: app.user_details['id_number']
+
+                                # User Role
+                                MDBoxLayout:
+                                    orientation: "vertical"
+                                    # spacing: "20dp"
+
+                                    MDLabel:
+                                        text: "User Role"
+                                        theme_text_color: "Secondary"
+                                        font_style: "H6"
+
+                                    MDTextField:
+                                        id: role
+                                        mode: "line"
+                                        disabled: True
+                                        # text: app.user_details['user_type']
+                        # horizontal line
+                        MDSeparator:
+                            height: "1dp"  # Thickness of the line
+                            color: "#B0BEC5"  # Color of the line
+
+                        MDBoxLayout:
+                            orientation: "vertical"
+                            spacing: "10dp"
+                            size_hint_y: .5
+
+                            # Change Password
+                            MDLabel:
+                                text: "Change your password"
+                                theme_text_color: "Hint"
+                                font_style: "H6"
+                                halign: 'center'
+                                valign: 'middle'
+
+                            MDBoxLayout:
+                                orientation: "horizontal"
+                                spacing: "20dp"
+
+                                FloatLayout:
+                                    size_hint_y: None
+                                    height: dp(60)
+                                
+                                    MDTextField:
+                                        id: current_password
+                                        hint_text: "Current Password"
+                                        mode: "rectangle"
+                                        pos_hint: {"center_y": .5, "right": 1}
+                                        height: dp(60)
+                                        icon_left: "key-variant"
+                                        multiline: False
+                                        font_size: '16sp'
+                                        password: True
+
+                                    MDIconButton:
+                                        icon: "eye-off"
+                                        pos_hint: {"center_y": .5, "right": 1}
+                                        on_release:
+                                            self.icon = "eye" if self.icon == "eye-off" else "eye-off"
+                                            current_password.password = not current_password.password
+                                            current_password.focus = True
+
+                                FloatLayout:
+                                    size_hint_y: None
+                                    height: dp(60)
+                                
+                                    MDTextField:
+                                        id: new_password
+                                        hint_text: "Current Password"
+                                        mode: "rectangle"
+                                        pos_hint: {"center_y": .5, "right": 1}
+                                        height: dp(60)
+                                        icon_left: "key-variant"
+                                        multiline: False
+                                        font_size: '16sp'
+                                        password: True
+
+                                    MDIconButton:
+                                        icon: "eye-off"
+                                        pos_hint: {"center_y": .5, "right": 1}
+                                        on_release:
+                                            self.icon = "eye" if self.icon == "eye-off" else "eye-off"
+                                            new_password.password = not new_password.password
+                                            new_password.focus = True
+
+                                FloatLayout:
+                                    size_hint_y: None
+                                    height: dp(60)
+                                
+                                    MDTextField:
+                                        id: new_password1
+                                        hint_text: "Current Password"
+                                        mode: "rectangle"
+                                        pos_hint: {"center_y": .5, "right": 1}
+                                        height: dp(60)
+                                        icon_left: "key-variant"
+                                        multiline: False
+                                        font_size: '16sp'
+                                        password: True
+
+                                    MDIconButton:
+                                        icon: "eye-off"
+                                        pos_hint: {"center_y": .5, "right": 1}
+                                        on_release:
+                                            self.icon = "eye" if self.icon == "eye-off" else "eye-off"
+                                            new_password1.password = not new_password1.password
+                                            new_password1.focus = True
+
+                                # MDTextField:
+                                #     id: new_password
+                                #     hint_text: "New Password"
+                                #     password: True
+                                #     icon_right: "eye"
+                                #     icon_right_color: app.theme_cls.primary_color
+                                #     mode: "rectangle"
+
+                                # MDTextField:
+                                #     id: new_password1
+                                #     hint_text: "Confirm New Password"
+                                #     password: True
+                                #     icon_right: "eye"
+                                #     icon_right_color: app.theme_cls.primary_color
+                                #     mode: "rectangle"
+
+                            MDRaisedButton:
+                                text: "Update Password"
+                                size_hint: None, None
+                                width: dp(450)
+                                height: dp(100)
+                                pos_hint: {"center_x": 0.5}
+                                on_release: root.change_password()
+
+                        
+
+
+               

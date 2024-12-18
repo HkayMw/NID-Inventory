@@ -1,0 +1,60 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Distribution / packaging
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+py_3.12.2_venv/
+dist/
+build/
+*.egg-info/
+*.egg
+
+# Buildozer-related files
+.buildozer/
+dist/
+
+# PyInstaller
+# One-dir and one-file builds
+dist/
+build/
+*.spec
+
+# Pytest
+.cache
+*.log
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# VS Code settings
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Other
+*.pyc
+*.pdb
+*.exe
